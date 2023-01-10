@@ -1,0 +1,21 @@
+[
+    {
+        "id": "BOX_HEADING_MODULES",
+        "items": [
+            {
+                "sort": 15,
+                "link": "modules.php",
+                "link_param": "set=payment&module=payrexx",
+                "title": "admin_menu.payrexx",
+                "items": [
+                    {
+                        "sort": 10,
+                        "link": "admin.php",
+                        "link_param": "do=payrexx/modules",
+                        "title": "admin_menu.BOX_HUB_ACCOUNT"
+                    }
+                ]
+            }
+        ]
+    }
+]

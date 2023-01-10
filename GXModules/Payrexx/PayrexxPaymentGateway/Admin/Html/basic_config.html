@@ -1,0 +1,77 @@
+{extends file="get_usermod:layouts/main/layout.html"}
+
+{block name="content"}
+{load_language_text section="{$content.translate_section}"}
+{load_language_text section="module_center_module" name="mcm"}
+
+<div class="breakpoint-small">
+    <form action="{$content.action_save}" method="POST" class="form-configuration">
+        <input type="hidden" name="pageToken" value="{$content.pageToken}">
+        <h4>{$txt.basic_configuration}</h4>
+        <div class="form-horizontal">
+            <fieldset>
+                <legend>{$txt.configuration}</legend>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.platform}</label>
+                    <div class="col-sm-7">
+                        <select class="form-control" name="configuration[PLATFORM]">
+                            {foreach from=$content.platforms item=platform}
+                            <option value="{$platform}"{if $content.configuration['PLATFORM'] === $platform} selected{/if}>{$platform}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="tooltip-icon" data-gx-widget="tooltip_icon" data-tooltip_icon-type="info">{$txt.platform_tooltip}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.instance_name}</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" name="configuration[INSTANCE_NAME]"
+                            id="instance_name" value="{$content.configuration['INSTANCE_NAME']}" required>
+                            <span>{$txt.instance_name_desc}</span>
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="tooltip-icon" data-gx-widget="tooltip_icon" data-tooltip_icon-type="info">{$txt.instance_name_tooltip}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.api_key}</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" name="configuration[API_KEY]"
+                            id="api_key" value="{$content.configuration['API_KEY']}" required>
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="tooltip-icon" data-gx-widget="tooltip_icon" data-tooltip_icon-type="info">{$txt.api_key_tooltip}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.prefix}</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" name="configuration[PREFIX]"
+                            id="prefix" value="{$content.configuration['PREFIX']}">
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="tooltip-icon" data-gx-widget="tooltip_icon" data-tooltip_icon-type="info">{$txt.prefix_tooltip}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.look_and_feel_id}</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" name="configuration[LOOK_AND_FEEL_ID]"
+                            id="look_and_feel_id" value="{$content.configuration['LOOK_AND_FEEL_ID']}">
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="tooltip-icon" data-gx-widget="tooltip_icon" data-tooltip_icon-type="info">{$txt.look_and_feel_id_tooltip}</span>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary pull-right">{$txt.save_configuration}</button>
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
