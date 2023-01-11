@@ -56,9 +56,21 @@ class PayrexxPaymentGatewayBase
         $this->description = $this->langText->get_text('text_description');
         if (defined('DIR_WS_ADMIN')) {
             $this->title = PayrexxHelper::createLogoImageTag() . ' ' . ucwords(str_replace('_', ' ', $this->code));
-            $this->description .= $this->langText->get_text('text_description2');
+            $this->description .= $this->_createDescription();
         }
         $this->defineConstants();
+    }
+
+    /**
+     * Description.
+     */
+    public function _createDescription()
+    {
+        $description = $this->langText->get_text('text_description2');
+        if (!$this->credentialsCheck()) {
+            $description .= '<br><span style="color:#ff0000">' . $this->langText->get_text('config_invalid') . '</span><br><br>';
+        }
+        return $description;
     }
 
     /**
@@ -141,6 +153,10 @@ class PayrexxPaymentGatewayBase
             $_SESSION['gm_error_message'] = urlencode($this->langText->get_text('payment_cancel'));
         }
 
+        if (!$this->credentialsCheck()) {
+            return false;
+        }
+
         $selection = [
             'id' => $this->code,
             'module' => $this->getConstantValue('CHECKOUT_NAME'),
@@ -151,6 +167,17 @@ class PayrexxPaymentGatewayBase
         return $selection;
     }
 
+    /**
+     * It is similar to Signature check
+     */
+    private function credentialsCheck()
+    {
+        $storage = MainFactory::create('PayrexxStorage');
+        if (empty($storage->get('API_KEY')) || empty($storage->get('INSTANCE_NAME'))) {
+            return false;
+        }
+        return true;
+    }
     /**
      * @return string
      */

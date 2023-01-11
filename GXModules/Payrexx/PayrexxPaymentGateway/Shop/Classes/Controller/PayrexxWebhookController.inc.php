@@ -2,7 +2,6 @@
 
 use Payrexx\PayrexxPaymentGateway\Classes\Service\OrderService;
 use Payrexx\PayrexxPaymentGateway\Classes\Service\PayrexxApiService;
-use Payrexx\Models\Request\Transaction;
 
 class PayrexxWebhookController extends HttpViewController
 {

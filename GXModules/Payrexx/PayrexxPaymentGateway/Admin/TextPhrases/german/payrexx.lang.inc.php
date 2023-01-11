@@ -8,7 +8,7 @@
     --------------------------------------------------------------------------------------------------
  */
 
-$t_language_text_section_content_array = [
+ $t_language_text_section_content_array = [
     'text_title'          => 'Payrexx Payment Gateway',
     'text_description'    => 'Payrexx enables you to process payments securely and easily. You do not need your own website or programming skills to accept over 100+ payment methods.<br/> If you have any questions, Please email us at <a href="mailto:integrations@payrexx.com">integrations@payrexx.com</a> OR visit <a href="https://www.payrexx.com">https://www.payrexx.com</a><br><br>',
     'text_description2'    => '<a class="btn" href="' . DIR_WS_ADMIN . 'admin.php?do=ModuleCenter#PayrexxPaymentGateway" style="width: 100%; margin:0;">Basic Configuration</a> <br>',
@@ -41,10 +41,9 @@ $t_language_text_section_content_array = [
     'zone_desc' => 'When a zone is selected, this payment method will be enabled for that zone only.',
     'allowed_title' => 'Allowed Zones',
     'allowed_desc' => 'Please enter the zones <b>individually</b> that should be allowed to use this module (e.g. US, UK (leave blank to allow all zones))',
-    'min_order_title' => 'Minimum Orders',
-    'min_order_desc' => 'Minimum number of orders for a customer to view this option.',
     'checkout_name_title' => 'Module Title',
     'checkout_name_desc' => 'This controls the Module Description on the checkout page',
     'checkout_description_title' => 'Module Desciption',
     'checkout_description_desc' => 'This controls the Module Description on the checkout page',
+    'config_invalid' => 'Invalid configuration. Please check!',
 ];

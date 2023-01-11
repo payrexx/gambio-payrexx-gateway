@@ -19,12 +19,19 @@ class PayrexxApiService
         $this->configuration = new PayrexxStorage();
     }
 
+    /**
+     * validate the api signature
+     *
+     * @param string $instance
+     * @param string $apiKey
+     * @param string $platform
+     * @return true|false
+     */
     public function validateSignature(string $instance, string $apiKey, string $platform): bool
     {
         $payrexx = new Payrexx($instance, $apiKey, '', $platform);
-        $signatureCheck = new SignatureCheck();
         try {
-            $response = $payrexx->getOne($signatureCheck);
+            $response = $payrexx->getOne(new SignatureCheck());
             return true;
         } catch (\Payrexx\PayrexxException $e) {
             return false;

@@ -45,4 +45,5 @@ $t_language_text_section_content_array = [
     'checkout_name_desc' => 'This controls the Module Description on the checkout page',
     'checkout_description_title' => 'Module Desciption',
     'checkout_description_desc' => 'This controls the Module Description on the checkout page',
+    'config_invalid' => 'Invalid configuration. Please check!',
 ];
