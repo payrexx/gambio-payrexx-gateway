@@ -44,8 +44,6 @@ class PayrexxPaymentGatewayBase
 
     /**
      * Constructor
-     *
-     * @param string $code payment module code
      */
     public function __construct()
     {
@@ -56,18 +54,20 @@ class PayrexxPaymentGatewayBase
         $this->enabled     = defined($this->getConstant('STATUS')) && filter_var(constant($this->getConstant('STATUS')), FILTER_VALIDATE_BOOLEAN);
         $this->description = $this->langText->get_text('text_description');
         if (defined('DIR_WS_ADMIN')) {
-            $this->title .= $this->createTitle();
-            $this->description .= $this->createDescription();
+           $this->addAdditionalInfo();
         }
         $this->defineConstants();
     }
 
     /**
-     * get additional info to title for admin view
+     * Add more information to admin view
+     *
+     * @return string
      */
-    public function createTitle()
+    public function addAdditionalInfo()
     {
-        return xtc_image(
+        // title
+        $this->title .= xtc_image(
             xtc_catalog_href_link(
                 PayrexxHelper::getImagePath() . $this->code . '.svg',
                 '',
@@ -75,24 +75,19 @@ class PayrexxPaymentGatewayBase
             ),
             $this->title . ' logo'
         );
-    }
 
-    /**
-     * get additional info to title for admin view
-     */
-    public function createDescription()
-    {
-        $description = $this->langText->get_text('text_description2');
+        // description
+        $this->description .= $this->langText->get_text('text_description2');
         if (!$this->credentialsCheck()) {
-            $description .= '<br><span style="color:#ff0000">' . $this->langText->get_text('config_invalid') . '</span><br><br>';
+            $this->description .= '<br><span style="color:#ff0000">' . $this->langText->get_text('config_invalid') . '</span><br><br>';
         }
-        return $description;
     }
 
     /**
      * Get constant
      *
      * @param string $key
+     * @return string
      */
     public function getConstant($key): string
     {
@@ -103,6 +98,7 @@ class PayrexxPaymentGatewayBase
      * Get constant value
      *
      * @param string $key
+     * @return string
      */
     public function getConstantValue($key)
     {
@@ -222,7 +218,7 @@ class PayrexxPaymentGatewayBase
      */
     protected function getPaymentMethodIcon($paymentMethod)
     {
-        $path = PayrexxHelper::getImagePath() . 'card_' . $paymentMethod . '.svg'; 
+        $path = PayrexxHelper::getImagePath() . 'card_' . $paymentMethod . '.svg';
         if (file_exists(DIR_FS_CATALOG . $path)) {
             return xtc_image(xtc_href_link($path, '', 'SSL'), $paymentMethod);
         }

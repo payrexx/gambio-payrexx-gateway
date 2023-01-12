@@ -8,7 +8,7 @@
     --------------------------------------------------------------------------------------------------
  */
 
- $t_language_text_section_content_array = [
+$t_language_text_section_content_array = [
     'text_title'          => 'Payrexx Payment Gateway',
     'text_description'    => 'Payrexx enables you to process payments securely and easily. You do not need your own website or programming skills to accept over 100+ payment methods.<br/> If you have any questions, Please email us at <a href="mailto:integrations@payrexx.com">integrations@payrexx.com</a> OR visit <a href="https://www.payrexx.com">https://www.payrexx.com</a><br><br>',
     'text_description2'    => '<a class="btn" href="' . DIR_WS_ADMIN . 'admin.php?do=ModuleCenter#PayrexxPaymentGateway" style="width: 100%; margin:0;">Basic Configuration</a> <br>',
