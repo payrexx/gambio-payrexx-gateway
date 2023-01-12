@@ -144,18 +144,4 @@ class PayrexxHelper
     {
         return 'GXModules/Payrexx/PayrexxPaymentGateway/Images/Icons/Payment/';
     }
-
-    /**
-     * Create image tag to logo
-     */
-    public static function createLogoImageTag($code = 'payrexx')
-    {
-        $tag = '';
-        if (!file_exists(DIR_FS_CATALOG . PayrexxHelper::getImagePath() . $code . '.svg')) {
-            $code = 'payrexx';
-        }
-        $logoUrl = xtc_catalog_href_link(PayrexxHelper::getImagePath() . $code . '.svg', '', 'SSL');
-        $tag = '<img src="' . $logoUrl . '" alt="{$code} Logo" />';
-        return $tag;
-    }
 }

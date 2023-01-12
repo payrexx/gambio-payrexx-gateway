@@ -1,6 +1,6 @@
 <?php
 /*--------------------------------------------------------------------------------------------------
-    PayrexxPaymentGatewayBase.php 02-01-2023
+    PayrexxPaymentGatewayBase.php 12-01-2023
     https://www.payrexx.com
     Copyright (c) 2023 payrexx
     Released under the GNU General Public License (Version 2)
@@ -41,6 +41,7 @@ class PayrexxPaymentGatewayBase
      * @var string
      */
     public $code = 'payrexx';
+
     /**
      * Constructor
      *
@@ -55,16 +56,31 @@ class PayrexxPaymentGatewayBase
         $this->enabled     = defined($this->getConstant('STATUS')) && filter_var(constant($this->getConstant('STATUS')), FILTER_VALIDATE_BOOLEAN);
         $this->description = $this->langText->get_text('text_description');
         if (defined('DIR_WS_ADMIN')) {
-            $this->title = PayrexxHelper::createLogoImageTag() . ' ' . ucwords(str_replace('_', ' ', $this->code));
-            $this->description .= $this->_createDescription();
+            $this->title .= $this->createTitle();
+            $this->description .= $this->createDescription();
         }
         $this->defineConstants();
     }
 
     /**
-     * Description.
+     * get additional info to title for admin view
      */
-    public function _createDescription()
+    public function createTitle()
+    {
+        return xtc_image(
+            xtc_catalog_href_link(
+                PayrexxHelper::getImagePath() . $this->code . '.svg',
+                '',
+                'SSL'
+            ),
+            $this->title . ' logo'
+        );
+    }
+
+    /**
+     * get additional info to title for admin view
+     */
+    public function createDescription()
     {
         $description = $this->langText->get_text('text_description2');
         if (!$this->credentialsCheck()) {
@@ -161,7 +177,11 @@ class PayrexxPaymentGatewayBase
             'id' => $this->code,
             'module' => $this->getConstantValue('CHECKOUT_NAME'),
             'description' => $this->getDescription(),
-            'logo_url' => xtc_href_link(PayrexxHelper::getImagePath() . 'payrexx.svg', '', 'SSL'),
+            'logo_url' => xtc_href_link(
+                PayrexxHelper::getImagePath() . 'payrexx.svg',
+                '',
+                'SSL'
+            ),
         ];
 
         return $selection;
@@ -169,6 +189,8 @@ class PayrexxPaymentGatewayBase
 
     /**
      * It is similar to Signature check
+     *
+     * @return bool
      */
     private function credentialsCheck()
     {
@@ -178,6 +200,7 @@ class PayrexxPaymentGatewayBase
         }
         return true;
     }
+
     /**
      * @return string
      */
@@ -199,9 +222,9 @@ class PayrexxPaymentGatewayBase
      */
     protected function getPaymentMethodIcon($paymentMethod)
     {
-        if (file_exists(DIR_FS_CATALOG . PayrexxHelper::getImagePath() . 'card_' . $paymentMethod) . '.svg') {
-            $src = xtc_href_link(PayrexxHelper::getImagePath() . 'card_' . $paymentMethod .'.svg', '', 'SSL');
-            return '<img src="' . $src . '" alt="' . $paymentMethod . '">';
+        $path = PayrexxHelper::getImagePath() . 'card_' . $paymentMethod . '.svg'; 
+        if (file_exists(DIR_FS_CATALOG . $path)) {
+            return xtc_image(xtc_href_link($path, '', 'SSL'), $paymentMethod);
         }
         return '';
     }
@@ -296,13 +319,6 @@ class PayrexxPaymentGatewayBase
         return false;
     }
 
-    public function checkModuleCenterInstalled()
-    {
-        $query  = xtc_db_query("SELECT `value` FROM " . TABLE_CONFIGURATION
-                . " WHERE `key` = 'configuration/MODULE_CENTER_PAYREXXPAYMENTGATEWAY_INSTALLED'");
-        return xtc_db_num_rows($query);
-    }
-
     /**
      * @return int|mixed|string
      */
@@ -316,6 +332,21 @@ class PayrexxPaymentGatewayBase
             $this->_check = xtc_db_num_rows($query);
         }
         return $this->_check;
+    }
+
+    /**
+     * Determines the module's configuration keys.
+     *
+     * @return array
+     */
+    public function keys(): array
+    {
+        $ckeys = array_keys(PayrexxHelper::getModuleConfigurations());
+        $keys  = [];
+        foreach ($ckeys as $key) {
+            $keys[] = 'configuration/' . $this->getConstant($key);
+        }
+        return $keys;
     }
 
     /**
@@ -344,22 +375,6 @@ class PayrexxPaymentGatewayBase
                 WHERE `key`
                 IN ('" . implode("', '", $this->keys()) . "')"
         );
-    }
-
-
-    /**
-     * Determines the module's configuration keys.
-     *
-     * @return array
-     */
-    public function keys(): array
-    {
-        $ckeys = array_keys(PayrexxHelper::getModuleConfigurations());
-        $keys  = [];
-        foreach ($ckeys as $key) {
-            $keys[] = 'configuration/' . $this->getConstant($key);
-        }
-        return $keys;
     }
 
     /**
