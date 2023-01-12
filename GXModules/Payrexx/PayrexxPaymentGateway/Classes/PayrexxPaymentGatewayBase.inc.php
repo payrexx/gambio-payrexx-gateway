@@ -15,7 +15,20 @@ use Payrexx\PayrexxPaymentGateway\Classes\Controller\PayrexxPaymentController;
 
 class PayrexxPaymentGatewayBase
 {
-    public $title, $description, $enabled;
+    /**
+     * @var string
+     */
+    public $title;
+
+    /**
+     * @var string
+     */
+    public $description;
+    
+    /**
+     * @var boolean
+     */
+    public $enabled;
 
     /**
      * @var int
@@ -54,7 +67,7 @@ class PayrexxPaymentGatewayBase
         $this->enabled     = defined($this->getConstant('STATUS')) && filter_var(constant($this->getConstant('STATUS')), FILTER_VALIDATE_BOOLEAN);
         $this->description = $this->langText->get_text('text_description');
         if (defined('DIR_WS_ADMIN')) {
-           $this->addAdditionalInfo();
+            $this->addAdditionalInfo();
         }
         $this->defineConstants();
     }
