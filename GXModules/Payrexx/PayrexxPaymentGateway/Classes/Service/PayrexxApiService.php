@@ -66,7 +66,6 @@ class PayrexxApiService
      * @param string $purpose
      * @param array $pm
      */
-
     public function createGateway($order, array $basket, $purpose, array $pm)
     {
         $currency = $order->info['currency'];
@@ -93,6 +92,7 @@ class PayrexxApiService
         $gateway->setCancelRedirectUrl($cancelUrl);
 
         $gateway->setPsp([]);
+        $gateway->setPm($pm);
 
         $gateway->setReferenceId($referenceId);
         $gateway->setValidity(15);

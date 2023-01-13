@@ -2,11 +2,15 @@
 
 namespace Payrexx\PayrexxPaymentGateway\Classes\Controller;
 
+use MainFactory;
 use Payrexx\PayrexxPaymentGateway\Classes\Service\PayrexxApiService;
+use Payrexx\PayrexxPaymentGateway\Classes\Util\PayrexxHelper;
 
 class PayrexxPaymentController
 {
-
+    /**
+     * @var PayrexxApiService
+     */
     protected $PayrexxApiService;
 
     /**
@@ -35,7 +39,15 @@ class PayrexxPaymentController
             $basket = [];
         }
 
-        return $payrexxApiService->createGateway($order, $basket, $purpose, []);
+        // pm
+        $configuration = MainFactory::create('PayrexxStorage');
+        $pm = [];
+        foreach (PayrexxHelper::getPaymentMethods() as $method) {
+            if ($configuration->get(strtoupper($method)) === 'true') {
+                $pm[] = $method;
+            }
+        }
+        return $payrexxApiService->createGateway($order, $basket, $purpose, $pm);
     }
 
     /**
