@@ -44,7 +44,7 @@ class PayrexxPaymentController
         $pm = [];
         foreach (PayrexxHelper::getPaymentMethods() as $method) {
             if ($configuration->get(strtoupper($method)) === 'true') {
-                $pm[] = $method;
+                $pm[] = str_replace('_', '-', $method);
             }
         }
         return $payrexxApiService->createGateway($order, $basket, $purpose, $pm);
