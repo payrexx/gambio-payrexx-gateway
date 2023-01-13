@@ -11,7 +11,7 @@
             <fieldset>
                 <legend>{$txt.basic_configuration}</legend>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">{$txt.platform}</label>
+                    <label class="col-sm-4 control-label">{$txt.platform}*</label>
                     <div class="col-sm-7">
                         <select class="form-control" name="configuration[PLATFORM]">
                             {foreach from=$content.platforms item=platform}
@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">{$txt.instance_name}</label>
+                    <label class="col-sm-4 control-label">{$txt.instance_name}*</label>
                     <div class="col-sm-7">
                         <input type="text" class="form-control" name="configuration[INSTANCE_NAME]"
                             id="instance_name" value="{$content.configuration['INSTANCE_NAME']}" required>
@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">{$txt.api_key}</label>
+                    <label class="col-sm-4 control-label">{$txt.api_key}*</label>
                     <div class="col-sm-7">
                         <input type="text" class="form-control" name="configuration[API_KEY]"
                             id="api_key" value="{$content.configuration['API_KEY']}" required>
@@ -70,6 +70,15 @@
             <div class="col-sm-12">
                 <button type="submit" class="btn btn-primary pull-right">{$txt.save_configuration}</button>
             </div>
+        </div>
+        <div class="form-horizontal">
+            <fieldset>
+                <legend>{$txt.webhook_url}</legend>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.webhook_url}</label>
+                    <div class="col-sm-8">{xtc_catalog_href_link("shop.php", 'do=PayrexxWebhook')}</div>
+                </div>
+            </fieldset>
         </div>
     </form>
 </div>

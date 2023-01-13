@@ -30,13 +30,14 @@ class PayrexxWebhookController extends HttpViewController
 
     public function actionDefault()
     {
-        // Call back url;
-        // $shopUrl = xtc_catalog_href_link("shop.php", 'do=PayrexxWebhook');
         try {
             $data = $_POST;
+            if (empty($data)) {
+                throw new \Exception('Payrexx Webhook Data incomplete');
+            }
             $transaction = $data['transaction'];
             $orderId = (int) end(explode('_', $transaction['referenceId']));
-        
+
             if (!$orderId || !$transaction['status'] || !$transaction['id']) {
                 throw new \Exception('Payrexx Webhook Data incomplete');
             }
