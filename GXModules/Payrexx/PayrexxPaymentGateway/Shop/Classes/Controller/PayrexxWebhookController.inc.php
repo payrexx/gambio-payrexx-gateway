@@ -9,7 +9,7 @@ class PayrexxWebhookController extends HttpViewController
 
     protected $orderService;
 
-    protected $PayrexxApiService;
+    protected $payrexxApiService;
 
     /**
      * @param HttpContextReaderInterface $httpContextReader
@@ -23,13 +23,15 @@ class PayrexxWebhookController extends HttpViewController
     ) {
         $this->configuration = MainFactory::create('PayrexxStorage');
         $this->orderService = new OrderService();
-        $this->PayrexxApiService = new PayrexxApiService();
+        $this->payrexxApiService = new PayrexxApiService();
 
         parent::__construct($httpContextReader, $httpResponseProcessor, $defaultContentView);
     }
 
     public function actionDefault()
     {
+        // Call back url;
+        // $shopUrl = xtc_catalog_href_link("shop.php", 'do=PayrexxWebhook');
         try {
             $data = $_POST;
             if (empty($data)) {
@@ -47,7 +49,7 @@ class PayrexxWebhookController extends HttpViewController
                 throw new \Exception('Malicious request');
             }
         
-            $payrexxTransaction = $this->PayrexxApiService->getTransactionById($transaction['id']);
+            $payrexxTransaction = $this->payrexxApiService->getTransactionById($transaction['id']);
             if ($payrexxTransaction->getStatus() !== $transaction['status']) {
                 throw new \Exception('Fraudulent transaction status');
             }

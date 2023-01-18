@@ -364,13 +364,13 @@ class PayrexxPaymentGatewayBase
     public function install()
     {
         $config     = PayrexxHelper::getModuleConfigurations();
-        $sort_order = 0;
+        $sortOrder = 0;
         foreach ($config as $key => $data) {
             $install_query = "INSERT INTO `gx_configurations` ( `key`, `value`, `sort_order`, `type`, `last_modified`) "
                 . "values ('configuration/MODULE_PAYMENT_" . strtoupper($this->code) . "_" . $key . "', '"
                 . $data['value'] . "', '" . $sort_order . "', '" . addslashes($data['type']) . "', now())";
             xtc_db_query($install_query);
-            $sort_order++;
+            $sortOrder++;
         }
     }
 

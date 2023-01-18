@@ -14,9 +14,30 @@ class PayrexxApiService
      */
     protected $configuration;
 
+    /**
+     * @var string
+     */
+    protected $instance;
+
+    /**
+     * @var string
+     */
+    protected $apiKey;
+
+    /**
+     * @var string
+     */
+    protected $platform;
+
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->configuration = new PayrexxStorage();
+        $this->instance = $this->configuration->get('INSTANCE_NAME');
+        $this->apiKey = $this->configuration->get('API_KEY');
+        $this->platform = $this->configuration->get('PLATFORM');
     }
 
     /**
@@ -29,9 +50,9 @@ class PayrexxApiService
      */
     public function validateSignature(string $instance, string $apiKey, string $platform): bool
     {
-        $payrexx = new Payrexx($instance, $apiKey, '', $platform);
+        $payrexx = $this->getInterface($instance, $apiKey, $platform);
         try {
-            $response = $payrexx->getOne(new SignatureCheck());
+            $payrexx->getOne(new SignatureCheck());
             return true;
         } catch (\Payrexx\PayrexxException $e) {
             return false;
@@ -46,7 +67,7 @@ class PayrexxApiService
      */
     public function getTransactionById(int $id)
     {
-        $payrexx = $this->getInterface();
+        $payrexx = $this->getInterface($this->instance, $this->apiKey, $this->platform);;
         $transaction = new Transaction();
         $transaction->setId($id);
 
@@ -117,20 +138,15 @@ class PayrexxApiService
             $gateway->setLookAndFeelProfile($this->configuration->get('LOOK_AND_FEEL_ID'));
         }
 
-        return $this->getInterface()->create($gateway);
+        $payrexx = $this->getInterface($this->instance, $this->apiKey, $this->platform);
+        return $payrexx->create($gateway);
     }
 
     /**
      * @return Payrexx
      */
-    public function getInterface(): Payrexx
+    private function getInterface(string $instance, string $apiKey, string $platform): Payrexx
     {
-        $payrexx = new Payrexx(
-            $this->configuration->get('INSTANCE_NAME'),
-            $this->configuration->get('API_KEY'),
-            '',
-            $this->configuration->get('PLATFORM')
-        );
-        return $payrexx;
+        return new Payrexx($instance, $apiKey, '', $platform);
     }
 }

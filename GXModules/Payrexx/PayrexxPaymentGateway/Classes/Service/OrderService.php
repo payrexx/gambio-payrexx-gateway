@@ -8,9 +8,9 @@ use StringType;
 use IdType;
 use IntType;
 use BoolType;
-use Exception;
 use Payrexx\Models\Response\Transaction;
 use Payrexx\PayrexxPaymentGateway\Classes\Util\PayrexxHelper;
+use Payrexx\PayrexxPaymentGateway\Classes\Repository\OrderRepository;
 
 class OrderService
 {
@@ -64,7 +64,7 @@ class OrderService
     }
 
     /**
-     * Handle webhook data
+     * update transaction status for order
      *
      * @param int $orderId
      * @param string $status
@@ -123,28 +123,11 @@ class OrderService
      * @param string $newStatus
      * @return bool
      */
-    private function allowedStatusTransition($orderId, $newStatus)
+    public function allowedStatusTransition($orderId, $newStatus)
     {
-        try {
-            $db = StaticGXCoreLoader::getDatabaseQueryBuilder();
-            $languages = $db->select('languages_id')
-                ->where('code', 'en')
-                ->get('languages')
-                ->result_array();
-            $langId =  $languages[0]['languages_id'];
-
-            $orderStatus = $db->select('orders_status.orders_status_name')
-                ->join('orders_status', 'orders.orders_status = orders_status.orders_status_id')
-                ->where('orders_status.language_id', $langId)
-                ->where('orders.orders_id', $orderId)
-                ->limit(1)
-                ->get('orders')
-                ->result_array();
-            $oldStatus = $orderStatus[0]['orders_status_name'];
-        } catch (Exception $e) {
-            return false;
-        }
-        if ($oldStatus === $newStatus) {
+        $orderRepository = new OrderRepository();
+        $oldStatus = $orderRepository->getTransitionStatusByOrderId($orderId);
+        if (empty($oldStatus) || $oldStatus === $newStatus) {
             return false;
         }
 
@@ -171,7 +154,7 @@ class OrderService
      * @param int $newStatusId
      * @param string $newStatus
      */
-    public function updateOrderStatus(int $orderId, int $newStatusId, string $newStatus)
+    private function updateOrderStatus(int $orderId, int $newStatusId, string $newStatus)
     {
         $orderWriteService = StaticGXCoreLoader::getService('OrderWrite');
         //update status and customer-history
