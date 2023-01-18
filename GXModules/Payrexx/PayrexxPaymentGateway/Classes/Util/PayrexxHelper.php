@@ -25,7 +25,7 @@ class PayrexxHelper
     /**
      * Get payment method configurations
      */
-    public static function getModuleConfigurations(string $paymentCode = null): array
+    public static function getModuleConfigurations(): array
     {
         $config = [
             'STATUS' => [
