@@ -366,10 +366,10 @@ class PayrexxPaymentGatewayBase
         $config     = PayrexxHelper::getModuleConfigurations();
         $sortOrder = 0;
         foreach ($config as $key => $data) {
-            $install_query = "INSERT INTO `gx_configurations` ( `key`, `value`, `sort_order`, `type`, `last_modified`) "
+            $installQuery = "INSERT INTO `gx_configurations` ( `key`, `value`, `sort_order`, `type`, `last_modified`) "
                 . "values ('configuration/MODULE_PAYMENT_" . strtoupper($this->code) . "_" . $key . "', '"
-                . $data['value'] . "', '" . $sort_order . "', '" . addslashes($data['type']) . "', now())";
-            xtc_db_query($install_query);
+                . $data['value'] . "', '" . $sortOrder . "', '" . addslashes($data['type']) . "', now())";
+            xtc_db_query($installQuery);
             $sortOrder++;
         }
     }
