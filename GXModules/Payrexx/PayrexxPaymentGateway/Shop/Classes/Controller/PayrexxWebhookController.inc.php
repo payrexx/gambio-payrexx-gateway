@@ -30,8 +30,6 @@ class PayrexxWebhookController extends HttpViewController
 
     public function actionDefault()
     {
-        // Call back url;
-        // $shopUrl = xtc_catalog_href_link("shop.php", 'do=PayrexxWebhook');
         try {
             $data = $_POST;
             if (empty($data)) {
