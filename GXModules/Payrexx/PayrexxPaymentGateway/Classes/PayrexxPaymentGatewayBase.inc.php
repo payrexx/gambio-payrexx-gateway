@@ -24,7 +24,7 @@ class PayrexxPaymentGatewayBase
      * @var string
      */
     public $description;
-    
+
     /**
      * @var boolean
      */
@@ -102,7 +102,7 @@ class PayrexxPaymentGatewayBase
      * @param string $key
      * @return string
      */
-    public function getConstant($key): string
+    public function getConstant(string $key): string
     {
         return 'MODULE_PAYMENT_' .  strtoupper($this->code) . '_' . $key;
     }
@@ -113,7 +113,7 @@ class PayrexxPaymentGatewayBase
      * @param string $key
      * @return string
      */
-    public function getConstantValue($key)
+    public function getConstantValue(string $key): string
     {
         return constant(MODULE_PAYMENT_ . strtoupper($this->code) . _ . $key);
     }
@@ -229,7 +229,7 @@ class PayrexxPaymentGatewayBase
      *
      * @return string
      */
-    protected function getPaymentMethodIcon($paymentMethod)
+    protected function getPaymentMethodIcon(string $paymentMethod)
     {
         $path = PayrexxHelper::getImagePath() . 'card_' . $paymentMethod . '.svg';
         if (file_exists(DIR_FS_CATALOG . $path)) {

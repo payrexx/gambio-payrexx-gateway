@@ -21,7 +21,6 @@
 class payrexx_ORIGIN extends PayrexxPaymentGatewayBase
 {
     public $code = 'payrexx';
-    public $sort_order = 9999;
 }
 
 MainFactory::load_origin_class('payrexx');
