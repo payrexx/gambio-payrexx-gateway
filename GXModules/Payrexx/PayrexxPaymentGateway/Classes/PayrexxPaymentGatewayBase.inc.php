@@ -118,7 +118,7 @@ class PayrexxPaymentGatewayBase
      */
     public function defineConstants()
     {
-        $configKeys = array_keys(PayrexxConfig::getModuleConfigurations());
+        $configKeys = array_keys(PayrexxConfig::getModuleConfigurations($this->code));
         foreach ($configKeys as $key) {
             if (in_array(strtolower($key), PayrexxConfig::getPaymentMethods())) {
                 $title = str_replace('_', ' ', ucfirst(strtolower($key)));
@@ -185,12 +185,15 @@ class PayrexxPaymentGatewayBase
             );
         }
 
+        $logoImageName = ($this->code === 'payrexx')
+            ? 'payrexx'
+            : str_replace('payrexx', 'card', $this->code);
         $selection = [
             'id' => $this->code,
             'module' => $this->_getConstantValue('CHECKOUT_NAME'),
             'description' => $this->_getDescription(),
             'logo_url' => xtc_href_link(
-                self::IMAGE_PATH . 'payrexx.svg',
+                self::IMAGE_PATH . $logoImageName . '.svg',
                 '',
                 'SSL'
             ),
@@ -336,7 +339,7 @@ class PayrexxPaymentGatewayBase
      */
     public function keys(): array
     {
-        $ckeys = array_keys(PayrexxConfig::getModuleConfigurations());
+        $ckeys = array_keys(PayrexxConfig::getModuleConfigurations($this->code));
         $keys  = [];
         foreach ($ckeys as $key) {
             $keys[] = 'configuration/' . $this->_getConstant($key);
@@ -351,7 +354,7 @@ class PayrexxPaymentGatewayBase
      */
     public function install()
     {
-        $config = PayrexxConfig::getModuleConfigurations();
+        $config    = PayrexxConfig::getModuleConfigurations($this->code);
         $sortOrder = 0;
         foreach ($config as $key => $data) {
             $installQuery = "INSERT INTO `gx_configurations` ( `key`, `value`, `sort_order`, `type`, `last_modified`) "

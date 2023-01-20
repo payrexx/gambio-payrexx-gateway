@@ -66,12 +66,17 @@ class PayrexxPaymentController
         }
 
         // pm
-        $configuration = MainFactory::create('PayrexxStorage');
         $pm = [];
-        foreach (PayrexxConfig::getPaymentMethods() as $method) {
-            if ($configuration->get(strtoupper($method)) === 'true') {
-                $pm[] = str_replace('_', '-', $method);
+        $paymentMethodCode = preg_replace('/payrexx_/', '', $userOrder->info['payment_method']);
+        if ($paymentMethodCode === 'parexx') {
+            $configuration = MainFactory::create('PayrexxStorage');
+            foreach (PayrexxConfig::getPaymentMethods() as $method) {
+                if ($configuration->get(strtoupper($method)) === 'true') {
+                    $pm[] = str_replace('_', '-', $method);
+                }
             }
+        } else {
+            $pm[] = str_replace('_', '-', $paymentMethodCode);
         }
         return $payrexxApiService->createGateway($userOrder, $basket, $purpose, $pm);
     }
