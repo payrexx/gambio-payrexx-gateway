@@ -127,7 +127,7 @@ class PayrexxPaymentGatewayBase
         foreach ($configKeys as $key) {
             if (in_array(strtolower($key), PayrexxHelper::getPaymentMethods())) {
                 $title = str_replace('_', ' ', ucfirst(strtolower($key)));
-                $desc = $this->langText->get_text('accept_payment_by') . ucfirst(strtolower($key)) .'?';
+                $desc = $this->langText->get_text('accept_payment_by') . $title .'?';
             } else {
                 $title = $this->langText->get_text(strtolower($key) . '_title');
                 $desc = $this->langText->get_text(strtolower($key). '_desc');
