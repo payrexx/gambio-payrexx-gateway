@@ -1,7 +1,7 @@
 <?php
 
 use Payrexx\PayrexxPaymentGateway\Classes\Service\OrderService;
-use Payrexx\PayrexxPaymentGateway\Classes\Util\PayrexxHelper;
+use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 
 class PayrexxPaymentGatewayModuleCenterModule extends AbstractModuleCenterModule
 {
@@ -21,7 +21,7 @@ class PayrexxPaymentGatewayModuleCenterModule extends AbstractModuleCenterModule
         $configuration = MainFactory::create('PayrexxStorage');
         $orderService = new OrderService();
         $orderService->addNewOrderStatus();
-        foreach (PayrexxHelper::getBasicConfigurations() as $key => $value) {
+        foreach (ConfigurationUtil::getBasicConfigurations() as $key => $value) {
             $configuration->set($key, $value['value']);
         }
     }

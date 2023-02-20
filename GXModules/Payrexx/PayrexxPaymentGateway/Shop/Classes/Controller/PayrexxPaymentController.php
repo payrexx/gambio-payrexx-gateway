@@ -4,7 +4,8 @@ namespace Payrexx\PayrexxPaymentGateway\Classes\Controller;
 
 use MainFactory;
 use Payrexx\PayrexxPaymentGateway\Classes\Service\PayrexxApiService;
-use Payrexx\PayrexxPaymentGateway\Classes\Util\PayrexxHelper;
+use Payrexx\PayrexxPaymentGateway\Classes\Util\BasketUtil;
+use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 
 class PayrexxPaymentController
 {
@@ -23,7 +24,7 @@ class PayrexxPaymentController
         $totalAmount = $userOrder->info['pp_total'] * 100;
 
         // Basket
-        $basket = PayrexxHelper::collectBasketData($order);
+        $basket = BasketUtil::collectBasketData($order);
         $basketAmount = 0;
         foreach ($basket as $basketItem) {
             $basketAmount += $basketItem['quantity'] * $basketItem['amount'];
@@ -32,14 +33,14 @@ class PayrexxPaymentController
         // Purpose
         $purpose = null;
         if (round($basketAmount) !== round($totalAmount)) {
-            $purpose = PayrexxHelper::createPurposeByBasket($basket);
+            $purpose = BasketUtil::createPurposeByBasket($basket);
             $basket = [];
         }
 
         // pm
         $configuration = MainFactory::create('PayrexxStorage');
         $pm = [];
-        foreach (PayrexxHelper::getPaymentMethods() as $method) {
+        foreach (ConfigurationUtil::getPaymentMethods() as $method) {
             if ($configuration->get(strtoupper($method)) === 'true') {
                 $pm[] = str_replace('_', '-', $method);
             }

@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-use Payrexx\PayrexxPaymentGateway\Classes\Util\PayrexxHelper;
+use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 
 /**
  * Class PayrexxStorage
@@ -74,7 +74,7 @@ class PayrexxStorage extends ConfigurationStorage
      */
     public function set($key, $value)
     {
-        if (!in_array($key, array_keys(PayrexxHelper::getBasicConfigurations()))) {
+        if (!in_array($key, array_keys(ConfigurationUtil::getBasicConfigurations()))) {
             return false;
         }
         return parent::set(static::CONFIG_STORAGE_PREFIX . $key, $value);
