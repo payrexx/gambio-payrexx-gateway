@@ -180,10 +180,6 @@ class PayrexxPaymentGatewayBase
             $_SESSION['gm_error_message'] = urlencode($this->langText->get_text('payment_cancel'));
         }
 
-        if (!$this->credentialsCheck()) {
-            return false;
-        }
-
         $selection = [
             'id' => $this->code,
             'module' => $this->getConstantValue('CHECKOUT_NAME'),
