@@ -119,29 +119,6 @@ class ConfigurationUtil
     }
 
     /**
-     * Get order status config
-     */
-    public static function getOrderStatusConfig(): array
-    {
-        return [
-            'refunded' => [
-                'names' => [
-                    'en' => OrderService::STATUS_REFUNDED,
-                    'de' => 'Payrexx Rückerstattung',
-                ],
-                'color' => '2196F3',
-            ],
-            'partially-refunded' => [
-                'names' => [
-                    'en' => OrderService::STATUS_PARTIALLY_REFUNDED,
-                    'de' => 'Payrexx Teilrückerstattung',
-                ],
-                'color' => '2196F3',
-            ],
-        ];
-    }
-
-    /**
      * Platforms
      */
     public static function getPlatforms(): array

@@ -9,7 +9,6 @@ use IdType;
 use IntType;
 use BoolType;
 use Payrexx\Models\Response\Transaction;
-use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 use Payrexx\PayrexxPaymentGateway\Classes\Repository\OrderRepository;
 
 class OrderService
@@ -44,7 +43,7 @@ class OrderService
     public function addNewOrderStatus()
     {
         $orderService = new OrderService();
-        $newOrderStatusConfig = ConfigurationUtil::getOrderStatusConfig();
+        $newOrderStatusConfig = $this->getOrderStatusConfig();
         $orderStatusService = StaticGXCoreLoader::getService('OrderStatus');
         foreach ($newOrderStatusConfig as $statusConfig) {
             $newOrderStatus = MainFactory::create('OrderStatus');
@@ -76,32 +75,32 @@ class OrderService
         switch ($status) {
             case Transaction::WAITING:
                 $newStatusId = 1; // Pending
-                $newStatus = static::STATUS_PENDING;
+                $newStatus = self::STATUS_PENDING;
                 break;
             case Transaction::CONFIRMED:
                 $newStatusId = 2; // Processing
-                $newStatus = static::STATUS_PROCESSING;
+                $newStatus = self::STATUS_PROCESSING;
                 break;
             case Transaction::CANCELLED:
             case Transaction::DECLINED:
             case Transaction::ERROR:
             case Transaction::EXPIRED:
                 $newStatusId = 99; // Canceled
-                $newStatus = static::STATUS_CANCELED;
+                $newStatus = self::STATUS_CANCELED;
                 break;
             case Transaction::REFUNDED:
             case Transaction::PARTIALLY_REFUNDED:
-                $newStatus = ConfigurationUtil::getOrderStatusConfig()[$status]['names']['en'];
+                $newStatus = $this->getOrderStatusConfig()[$status]['names']['en'];
                 $newStatusId = $this->orderStatusExists($newStatus);
                 if (!$newStatusId) {
                     $this->addNewOrderStatus();
                     $newStatusId = $this->orderStatusExists($newStatus);
                 }
-                if ($newStatus == static::STATUS_PARTIALLY_REFUNDED &&
+                if ($newStatus == self::STATUS_PARTIALLY_REFUNDED &&
                     !empty($invoice) &&
                     $invoice['originalAmount'] == $invoice['refundedAmount']
                 ) {
-                    $newStatus = static::STATUS_REFUNDED;
+                    $newStatus = self::STATUS_REFUNDED;
                     $newStatusId = $this->orderStatusExists($newStatus);
                 }
                 break;
@@ -132,16 +131,16 @@ class OrderService
         }
 
         switch ($oldStatus) {
-            case static::STATUS_PENDING:
+            case self::STATUS_PENDING:
                 return !in_array($newStatus, [
-                    static::STATUS_REFUNDED,
-                    static::STATUS_PARTIALLY_REFUNDED,
+                    self::STATUS_REFUNDED,
+                    self::STATUS_PARTIALLY_REFUNDED,
                 ]);
-            case static::STATUS_PROCESSING:
-            case static::STATUS_PARTIALLY_REFUNDED:
+            case self::STATUS_PROCESSING:
+            case self::STATUS_PARTIALLY_REFUNDED:
                 return in_array($newStatus, [
-                    static::STATUS_REFUNDED,
-                    static::STATUS_PARTIALLY_REFUNDED,
+                    self::STATUS_REFUNDED,
+                    self::STATUS_PARTIALLY_REFUNDED,
                 ]);
         }
         return false;
@@ -164,5 +163,29 @@ class OrderService
             new StringType($newStatus . ' status updated by payrexx'),
             new BoolType(false)
         );
+    }
+
+    /**
+     * Get order status config
+     * @return array
+     */
+    private function getOrderStatusConfig(): array
+    {
+        return [
+            'refunded' => [
+                'names' => [
+                    'en' => self::STATUS_REFUNDED,
+                    'de' => 'Payrexx Rückerstattung',
+                ],
+                'color' => '2196F3',
+            ],
+            'partially-refunded' => [
+                'names' => [
+                    'en' => self::STATUS_PARTIALLY_REFUNDED,
+                    'de' => 'Payrexx Teilrückerstattung',
+                ],
+                'color' => '2196F3',
+            ],
+        ];
     }
 }
