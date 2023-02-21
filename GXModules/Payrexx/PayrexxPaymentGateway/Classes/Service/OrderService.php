@@ -9,7 +9,7 @@ use IdType;
 use IntType;
 use BoolType;
 use Payrexx\Models\Response\Transaction;
-use Payrexx\PayrexxPaymentGateway\Classes\Util\PayrexxHelper;
+use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 use Payrexx\PayrexxPaymentGateway\Classes\Repository\OrderRepository;
 
 class OrderService
@@ -44,7 +44,7 @@ class OrderService
     public function addNewOrderStatus()
     {
         $orderService = new OrderService();
-        $newOrderStatusConfig = PayrexxHelper::getOrderStatusConfig();
+        $newOrderStatusConfig = ConfigurationUtil::getOrderStatusConfig();
         $orderStatusService = StaticGXCoreLoader::getService('OrderStatus');
         foreach ($newOrderStatusConfig as $statusConfig) {
             $newOrderStatus = MainFactory::create('OrderStatus');
@@ -91,7 +91,7 @@ class OrderService
                 break;
             case Transaction::REFUNDED:
             case Transaction::PARTIALLY_REFUNDED:
-                $newStatus = PayrexxHelper::getOrderStatusConfig()[$status]['names']['en'];
+                $newStatus = ConfigurationUtil::getOrderStatusConfig()[$status]['names']['en'];
                 $newStatusId = $this->orderStatusExists($newStatus);
                 if (!$newStatusId) {
                     $this->addNewOrderStatus();

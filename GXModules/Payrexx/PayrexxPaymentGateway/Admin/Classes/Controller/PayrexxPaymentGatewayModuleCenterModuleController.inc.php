@@ -2,7 +2,7 @@
 
 
 use Payrexx\PayrexxPaymentGateway\Classes\Service\PayrexxApiService;
-use Payrexx\PayrexxPaymentGateway\Classes\Util\PayrexxHelper;
+use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 use PayrexxStorage;
 
 /**
@@ -41,7 +41,7 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
             [
                 'pageToken' => $_SESSION['coo_page_token']->generate_token(),
                 'configuration' => $this->configuration->getAll(),
-                'platforms' => PayrexxHelper::getPlatforms(),
+                'platforms' => ConfigurationUtil::getPlatforms(),
                 'translate_section' => 'payrexx',
                 'action_save' => xtc_href_link('admin.php', 'do=PayrexxPaymentGatewayModuleCenterModule/SaveConfig'),
             ]

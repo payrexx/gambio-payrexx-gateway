@@ -8,7 +8,7 @@
     --------------------------------------------------------------------------------------------------
  */
 
-use Payrexx\PayrexxPaymentGateway\Classes\Util\PayrexxHelper;
+use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 use Payrexx\Models\Response\Transaction;
 use Payrexx\PayrexxPaymentGateway\Classes\Service\OrderService;
 use Payrexx\PayrexxPaymentGateway\Classes\Controller\PayrexxPaymentController;
@@ -55,6 +55,8 @@ class PayrexxPaymentGatewayBase
      */
     public $code = 'payrexx';
 
+    const IMAGE_PATH = 'GXModules/Payrexx/PayrexxPaymentGateway/Images/Icons/Payment/';
+
     /**
      * Constructor
      */
@@ -82,7 +84,7 @@ class PayrexxPaymentGatewayBase
         // title
         $this->title .= xtc_image(
             xtc_catalog_href_link(
-                PayrexxHelper::getImagePath() . $this->code . '.svg',
+                self::IMAGE_PATH . $this->code . '.svg',
                 '',
                 'SSL'
             ),
@@ -123,11 +125,11 @@ class PayrexxPaymentGatewayBase
      */
     public function defineConstants()
     {
-        $configKeys = array_keys(PayrexxHelper::getModuleConfigurations());
+        $configKeys = array_keys(ConfigurationUtil::getModuleConfigurations());
         foreach ($configKeys as $key) {
-            if (in_array(strtolower($key), PayrexxHelper::getPaymentMethods())) {
+            if (in_array(strtolower($key), ConfigurationUtil::getPaymentMethods())) {
                 $title = str_replace('_', ' ', ucfirst(strtolower($key)));
-                $desc = $this->langText->get_text('accept_payment_by') . ucfirst(strtolower($key)) .'?';
+                $desc = $this->langText->get_text('accept_payment_by') . $title .'?';
             } else {
                 $title = $this->langText->get_text(strtolower($key) . '_title');
                 $desc = $this->langText->get_text(strtolower($key). '_desc');
@@ -187,7 +189,7 @@ class PayrexxPaymentGatewayBase
             'module' => $this->getConstantValue('CHECKOUT_NAME'),
             'description' => $this->getDescription(),
             'logo_url' => xtc_href_link(
-                PayrexxHelper::getImagePath() . 'payrexx.svg',
+                self::IMAGE_PATH . 'payrexx.svg',
                 '',
                 'SSL'
             ),
@@ -216,7 +218,7 @@ class PayrexxPaymentGatewayBase
     protected function getDescription()
     {
         $description = $this->getConstantValue('CHECKOUT_DESCRIPTION');
-        foreach (PayrexxHelper::getPaymentMethods() as $method) {
+        foreach (ConfigurationUtil::getPaymentMethods() as $method) {
             if ($this->getConstantValue(strtoupper($method)) === 'true') {
                 $description .= $this->getPaymentMethodIcon($method);
             }
@@ -231,7 +233,7 @@ class PayrexxPaymentGatewayBase
      */
     protected function getPaymentMethodIcon(string $paymentMethod)
     {
-        $path = PayrexxHelper::getImagePath() . 'card_' . $paymentMethod . '.svg';
+        $path = self::IMAGE_PATH . 'card_' . $paymentMethod . '.svg';
         if (file_exists(DIR_FS_CATALOG . $path)) {
             return xtc_image(xtc_href_link($path, '', 'SSL'), $paymentMethod);
         }
@@ -350,7 +352,7 @@ class PayrexxPaymentGatewayBase
      */
     public function keys(): array
     {
-        $ckeys = array_keys(PayrexxHelper::getModuleConfigurations());
+        $ckeys = array_keys(ConfigurationUtil::getModuleConfigurations());
         $keys  = [];
         foreach ($ckeys as $key) {
             $keys[] = 'configuration/' . $this->getConstant($key);
@@ -363,7 +365,7 @@ class PayrexxPaymentGatewayBase
      */
     public function install()
     {
-        $config     = PayrexxHelper::getModuleConfigurations();
+        $config     = ConfigurationUtil::getModuleConfigurations();
         $sortOrder = 0;
         foreach ($config as $key => $data) {
             $installQuery = "INSERT INTO `gx_configurations` ( `key`, `value`, `sort_order`, `type`, `last_modified`) "
