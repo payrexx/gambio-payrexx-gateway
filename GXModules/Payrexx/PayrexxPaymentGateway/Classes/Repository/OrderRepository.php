@@ -10,7 +10,7 @@ class OrderRepository
     /**
      * get transition status by order id
      *
-     * @param int $d
+     * @param int $id
      * @return string
      */
     public function getTransitionStatusByOrderId(int $id)

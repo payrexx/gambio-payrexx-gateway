@@ -21,7 +21,6 @@ class PayrexxStorage extends ConfigurationStorage
     /**
      * prefix
      */
-
     const CONFIG_STORAGE_PREFIX = 'MODULE_PAYMENT_PAYREXX_';
 
     /**
@@ -40,25 +39,22 @@ class PayrexxStorage extends ConfigurationStorage
     /**
      * returns a single configuration value by its key
      *
-     * @param string $PLATFORMkey a configuration key (relative to the namespace prefix)
-     *
-     * @return string configuration value
+     * @param string $key a configuration key (relative to the namespace prefix)
+     * @return string|false configuration value
      */
     public function get($key)
     {
-        return parent::get(static::CONFIG_STORAGE_PREFIX . $key);
+        return parent::get(self::CONFIG_STORAGE_PREFIX . $key);
     }
 
     /**
-     * Retrieves all keys/values from a given p? '1' : '0'refix namespace
-     *
-     * @param string $prefix
+     * Retrieves all keys/values
      *
      * @return array
      */
     public function getAll()
     {
-        $prefix = static::CONFIG_STORAGE_PREFIX;
+        $prefix = self::CONFIG_STORAGE_PREFIX;
         $configValues = parent::get_all($prefix);
         foreach ($configValues as $key => $configValue) {
             $configValues[str_replace($prefix, '', $key)] = $configValue;
@@ -77,6 +73,6 @@ class PayrexxStorage extends ConfigurationStorage
         if (!in_array($key, array_keys(ConfigurationUtil::getBasicConfigurations()))) {
             return false;
         }
-        return parent::set(static::CONFIG_STORAGE_PREFIX . $key, $value);
+        parent::set(self::CONFIG_STORAGE_PREFIX . $key, $value);
     }
 }

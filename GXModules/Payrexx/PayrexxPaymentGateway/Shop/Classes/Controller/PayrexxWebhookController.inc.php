@@ -47,7 +47,7 @@ class PayrexxWebhookController extends HttpViewController
                 throw new \Exception('Malicious request');
             }
         
-            $payrexxTransaction = $this->payrexxApiService->getTransactionById($transaction['id']);
+            $payrexxTransaction = $this->payrexxApiService->getTransactionById((int)$transaction['id']);
             if ($payrexxTransaction->getStatus() !== $transaction['status']) {
                 throw new \Exception('Fraudulent transaction status');
             }

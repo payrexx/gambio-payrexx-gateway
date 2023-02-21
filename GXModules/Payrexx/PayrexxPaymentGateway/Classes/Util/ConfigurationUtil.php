@@ -82,7 +82,7 @@ class ConfigurationUtil
         /**
          * Creating checkbox for each payment method.
          */
-        foreach (static::getPaymentMethods() as $method) {
+        foreach (self::getPaymentMethods() as $method) {
             $config[strtoupper($method)] = ['value' => 'False','type'  => 'switcher'];
         }
 
