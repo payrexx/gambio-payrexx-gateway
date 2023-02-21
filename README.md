@@ -11,10 +11,6 @@ Payrexx Payment Gateway Plugin for Gambio allows you to integrate your Gambio sh
 - Extract the zip file.
 - Copy the extracted file and paste it into the Gambio shop root directory.
 - Sign into your Gambio Back Office.
-- Run the install command from the path /GXModules/Payrexx/PayrexxPaymentGateway
-    ```
-    # composer install
-    ```
 - Go to the Toolbox > Cache and clear all caches
 
 #####  Module Center
