@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
 
 use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 
@@ -14,22 +16,22 @@ class PayrexxStorage extends ConfigurationStorage
     const CONFIG_LOOK_AND_FEEL_ID = 'LOOK_AND_FEEL_ID';
 
     /**
-     * namespace inside the configuration storage
+     * Namespace inside the configuration storage
      */
     const CONFIG_STORAGE_NAMESPACE = 'configuration';
 
     /**
-     * prefix
+     * Prefix
      */
     const CONFIG_STORAGE_PREFIX = 'MODULE_PAYMENT_PAYREXX_';
 
     /**
-     * array holding default values to be used in absence of configured values
+     * Array holding default values to be used in absence of configured values
      */
     protected $default_configuration;
 
     /**
-     * constructor; initializes default configuration
+     * Constructor initializes default configuration
      */
     public function __construct()
     {
@@ -37,9 +39,10 @@ class PayrexxStorage extends ConfigurationStorage
     }
 
     /**
-     * returns a single configuration value by its key
+     * Returns a single configuration value by its key
      *
      * @param string $key a configuration key (relative to the namespace prefix)
+     *
      * @return string|false configuration value
      */
     public function get($key)
@@ -65,8 +68,8 @@ class PayrexxStorage extends ConfigurationStorage
     /**
      * Set config value
      *
-     * @param string $key
-     * @param string $value
+     * @param string $key   config key
+     * @param string $value config value
      */
     public function set($key, $value)
     {

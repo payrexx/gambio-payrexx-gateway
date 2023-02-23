@@ -8,9 +8,10 @@ use Exception;
 class OrderRepository
 {
     /**
-     * get transition status by order id
+     * Get transition status by order id
      *
-     * @param int $id
+     * @param int $id transaction id
+     *
      * @return string
      */
     public function getTransitionStatusByOrderId(int $id)

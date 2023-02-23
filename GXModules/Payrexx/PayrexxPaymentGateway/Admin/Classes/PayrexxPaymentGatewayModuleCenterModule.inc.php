@@ -5,6 +5,9 @@ use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 
 class PayrexxPaymentGatewayModuleCenterModule extends AbstractModuleCenterModule
 {
+    /**
+     * Initialize the module
+     */
     protected function _init()
     {
         $this->title       = $this->languageTextManager->get_text('page_title', 'payrexx');
@@ -13,8 +16,8 @@ class PayrexxPaymentGatewayModuleCenterModule extends AbstractModuleCenterModule
     }
 
     /**
-    * Install module and set own install flag in module table
-    */
+     * Install module and set own install flag in module table
+     */
     public function install()
     {
         parent::install();
@@ -26,9 +29,9 @@ class PayrexxPaymentGatewayModuleCenterModule extends AbstractModuleCenterModule
         }
     }
 
-   /**
-    * Uninstall module and set own install flag in module table
-    */
+    /**
+     * Uninstall module and set own install flag in module table
+     */
     public function uninstall()
     {
         parent::uninstall();

@@ -21,11 +21,13 @@ class OrderService
     const STATUS_PENDING = 'Pending';
     const STATUS_PROCESSING = 'Processing';
     const STATUS_CANCELED = 'Canceled';
+
     /**
      * Check order status exist
      *
-     * @param string $statusName
-     * @param string $langCode
+     * @param string $statusName Order status name
+     * @param string $langCode   Language code
+     *
      * @return bool|int
      */
     public function orderStatusExists($statusName, $langCode = 'en')
@@ -40,6 +42,9 @@ class OrderService
         return $orderStatusId;
     }
 
+    /**
+     * Add new order status.
+     */
     public function addNewOrderStatus()
     {
         $orderService = new OrderService();
@@ -63,11 +68,13 @@ class OrderService
     }
 
     /**
-     * update transaction status for order
+     * Update transaction status for order
      *
-     * @param int $orderId
-     * @param string $status
-     * @param array $invoice
+     * @param int    $orderId order id
+     * @param string $status  status
+     * @param array  $invoice invoice
+     *
+     * @return void
      */
     public function handleTransactionStatus(int $orderId, string $status, array $invoice = [])
     {
@@ -118,8 +125,9 @@ class OrderService
     /**
      * Check the transition is allowed or not
      *
-     * @param int $orderId
-     * @param string $newStatus
+     * @param int    $orderId   Order id
+     * @param string $newStatus New status
+     *
      * @return bool
      */
     public function allowedStatusTransition($orderId, $newStatus)
@@ -149,9 +157,9 @@ class OrderService
     /**
      * Update order status
      *
-     * @param int $orderId
-     * @param int $newStatusId
-     * @param string $newStatus
+     * @param int    $orderId     Order id
+     * @param int    $newStatusId New status id
+     * @param string $newStatus   New status
      */
     private function updateOrderStatus(int $orderId, int $newStatusId, string $newStatus)
     {
@@ -167,6 +175,7 @@ class OrderService
 
     /**
      * Get order status config
+     *
      * @return array
      */
     private function getOrderStatusConfig(): array

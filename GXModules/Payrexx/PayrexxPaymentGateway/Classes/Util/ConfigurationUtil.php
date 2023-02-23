@@ -2,12 +2,12 @@
 
 namespace Payrexx\PayrexxPaymentGateway\Classes\Util;
 
-use Payrexx\PayrexxPaymentGateway\Classes\Service\OrderService;
-
 class ConfigurationUtil
 {
     /**
      * Get paymentmethods
+     *
+     * @return array
      */
     public static function getPaymentMethods(): array
     {
@@ -15,10 +15,10 @@ class ConfigurationUtil
             'masterpass',
             'mastercard',
             'visa',
-            'apple_pay',
+            'apple-pay',
             'maestro',
             'jcb',
-            'american_express',
+            'american-express',
             'wirpay',
             'paypal',
             'bitcoin',
@@ -27,25 +27,25 @@ class ConfigurationUtil
             'bonus',
             'cashu',
             'cb',
-            'diners_club',
-            'sepa_direct_debit',
+            'diners-club',
+            'sepa-direct-debit',
             'discover',
             'elv',
             'ideal',
             'invoice',
             'myone',
             'paysafecard',
-            'post_finance_card',
-            'post_finance_e_finance',
+            'post-finance-card',
+            'post-finance-e-finance',
             'swissbilling',
             'twint',
             'barzahlen',
             'bancontact',
             'giropay',
             'eps',
-            'google_pay',
-            'klarna_paynow',
-            'klarna_paylater',
+            'google-pay',
+            'klarna-paynow',
+            'klarna-paylater',
             'oney',
         ];
 
@@ -54,6 +54,8 @@ class ConfigurationUtil
 
     /**
      * Get payment method configurations
+     *
+     * @return array
      */
     public static function getModuleConfigurations(): array
     {
@@ -91,6 +93,8 @@ class ConfigurationUtil
 
     /**
      * Get basic configurations
+     *
+     * @return array
      */
     public static function getBasicConfigurations(): array
     {
@@ -120,6 +124,8 @@ class ConfigurationUtil
 
     /**
      * Platforms
+     *
+     * @return array
      */
     public static function getPlatforms(): array
     {

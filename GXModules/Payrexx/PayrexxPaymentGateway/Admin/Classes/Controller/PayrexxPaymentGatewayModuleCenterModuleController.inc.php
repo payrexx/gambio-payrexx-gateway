@@ -1,6 +1,5 @@
 <?php declare(strict_types=1);
 
-
 use Payrexx\PayrexxPaymentGateway\Classes\Service\PayrexxApiService;
 use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 use PayrexxStorage;
@@ -11,16 +10,24 @@ use PayrexxStorage;
 class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCenterModuleController
 {
     /**
+     * Configuration
+     *
      * @var PayrexxStorage $configuration
      */
     protected $configuration;
 
     /**
+     * Payrexx api service
+     *
      * @var PayrexxApiService $payrexxApiService
      */
     public $payrexxApiService;
 
-
+    /**
+     * Init function
+     *
+     * @return void
+     */
     protected function _init(): void
     {
         $this->pageTitle = $this->languageTextManager->get_text('page_title', 'payrexx');
@@ -29,6 +36,8 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
     }
 
     /**
+     * Default action execute
+     *
      * @return AdminLayoutHttpControllerResponse
      * @throws Exception
      */
@@ -51,6 +60,8 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
     }
 
     /**
+     * Save configuration
+     *
      * @return RedirectHttpControllerResponse
      * @throws Exception
      */
