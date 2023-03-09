@@ -111,10 +111,6 @@ class ConfigurationUtil
                 'value'  => 'payrexx.com',
                 'type' => 'text'
             ],
-            'PREFIX' => [
-                'value' => '',
-                'type' => 'text'
-            ],
             'LOOK_AND_FEEL_ID' => [
                 'value' => '',
                 'type' => 'text'

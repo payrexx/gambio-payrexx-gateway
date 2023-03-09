@@ -93,12 +93,6 @@ class PayrexxApiService
         $totalAmount = $order->info['pp_total'] * 100;
         $orderId = $order->info['orders_id'];
 
-        // Reference
-        $referenceId = $orderId;
-        if (!empty($this->configuration->get('PREFIX'))) {
-            $referenceId = $this->configuration->get('PREFIX') . '_' . $orderId;
-        }
-
         // Redirect URL
         $successUrl = xtc_href_link(FILENAME_CHECKOUT_PROCESS, 'payrexx_success=1', 'SSL');
         $failedUrl = xtc_href_link(FILENAME_CHECKOUT_PROCESS, 'payrexx_failed=1', 'SSL');
@@ -115,7 +109,7 @@ class PayrexxApiService
         $gateway->setPsp([]);
         $gateway->setPm($pm);
 
-        $gateway->setReferenceId($referenceId);
+        $gateway->setReferenceId($orderId);
         $gateway->setValidity(15);
 
         $gateway->setBasket($basket);

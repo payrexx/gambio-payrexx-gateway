@@ -12,7 +12,6 @@ class PayrexxStorage extends ConfigurationStorage
     const CONFIG_INSTANCE_NAME = 'INSTANCE_NAME';
     const CONFIG_API_KEY = 'API_KEY';
     const CONFIG_PLATFORM = 'PLATFORM';
-    const CONFIG_PREFIX = 'PREFIX';
     const CONFIG_LOOK_AND_FEEL_ID = 'LOOK_AND_FEEL_ID';
 
     /**

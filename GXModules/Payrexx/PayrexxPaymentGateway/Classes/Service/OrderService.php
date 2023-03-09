@@ -23,26 +23,6 @@ class OrderService
     const STATUS_CANCELED = 'Canceled';
 
     /**
-     * Check order status exist
-     *
-     * @param string $statusName Order status name
-     * @param string $langCode   Language code
-     *
-     * @return bool|int
-     */
-    public function orderStatusExists($statusName, $langCode = 'en')
-    {
-        $orderStatusId = false;
-        $orderStatusService = StaticGXCoreLoader::getService('OrderStatus');
-        foreach ($orderStatusService->findAll() as $orderStatus) {
-            if ($orderStatus->getName(MainFactory::create('LanguageCode', new StringType($langCode))) === $statusName) {
-                return $orderStatusId = (int) $orderStatus->getId();
-            }
-        }
-        return $orderStatusId;
-    }
-
-    /**
      * Add new order status.
      */
     public function addNewOrderStatus()
@@ -72,11 +52,10 @@ class OrderService
      *
      * @param int    $orderId order id
      * @param string $status  status
-     * @param array  $invoice invoice
      *
      * @return void
      */
-    public function handleTransactionStatus(int $orderId, string $status, array $invoice = [])
+    public function handleTransactionStatus(int $orderId, string $status)
     {
         // status mapping
         switch ($status) {
@@ -103,13 +82,6 @@ class OrderService
                     $this->addNewOrderStatus();
                     $newStatusId = $this->orderStatusExists($newStatus);
                 }
-                if ($newStatus == self::STATUS_PARTIALLY_REFUNDED &&
-                    !empty($invoice) &&
-                    $invoice['originalAmount'] == $invoice['refundedAmount']
-                ) {
-                    $newStatus = self::STATUS_REFUNDED;
-                    $newStatusId = $this->orderStatusExists($newStatus);
-                }
                 break;
             default:
                 throw new \Exception($status . ' case not implemented.');
@@ -130,7 +102,7 @@ class OrderService
      *
      * @return bool
      */
-    public function allowedStatusTransition($orderId, $newStatus)
+    private function allowedStatusTransition($orderId, $newStatus)
     {
         $orderRepository = new OrderRepository();
         $oldStatus = $orderRepository->getTransitionStatusByOrderId($orderId);
@@ -171,6 +143,26 @@ class OrderService
             new StringType($newStatus . ' status updated by payrexx'),
             new BoolType(false)
         );
+    }
+
+    /**
+     * Check order status exist
+     *
+     * @param string $statusName Order status name
+     * @param string $langCode   Language code
+     *
+     * @return bool|int
+     */
+    private function orderStatusExists($statusName, $langCode = 'en')
+    {
+        $orderStatusId = false;
+        $orderStatusService = StaticGXCoreLoader::getService('OrderStatus');
+        foreach ($orderStatusService->findAll() as $orderStatus) {
+            if ($orderStatus->getName(MainFactory::create('LanguageCode', new StringType($langCode))) === $statusName) {
+                return $orderStatusId = (int) $orderStatus->getId();
+            }
+        }
+        return $orderStatusId;
     }
 
     /**

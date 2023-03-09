@@ -36,26 +36,22 @@ class PayrexxWebhookController extends HttpViewController
                 throw new \Exception('Payrexx Webhook Data incomplete');
             }
             $transaction = $data['transaction'];
-            $orderId = (int) end(explode('_', $transaction['referenceId']));
+            $orderId = (int) $transaction['referenceId'];
 
             if (!$orderId || !$transaction['status'] || !$transaction['id']) {
                 throw new \Exception('Payrexx Webhook Data incomplete');
             }
-        
+
             $order = new order($orderId);
             if (!$order) {
                 throw new \Exception('Malicious request');
             }
-        
+
             $payrexxTransaction = $this->payrexxApiService->getTransactionById((int)$transaction['id']);
             if ($payrexxTransaction->getStatus() !== $transaction['status']) {
                 throw new \Exception('Fraudulent transaction status');
             }
-            $this->orderService->handleTransactionStatus(
-                $orderId,
-                $transaction['status'],
-                $transaction['invoice']
-            );
+            $this->orderService->handleTransactionStatus($orderId, $transaction['status']);
             echo 'Success: Webhook processed!';
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();
