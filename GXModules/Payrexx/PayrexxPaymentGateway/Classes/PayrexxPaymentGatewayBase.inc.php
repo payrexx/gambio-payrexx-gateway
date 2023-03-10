@@ -1,13 +1,18 @@
 <?php
-/*--------------------------------------------------------------------------------------------------
-    PayrexxPaymentGatewayBase.php 12-01-2023
-    https://www.payrexx.com
-    Copyright (c) 2023 payrexx
-    Released under the GNU General Public License (Version 2)
-    [http://www.gnu.org/licenses/gpl-2.0.html]
-    --------------------------------------------------------------------------------------------------
+/**
+ * Class PayrexxPaymentGatewayBase.
+ *
+ * Payment gateway for Payrexx AG.
+ *
+ * @category  Payment Module
+ * @link      https://www.payrexx.com
+ * @author    Payrexx <integration@payrexx.com>
+ * @copyright 2023 Payrexx
+ * @license   MIT License
+ *
+ * VERSION HISTORY:
+ * 1.0.0 Payrexx Payment Gateway.
  */
-
 use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 use Payrexx\Models\Response\Transaction;
 use Payrexx\PayrexxPaymentGateway\Classes\Service\OrderService;

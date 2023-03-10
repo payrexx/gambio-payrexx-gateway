@@ -1,5 +1,18 @@
 <?php
-
+/**
+ * Class PayrexxPaymentGatewayModuleCenterModule.
+ *
+ * Payment gateway for Payrexx AG.
+ *
+ * @category  Payment Module
+ * @link      https://www.payrexx.com
+ * @author    Payrexx <integration@payrexx.com>
+ * @copyright 2023 Payrexx
+ * @license   MIT License
+ *
+ * VERSION HISTORY:
+ * 1.0.0 Payrexx Payment Gateway.
+ */
 use Payrexx\PayrexxPaymentGateway\Classes\Service\OrderService;
 use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 

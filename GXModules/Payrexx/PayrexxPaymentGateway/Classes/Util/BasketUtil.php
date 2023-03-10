@@ -1,10 +1,22 @@
 <?php
-
+/**
+ * Class BasketUtil.
+ *
+ * Payment gateway for Payrexx AG.
+ *
+ * @category  Payment Module
+ * @link      https://www.payrexx.com
+ * @author    Payrexx <integration@payrexx.com>
+ * @copyright 2023 Payrexx
+ * @license   MIT License
+ *
+ * VERSION HISTORY:
+ * 1.0.0 Payrexx Payment Gateway.
+ */
 namespace Payrexx\PayrexxPaymentGateway\Classes\Util;
 
 class BasketUtil
 {
-
     /**
      * Collect basket data
      *

@@ -1,11 +1,17 @@
 <?php
-/*--------------------------------------------------------------------------------------------------
-    payrexx.lang.inc.php
-    https://www.payrexx.com
-    Copyright (c) 2023 payrexx
-    Released under the GNU General Public License (Version 2)
-    [http://www.gnu.org/licenses/gpl-2.0.html]
-    --------------------------------------------------------------------------------------------------
+/**
+ * payrexx.lang.inc.php
+ *
+ * Payment gateway for Payrexx AG.
+ *
+ * @category  Payment Module
+ * @link      https://www.payrexx.com
+ * @author    Payrexx <integration@payrexx.com>
+ * @copyright 2023 Payrexx
+ * @license   MIT License
+ *
+ * VERSION HISTORY:
+ * 1.0.0 Payrexx Payment Gateway.
  */
 
 $t_language_text_section_content_array = [
@@ -24,8 +30,6 @@ $t_language_text_section_content_array = [
     'status'              => 'Status',
     'save_configuration'  => 'Save',
     'basic_configuration' => 'Basic Configuration',
-    'prefix'              => 'Prefix',
-    'prefix_tooltip'      => 'This is only relevant for non Payrexx merchants more than one shop.',
     'look_and_feel_id'    => 'Look and Feel Id',
     'look_and_feel_id_tooltip' => 'Enter a profile ID if you wish to use a specific Look&Feel profile.',
     'configuration_saved' => 'Configuration saved successfully',
