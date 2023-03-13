@@ -4,21 +4,35 @@
  *
  * Payment gateway for Payrexx AG.
  *
- * @category  Payment Module
- * @link      https://www.payrexx.com
+ * PHP version 7,8
+ *
+ * @category  PaymentModule
+ * @package   PayrexxPayemntGateway
  * @author    Payrexx <integration@payrexx.com>
  * @copyright 2023 Payrexx
  * @license   MIT License
+ * @link      https://www.payrexx.com
  *
  * VERSION HISTORY:
  * 1.0.0 Payrexx Payment Gateway.
  */
 namespace Payrexx\PayrexxPaymentGateway\Classes\Util;
 
+/**
+ * Class BasketUtil.
+ *
+ * @category PaymentModule
+ * @package  PayrexxPayemntGateway
+ * @author   Payrexx <integration@payrexx.com>
+ * @license  MIT License
+ * @link     https://www.payrexx.com
+ */
 class BasketUtil
 {
     /**
      * Collect basket data
+     *
+     * @param order $order order
      *
      * @return array
      */
@@ -80,8 +94,12 @@ class BasketUtil
 
     /**
      * Create purpose by basket items.
+     *
+     * @param array $basket Basket items
+     *
+     * @return string
      */
-    public static function createPurposeByBasket($basket): string
+    public static function createPurposeByBasket(array $basket): string
     {
         $desc = [];
         foreach ($basket as $product) {

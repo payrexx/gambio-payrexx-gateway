@@ -4,11 +4,14 @@
  *
  * Payment gateway for Payrexx AG.
  *
- * @category  Payment Module
- * @link      https://www.payrexx.com
+ * PHP version 7,8
+ *
+ * @category  PaymentModule
+ * @package   PayrexxPayemntGateway
  * @author    Payrexx <integration@payrexx.com>
  * @copyright 2023 Payrexx
  * @license   MIT License
+ * @link      https://www.payrexx.com
  *
  * VERSION HISTORY:
  * 1.0.0 Payrexx Payment Gateway.
@@ -21,24 +24,41 @@ use PayrexxStorage;
 use Payrexx\Models\Request\SignatureCheck;
 use Payrexx\Models\Request\Transaction;
 
+/**
+ * Class PayrexxApiService.
+ *
+ * @category PaymentModule
+ * @package  PayrexxPayemntGateway
+ * @author   Payrexx <integration@payrexx.com>
+ * @license  MIT License
+ * @link     https://www.payrexx.com
+ */
 class PayrexxApiService
 {
     /**
+     * Configuration
+     *
      * @var PayrexxStorage $configuration
      */
     protected $configuration;
 
     /**
+     * Instance name
+     *
      * @var string
      */
     protected $instance;
 
     /**
+     * Payrexx Api Key
+     *
      * @var string
      */
     protected $apiKey;
 
     /**
+     * Payrexx Platform
+     *
      * @var string
      */
     protected $platform;
@@ -55,11 +75,12 @@ class PayrexxApiService
     }
 
     /**
-     * validate the api signature
+     * Validate the api signature
      *
-     * @param string $instance
-     * @param string $apiKey
-     * @param string $platform
+     * @param string $instance Instance name
+     * @param string $apiKey   Api key
+     * @param string $platform Platform
+     *
      * @return true|false
      */
     public function validateSignature(string $instance, string $apiKey, string $platform): bool
@@ -76,7 +97,8 @@ class PayrexxApiService
     /**
      * Get Transaction by transaction id
      *
-     * @param integer $id
+     * @param integer $id Transaction id
+     *
      * @return array|Transaction
      */
     public function getTransactionById(int $id)
@@ -96,10 +118,12 @@ class PayrexxApiService
     /**
      * Create Gateway
      *
-     * @param order $order
-     * @param array $basket
-     * @param string $purpose
-     * @param array $pm
+     * @param order  $order   Order
+     * @param array  $basket  Basket items
+     * @param string $purpose Purpose
+     * @param array  $pm      Payment Mean
+     *
+     * @return \Payrexx\Models\Response\Gateway
      */
     public function createGateway($order, array $basket, $purpose, array $pm)
     {
@@ -151,10 +175,19 @@ class PayrexxApiService
     }
 
     /**
+     * Get Payrexx object
+     *
+     * @param string $instance Instance Name
+     * @param string $apiKey   Api Key
+     * @param string $platform Platform
+     *
      * @return Payrexx
      */
-    private function getInterface(string $instance, string $apiKey, string $platform): Payrexx
-    {
+    private function getInterface(
+        string $instance,
+        string $apiKey,
+        string $platform
+    ): Payrexx {
         return new Payrexx($instance, $apiKey, '', $platform);
     }
 }

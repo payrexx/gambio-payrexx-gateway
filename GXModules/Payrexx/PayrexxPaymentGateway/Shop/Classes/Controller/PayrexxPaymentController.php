@@ -4,11 +4,14 @@
  *
  * Payment gateway for Payrexx AG.
  *
- * @category  Payment Module
- * @link      https://www.payrexx.com
+ * PHP version 7,8
+ *
+ * @category  PaymentModule
+ * @package   PayrexxPayemntGateway
  * @author    Payrexx <integration@payrexx.com>
  * @copyright 2023 Payrexx
  * @license   MIT License
+ * @link      https://www.payrexx.com
  *
  * VERSION HISTORY:
  * 1.0.0 Payrexx Payment Gateway.
@@ -22,12 +25,22 @@ use Payrexx\PayrexxPaymentGateway\Classes\Service\PayrexxApiService;
 use Payrexx\PayrexxPaymentGateway\Classes\Util\BasketUtil;
 use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 
+/**
+ * Class PayrexxPaymentController.
+ *
+ * @category PaymentModule
+ * @package  PayrexxPayemntGateway
+ * @author   Payrexx <integration@payrexx.com>
+ * @license  MIT License
+ * @link     https://www.payrexx.com
+ */
 class PayrexxPaymentController
 {
     /**
      * Create Payrexx Gateway
      *
-     * @param order $userOrder
+     * @param order $userOrder Order
+     *
      * @return \Payrexx\Models\Response\Gateway
      */
     public function createPayrexxGateway($userOrder)

@@ -4,21 +4,31 @@
  *
  * Payment gateway for Payrexx AG.
  *
- * @category  Payment Module
- * @link      https://www.payrexx.com
+ * PHP version 7,8
+ *
+ * @category  PaymentModule
+ * @package   PayrexxPayemntGateway
  * @author    Payrexx <integration@payrexx.com>
  * @copyright 2023 Payrexx
  * @license   MIT License
+ * @link      https://www.payrexx.com
  *
  * VERSION HISTORY:
  * 1.0.0 Payrexx Payment Gateway.
  */
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 
 /**
  * Class PayrexxStorage
+ *
+ * @category  PaymentModule
+ * @package   PayrexxPaymentGateway
+ * @author    Payrexx <integration@payrexx.com>
+ * @copyright 2023 Payrexx
+ * @license   MIT License
+ * @link      https://www.payrexx.com
  */
 class PayrexxStorage extends ConfigurationStorage
 {
@@ -67,7 +77,7 @@ class PayrexxStorage extends ConfigurationStorage
      *
      * @return array
      */
-    public function getAll()
+    public function getAll(): array
     {
         $prefix = self::CONFIG_STORAGE_PREFIX;
         $configValues = parent::get_all($prefix);
@@ -82,6 +92,8 @@ class PayrexxStorage extends ConfigurationStorage
      *
      * @param string $key   config key
      * @param string $value config value
+     * 
+     * @return void
      */
     public function set($key, $value)
     {

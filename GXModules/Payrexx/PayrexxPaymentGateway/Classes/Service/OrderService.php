@@ -4,11 +4,14 @@
  *
  * Payment gateway for Payrexx AG.
  *
- * @category  Payment Module
- * @link      https://www.payrexx.com
+ * PHP version 7,8
+ *
+ * @category  PaymentModule
+ * @package   PayrexxPayemntGateway
  * @author    Payrexx <integration@payrexx.com>
  * @copyright 2023 Payrexx
  * @license   MIT License
+ * @link      https://www.payrexx.com
  *
  * VERSION HISTORY:
  * 1.0.0 Payrexx Payment Gateway.
@@ -24,6 +27,15 @@ use BoolType;
 use Payrexx\Models\Response\Transaction;
 use Payrexx\PayrexxPaymentGateway\Classes\Repository\OrderRepository;
 
+/**
+ * Class OrderService.
+ *
+ * @category PaymentModule
+ * @package  PayrexxPayemntGateway
+ * @author   Payrexx <integration@payrexx.com>
+ * @license  MIT License
+ * @link     https://www.payrexx.com
+ */
 class OrderService
 {
     /**
@@ -37,6 +49,8 @@ class OrderService
 
     /**
      * Add new order status.
+     *
+     * @return void
      */
     public function addNewOrderStatus()
     {
@@ -145,6 +159,8 @@ class OrderService
      * @param int    $orderId     Order id
      * @param int    $newStatusId New status id
      * @param string $newStatus   New status
+     *
+     * @return void
      */
     private function updateOrderStatus(int $orderId, int $newStatusId, string $newStatus)
     {

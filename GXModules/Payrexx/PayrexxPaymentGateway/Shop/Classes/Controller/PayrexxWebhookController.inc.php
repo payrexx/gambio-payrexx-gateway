@@ -4,11 +4,14 @@
  *
  * Payment gateway for Payrexx AG.
  *
- * @category  Payment Module
- * @link      https://www.payrexx.com
+ * PHP version 7,8
+ *
+ * @category  PaymentModule
+ * @package   PayrexxPayemntGateway
  * @author    Payrexx <integration@payrexx.com>
  * @copyright 2023 Payrexx
  * @license   MIT License
+ * @link      https://www.payrexx.com
  *
  * VERSION HISTORY:
  * 1.0.0 Payrexx Payment Gateway.
@@ -18,6 +21,15 @@ declare(strict_types=1);
 use Payrexx\PayrexxPaymentGateway\Classes\Service\OrderService;
 use Payrexx\PayrexxPaymentGateway\Classes\Service\PayrexxApiService;
 
+/**
+ * Class PayrexxWebhookController.
+ *
+ * @category PaymentModule
+ * @package  PayrexxPayemntGateway
+ * @author   Payrexx <integration@payrexx.com>
+ * @license  MIT License
+ * @link     https://www.payrexx.com
+ */
 class PayrexxWebhookController extends HttpViewController
 {
     protected $configuration;
@@ -27,9 +39,11 @@ class PayrexxWebhookController extends HttpViewController
     protected $payrexxApiService;
 
     /**
-     * @param HttpContextReaderInterface $httpContextReader
-     * @param HttpResponseProcessorInterface $httpResponseProcessor
-     * @param ContentViewInterface $defaultContentView
+     * Constructor
+     *
+     * @param HttpContextReaderInterface     $httpContextReader     Context Reader
+     * @param HttpResponseProcessorInterface $httpResponseProcessor Response Processor
+     * @param ContentViewInterface           $defaultContentView    Content view
      */
     public function __construct(
         HttpContextReaderInterface $httpContextReader,
@@ -43,6 +57,12 @@ class PayrexxWebhookController extends HttpViewController
         parent::__construct($httpContextReader, $httpResponseProcessor, $defaultContentView);
     }
 
+    /**
+     * Executes default action
+     *
+     * @return string
+     * @throws Exception
+     */
     public function actionDefault()
     {
         try {

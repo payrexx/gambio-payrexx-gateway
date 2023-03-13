@@ -4,62 +4,94 @@
  *
  * Payment gateway for Payrexx AG.
  *
- * @category  Payment Module
- * @link      https://www.payrexx.com
+ * PHP version 7,8
+ *
+ * @category  PaymentModule
+ * @package   PayrexxPayemntGateway
  * @author    Payrexx <integration@payrexx.com>
  * @copyright 2023 Payrexx
  * @license   MIT License
+ * @link      https://www.payrexx.com
  *
  * VERSION HISTORY:
  * 1.0.0 Payrexx Payment Gateway.
  */
+
 use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 use Payrexx\Models\Response\Transaction;
 use Payrexx\PayrexxPaymentGateway\Classes\Service\OrderService;
 use Payrexx\PayrexxPaymentGateway\Classes\Controller\PayrexxPaymentController;
 
+/**
+ * Class PayrexxPaymentGatewayBase.
+ *
+ * @category PaymentModule
+ * @package  PayrexxPayemntGateway
+ * @author   Payrexx <integration@payrexx.com>
+ * @license  MIT License
+ * @link     https://www.payrexx.com
+ */
 class PayrexxPaymentGatewayBase
 {
     /**
+     * Title
+     *
      * @var string
      */
     public $title;
 
     /**
+     * Description
+     *
      * @var string
      */
     public $description;
 
     /**
+     * Enabled
+     *
      * @var boolean
      */
     public $enabled;
 
     /**
+     * Sorting order
+     *
      * @var int
      */
     public $sort_order = 0;
 
     /**
+     * Info
+     *
      * @var string
      */
     public $info;
 
     /**
+     * Temp orders
+     *
      * @var bool
      */
     public $tmpOrders = true;
 
     /**
+     * Language Text
+     *
      * @var LanguageTextManager
      */
     private $langText;
 
     /**
+     * Payment Code
+     *
      * @var string
      */
     public $code = 'payrexx';
 
+    /**
+     * Card Images path
+     */
     const IMAGE_PATH = 'GXModules/Payrexx/PayrexxPaymentGateway/Images/Icons/Payment/';
 
     /**
@@ -69,8 +101,8 @@ class PayrexxPaymentGatewayBase
     {
         $this->langText    = MainFactory::create('LanguageTextManager', 'payrexx', $_SESSION['languages_id']);
         $this->title       = ucwords(str_replace('_', ' ', $this->code));
-        $this->info        = defined($this->getConstant('TEXT_INFO')) ? $this->getConstantValue('TEXT_INFO') : $this->langText->get_text('text_info');
-        $this->sort_order  = defined($this->getConstant('SORT_ORDER')) ? $this->getConstantValue('SORT_ORDER') : $this->sort_order;
+        $this->info        = defined($this->getConstant('TEXT_INFO')) ? $this->_getConstantValue('TEXT_INFO') : $this->langText->get_text('text_info');
+        $this->sort_order  = defined($this->getConstant('SORT_ORDER')) ? $this->_getConstantValue('SORT_ORDER') : $this->sort_order;
         $this->enabled     = defined($this->getConstant('STATUS')) && filter_var(constant($this->getConstant('STATUS')), FILTER_VALIDATE_BOOLEAN);
         $this->description = $this->langText->get_text('text_description');
         if (defined('DIR_WS_ADMIN')) {
@@ -81,6 +113,8 @@ class PayrexxPaymentGatewayBase
 
     /**
      * Initialize the constants.
+     *
+     * @return void
      */
     public function defineConstants()
     {
@@ -98,31 +132,39 @@ class PayrexxPaymentGatewayBase
         }
     }
 
+    /**
+     * Update edit page changes
+     *
+     * @return void
+     */
     public function update_status()
     {
         global $order;
-        if (($this->enabled == true) && ((int)$this->getConstantValue('ZONE') > 0)) {
-            $check_flag = false;
-            $sql        = xtc_db_query("SELECT zone_id FROM " . TABLE_ZONES_TO_GEO_ZONES . " WHERE geo_zone_id = '"
-                . $this->getConstantValue('ZONE') . "' AND zone_country_id = '"
-                . $order->billing['country']['id'] . "' ORDER BY zone_id");
+        if (($this->enabled == true) && ((int)$this->_getConstantValue('ZONE') > 0)) {
+            $checkFlag = false;
+            $sql = xtc_db_query("SELECT zone_id FROM " . TABLE_ZONES_TO_GEO_ZONES . " WHERE geo_zone_id = '"
+                . $this->_getConstantValue('ZONE') . "' AND zone_country_id = '"
+                . $order->billing['country']['id'] . "' ORDER BY zone_id"
+            );
 
             while ($check = xtc_db_fetch_array($sql)) {
                 if ($check['zone_id'] < 1) {
-                    $check_flag = true;
+                    $checkFlag = true;
                     break;
                 } elseif ($check['zone_id'] == $order->billing['zone_id']) {
-                    $check_flag = true;
+                    $checkFlag = true;
                     break;
                 }
             }
-            if ($check_flag == false) {
+            if ($checkFlag == false) {
                 $this->enabled = false;
             }
         }
     }
 
     /**
+     * Javascript validation
+     *
      * @return false
      */
     public function javascript_validation()
@@ -131,6 +173,8 @@ class PayrexxPaymentGatewayBase
     }
 
     /**
+     * Selection
+     *
      * @return array|false
      */
     public function selection()
@@ -141,8 +185,8 @@ class PayrexxPaymentGatewayBase
 
         $selection = [
             'id' => $this->code,
-            'module' => $this->getConstantValue('CHECKOUT_NAME'),
-            'description' => $this->getDescription(),
+            'module' => $this->_getConstantValue('CHECKOUT_NAME'),
+            'description' => $this->_getDescription(),
             'logo_url' => xtc_href_link(
                 self::IMAGE_PATH . 'payrexx.svg',
                 '',
@@ -154,20 +198,8 @@ class PayrexxPaymentGatewayBase
     }
 
     /**
-     * It is similar to Signature check
+     * Executes before confirmation
      *
-     * @return bool
-     */
-    private function credentialsCheck()
-    {
-        $storage = MainFactory::create('PayrexxStorage');
-        if (empty($storage->get('API_KEY')) || empty($storage->get('INSTANCE_NAME'))) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * @return false
      */
     public function pre_confirmation_check()
@@ -176,6 +208,8 @@ class PayrexxPaymentGatewayBase
     }
 
     /**
+     * Order confirmation
+     *
      * @return false
      */
     public function confirmation()
@@ -187,6 +221,8 @@ class PayrexxPaymentGatewayBase
     }
 
     /**
+     * Excutes the function click payment button
+     *
      * @return false
      */
     public function process_button()
@@ -196,6 +232,8 @@ class PayrexxPaymentGatewayBase
 
     /**
      * Execute after order saved
+     *
+     * @return false|void
      */
     public function payment_action()
     {
@@ -218,6 +256,8 @@ class PayrexxPaymentGatewayBase
     }
 
     /**
+     * Before payment process
+     *
      * @return false
      */
     public function before_process()
@@ -226,7 +266,9 @@ class PayrexxPaymentGatewayBase
     }
 
     /**
-     * @return false
+     * Executes fter payment process
+     *
+     * @return false|void
      */
     public function after_process()
     {
@@ -250,6 +292,8 @@ class PayrexxPaymentGatewayBase
     }
 
     /**
+     * Get error
+     *
      * @return false
      */
     public function get_error()
@@ -258,6 +302,8 @@ class PayrexxPaymentGatewayBase
     }
 
     /**
+     * Check the module status
+     *
      * @return int|mixed|string
      */
     public function check()
@@ -275,7 +321,7 @@ class PayrexxPaymentGatewayBase
     /**
      * Determines the module's configuration keys.
      *
-     * @return array
+     * @return array configuration keys
      */
     public function keys(): array
     {
@@ -289,6 +335,8 @@ class PayrexxPaymentGatewayBase
 
     /**
      * Installs the Module configurations.
+     *
+     * @return void
      */
     public function install()
     {
@@ -305,6 +353,8 @@ class PayrexxPaymentGatewayBase
 
     /**
      * Removes the Module configurations.
+     *
+     * @return void
      */
     public function remove()
     {
@@ -316,6 +366,8 @@ class PayrexxPaymentGatewayBase
     }
 
     /**
+     * Check the module installed or not
+     *
      * @return bool
      */
     public function isInstalled(): bool
@@ -332,7 +384,7 @@ class PayrexxPaymentGatewayBase
     /**
      * Add more information to admin view
      *
-     * @return string
+     * @return void
      */
     private function addAdditionalInfo()
     {
@@ -348,7 +400,7 @@ class PayrexxPaymentGatewayBase
 
         // description
         $this->description .= $this->langText->get_text('text_description2');
-        if (!$this->credentialsCheck()) {
+        if (!$this->_credentialsCheck()) {
             $this->description .= '<br><span style="color:#ff0000">' . $this->langText->get_text('config_invalid') . '</span><br><br>';
         }
     }
@@ -356,8 +408,9 @@ class PayrexxPaymentGatewayBase
     /**
      * Get constant
      *
-     * @param string $key
-     * @return string
+     * @param string $key Contant key
+     *
+     * @return string constant
      */
     private function getConstant(string $key): string
     {
@@ -367,39 +420,58 @@ class PayrexxPaymentGatewayBase
     /**
      * Get constant value
      *
-     * @param string $key
-     * @return string
+     * @param string $key Constant Key
+     *
+     * @return string constant value
      */
-    private function getConstantValue(string $key): string
+    private function _getConstantValue(string $key): string
     {
         return constant(MODULE_PAYMENT_ . strtoupper($this->code) . _ . $key);
     }
 
     /**
+     * Description
+     *
      * @return string
      */
-    private function getDescription()
+    private function _getDescription(): string
     {
-        $description = $this->getConstantValue('CHECKOUT_DESCRIPTION');
+        $description = $this->_getConstantValue('CHECKOUT_DESCRIPTION');
         foreach (ConfigurationUtil::getPaymentMethods() as $method) {
-            if ($this->getConstantValue(strtoupper($method)) === 'true') {
-                $description .= $this->getPaymentMethodIcon($method);
+            if ($this->_getConstantValue(strtoupper($method)) === 'true') {
+                $description .= $this->_getPaymentMethodIcon($method);
             }
         }
         return $description;
     }
 
     /**
-     * @param $paymentMethod
+     * Payment Method Icon
+     *
+     * @param string $paymentMethod Payment Method
      *
      * @return string
      */
-    private function getPaymentMethodIcon(string $paymentMethod)
+    private function _getPaymentMethodIcon(string $paymentMethod): string
     {
         $path = self::IMAGE_PATH . 'card_' . $paymentMethod . '.svg';
         if (file_exists(DIR_FS_CATALOG . $path)) {
             return xtc_image(xtc_href_link($path, '', 'SSL'), $paymentMethod);
         }
         return '';
+    }
+
+    /**
+     * It is similar to Signature check
+     *
+     * @return bool
+     */
+    private function _credentialsCheck(): bool
+    {
+        $storage = MainFactory::create('PayrexxStorage');
+        if (empty($storage->get('API_KEY')) || empty($storage->get('INSTANCE_NAME'))) {
+            return false;
+        }
+        return true;
     }
 }
