@@ -94,7 +94,7 @@ class ConfigurationUtil
                 'value' => '-9999',
                 'type' => 'number'
             ],
-            'ALLOWED'    => [
+            'ALLOWED' => [
                 'value' => '',
                 'type' => 'text'
             ],
@@ -102,18 +102,25 @@ class ConfigurationUtil
                 'value' => '',
                 'type' => 'geo-zone',
             ],
+            'CHECKOUT_NAME' => [
+                'value' => 'Payrexx Payment Gateway',
+                'type' => 'text',
+            ],
+            'CHECKOUT_DESCRIPTION' => [
+                'value' => '',
+                'type' => 'text',
+            ]
         ];
-
-        $config['CHECKOUT_NAME'] = ['value' => 'Payrexx Payment Gateway', 'type' => 'text'];
-        $config['CHECKOUT_DESCRIPTION'] = ['value' => '', 'type' => 'text'];
 
         /**
          * Creating checkbox for each payment method.
          */
         foreach (self::getPaymentMethods() as $method) {
-            $config[strtoupper($method)] = ['value' => 'False','type'  => 'switcher'];
+            $config[strtoupper($method)] = [
+                'value' => 'False',
+                'type'  => 'switcher',
+            ];
         }
-
         return $config;
     }
 
@@ -127,19 +134,19 @@ class ConfigurationUtil
         return [
             'INSTANCE_NAME' => [
                 'value' => '',
-                'type' => 'text'
+                'type' => 'text',
             ],
             'API_KEY' => [
                 'value' => '',
-                'type' => 'text'
+                'type' => 'text',
             ],
             'PLATFORM' => [
                 'value'  => 'payrexx.com',
-                'type' => 'text'
+                'type' => 'text',
             ],
             'LOOK_AND_FEEL_ID' => [
                 'value' => '',
-                'type' => 'text'
+                'type' => 'text',
             ]
         ];
     }

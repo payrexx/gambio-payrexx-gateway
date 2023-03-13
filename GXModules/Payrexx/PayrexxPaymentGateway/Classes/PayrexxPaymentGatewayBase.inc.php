@@ -99,11 +99,11 @@ class PayrexxPaymentGatewayBase
      */
     public function __construct()
     {
-        $this->langText    = MainFactory::create('LanguageTextManager', 'payrexx', $_SESSION['languages_id']);
-        $this->title       = ucwords(str_replace('_', ' ', $this->code));
-        $this->info        = defined($this->getConstant('TEXT_INFO')) ? $this->_getConstantValue('TEXT_INFO') : $this->langText->get_text('text_info');
-        $this->sort_order  = defined($this->getConstant('SORT_ORDER')) ? $this->_getConstantValue('SORT_ORDER') : $this->sort_order;
-        $this->enabled     = defined($this->getConstant('STATUS')) && filter_var(constant($this->getConstant('STATUS')), FILTER_VALIDATE_BOOLEAN);
+        $this->langText = MainFactory::create('LanguageTextManager', 'payrexx', $_SESSION['languages_id']);
+        $this->title = ucwords(str_replace('_', ' ', $this->code));
+        $this->info = defined($this->getConstant('TEXT_INFO')) ? $this->_getConstantValue('TEXT_INFO') : $this->langText->get_text('text_info');
+        $this->sort_order = defined($this->getConstant('SORT_ORDER')) ? $this->_getConstantValue('SORT_ORDER') : $this->sort_order;
+        $this->enabled = defined($this->getConstant('STATUS')) && filter_var(constant($this->getConstant('STATUS')), FILTER_VALIDATE_BOOLEAN);
         $this->description = $this->langText->get_text('text_description');
         if (defined('DIR_WS_ADMIN')) {
             $this->addAdditionalInfo();
@@ -180,7 +180,9 @@ class PayrexxPaymentGatewayBase
     public function selection()
     {
         if (isset($_GET['payrexx_cancel'])) {
-            $_SESSION['gm_error_message'] = urlencode($this->langText->get_text('payment_cancel'));
+            $_SESSION['gm_error_message'] = urlencode(
+                $this->langText->get_text('payment_cancel')
+            );
         }
 
         $selection = [
@@ -215,7 +217,9 @@ class PayrexxPaymentGatewayBase
     public function confirmation()
     {
         if (isset($_GET['payrexx_failed'])) {
-            $_SESSION['gm_error_message'] = urlencode($this->langText->get_text('payment_failed'));
+            $_SESSION['gm_error_message'] = urlencode(
+                $this->langText->get_text('payment_failed')
+            );
         }
         return false;
     }
@@ -251,7 +255,11 @@ class PayrexxPaymentGatewayBase
         } catch (\Payrexx\PayrexxException $e) {
             return false;
         }
-        $payrexxPaymentUrl = str_replace('?', $_SESSION['language_code'] . '/?', $response->getLink());
+        $payrexxPaymentUrl = str_replace(
+            '?',
+            $_SESSION['language_code'] . '/?',
+            $response->getLink()
+        );
         xtc_redirect($payrexxPaymentUrl);
     }
 
@@ -280,7 +288,10 @@ class PayrexxPaymentGatewayBase
 
         try {
             $orderservice = new OrderService();
-            $orderservice->handleTransactionStatus($insert_id, Transaction::CANCELLED);
+            $orderservice->handleTransactionStatus(
+                $insert_id,
+                Transaction::CANCELLED
+            );
         } catch (Exception $e) {
         }
         // Error messages.
@@ -308,11 +319,11 @@ class PayrexxPaymentGatewayBase
      */
     public function check()
     {
-
         if (!isset($this->_check)) {
             $query  = xtc_db_query("SELECT `value` FROM " . TABLE_CONFIGURATION
                 . " WHERE `key` = 'configuration/MODULE_PAYMENT_" . strtoupper($this->code)
-                . "_STATUS'");
+                . "_STATUS'"
+            );
             $this->_check = xtc_db_num_rows($query);
         }
         return $this->_check;
@@ -401,7 +412,9 @@ class PayrexxPaymentGatewayBase
         // description
         $this->description .= $this->langText->get_text('text_description2');
         if (!$this->_credentialsCheck()) {
-            $this->description .= '<br><span style="color:#ff0000">' . $this->langText->get_text('config_invalid') . '</span><br><br>';
+            $this->description .= '<br><span style="color:#ff0000">';
+            $this->description .= $this->langText->get_text('config_invalid');
+            $this->description .= '</span><br><br>';
         }
     }
 

@@ -103,12 +103,15 @@ class BasketUtil
     {
         $desc = [];
         foreach ($basket as $product) {
-            $desc[] = implode(' ', [
-                $product['name']['2'],
-                $product['quantity'],
-                'x',
-                number_format($product['amount'] / 100, 2, '.', ','),
-            ]);
+            $desc[] = implode(
+                ' ',
+                [
+                    $product['name']['2'],
+                    $product['quantity'],
+                    'x',
+                    number_format($product['amount'] / 100, 2, '.', ','),
+                ]
+            );
         }
         return implode('; ', $desc);
     }

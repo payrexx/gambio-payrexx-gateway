@@ -97,7 +97,12 @@ class PayrexxStorage extends ConfigurationStorage
      */
     public function set($key, $value)
     {
-        if (!in_array($key, array_keys(ConfigurationUtil::getBasicConfigurations()))) {
+        if (
+            !in_array(
+                $key,
+                array_keys(ConfigurationUtil::getBasicConfigurations())
+            )
+        ) {
             return false;
         }
         parent::set(self::CONFIG_STORAGE_PREFIX . $key, $value);

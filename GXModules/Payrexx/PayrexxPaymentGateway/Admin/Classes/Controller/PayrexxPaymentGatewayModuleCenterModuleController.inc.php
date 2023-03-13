@@ -67,8 +67,12 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
      */
     public function actionDefault(): AdminLayoutHttpControllerResponse
     {
-        $title = new NonEmptyStringType($this->languageTextManager->get_text('page_title', 'payrexx'));
-        $template = $this->getTemplateFile('Payrexx/PayrexxPaymentGateway/Admin/Html/basic_config.html');
+        $title = new NonEmptyStringType(
+            $this->languageTextManager->get_text('page_title', 'payrexx')
+        );
+        $template = $this->getTemplateFile(
+            'Payrexx/PayrexxPaymentGateway/Admin/Html/basic_config.html'
+        );
         $data = MainFactory::create(
             'KeyValueCollection',
             [
@@ -76,11 +80,19 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
                 'configuration' => $this->configuration->getAll(),
                 'platforms' => ConfigurationUtil::getPlatforms(),
                 'translate_section' => 'payrexx',
-                'action_save' => xtc_href_link('admin.php', 'do=PayrexxPaymentGatewayModuleCenterModule/SaveConfig'),
+                'action_save' => xtc_href_link(
+                    'admin.php', 
+                    'do=PayrexxPaymentGatewayModuleCenterModule/SaveConfig'
+                ),
             ]
         );
 
-        return MainFactory::create('AdminLayoutHttpControllerResponse', $title, $template, $data);
+        return MainFactory::create(
+            'AdminLayoutHttpControllerResponse',
+            $title,
+            $template,
+            $data
+        );
     }
 
     /**
@@ -105,7 +117,10 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
                     $this->configuration->set($key, $value);
                 }
                 $GLOBALS['messageStack']->add_session(
-                    $this->languageTextManager->get_text('configuration_saved', 'payrexx'),
+                    $this->languageTextManager->get_text(
+                        'configuration_saved',
+                        'payrexx'
+                    ),
                     'info'
                 );
             } else {
@@ -113,13 +128,19 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
             }
         } catch (Exception $e) {
             $GLOBALS['messageStack']->add_session(
-                $this->languageTextManager->get_text('error_saving_configuration', 'payrexx'),
+                $this->languageTextManager->get_text(
+                    'error_saving_configuration',
+                    'payrexx'
+                ),
                 'error'
             );
         }
         return MainFactory::create(
             'RedirectHttpControllerResponse',
-            xtc_href_link('admin.php', 'do=PayrexxPaymentGatewayModuleCenterModule')
+            xtc_href_link(
+                'admin.php',
+                'do=PayrexxPaymentGatewayModuleCenterModule'
+            )
         );
     }
 }
