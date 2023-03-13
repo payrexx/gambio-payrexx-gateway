@@ -19,8 +19,8 @@
 
 namespace Payrexx\PayrexxPaymentGateway\Classes\Service;
 
-use Payrexx\Payrexx;
 use PayrexxStorage;
+use Payrexx\Payrexx;
 use Payrexx\Models\Request\SignatureCheck;
 use Payrexx\Models\Request\Transaction;
 

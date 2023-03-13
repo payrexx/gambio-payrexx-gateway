@@ -18,7 +18,7 @@
  */
 declare(strict_types=1);
 
-use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
+use Payrexx\PayrexxPaymentGateway\Classes\Config\PayrexxConfig;
 
 /**
  * Class PayrexxStorage
@@ -100,7 +100,7 @@ class PayrexxStorage extends ConfigurationStorage
         if (
             !in_array(
                 $key,
-                array_keys(ConfigurationUtil::getBasicConfigurations())
+                array_keys(PayrexxConfig::getBasicConfigurations())
             )
         ) {
             return false;

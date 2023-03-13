@@ -16,6 +16,7 @@
  * VERSION HISTORY:
  * 1.0.0 Payrexx Payment Gateway.
  */
+
 namespace Payrexx\PayrexxPaymentGateway\Classes\Util;
 
 /**

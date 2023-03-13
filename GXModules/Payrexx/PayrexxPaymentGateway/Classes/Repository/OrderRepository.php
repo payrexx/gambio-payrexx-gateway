@@ -18,8 +18,8 @@
  */
 namespace Payrexx\PayrexxPaymentGateway\Classes\Repository;
 
-use StaticGXCoreLoader;
 use Exception;
+use StaticGXCoreLoader;
 
 /**
  * Class OrderRepository.

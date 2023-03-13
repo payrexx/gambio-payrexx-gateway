@@ -17,10 +17,10 @@
  * 1.0.0 Payrexx Payment Gateway.
  */
 
-use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
-use Payrexx\Models\Response\Transaction;
-use Payrexx\PayrexxPaymentGateway\Classes\Service\OrderService;
+use Payrexx\PayrexxPaymentGateway\Classes\Config\PayrexxConfig;
 use Payrexx\PayrexxPaymentGateway\Classes\Controller\PayrexxPaymentController;
+use Payrexx\PayrexxPaymentGateway\Classes\Service\OrderService;
+use Payrexx\Models\Response\Transaction;
 
 /**
  * Class PayrexxPaymentGatewayBase.
@@ -118,9 +118,9 @@ class PayrexxPaymentGatewayBase
      */
     public function defineConstants()
     {
-        $configKeys = array_keys(ConfigurationUtil::getModuleConfigurations());
+        $configKeys = array_keys(PayrexxConfig::getModuleConfigurations());
         foreach ($configKeys as $key) {
-            if (in_array(strtolower($key), ConfigurationUtil::getPaymentMethods())) {
+            if (in_array(strtolower($key), PayrexxConfig::getPaymentMethods())) {
                 $title = str_replace('_', ' ', ucfirst(strtolower($key)));
                 $desc = $this->langText->get_text('accept_payment_by') . $title .'?';
             } else {
@@ -336,7 +336,7 @@ class PayrexxPaymentGatewayBase
      */
     public function keys(): array
     {
-        $ckeys = array_keys(ConfigurationUtil::getModuleConfigurations());
+        $ckeys = array_keys(PayrexxConfig::getModuleConfigurations());
         $keys  = [];
         foreach ($ckeys as $key) {
             $keys[] = 'configuration/' . $this->getConstant($key);
@@ -351,7 +351,7 @@ class PayrexxPaymentGatewayBase
      */
     public function install()
     {
-        $config     = ConfigurationUtil::getModuleConfigurations();
+        $config = PayrexxConfig::getModuleConfigurations();
         $sortOrder = 0;
         foreach ($config as $key => $data) {
             $installQuery = "INSERT INTO `gx_configurations` ( `key`, `value`, `sort_order`, `type`, `last_modified`) "
@@ -450,7 +450,7 @@ class PayrexxPaymentGatewayBase
     private function _getDescription(): string
     {
         $description = $this->_getConstantValue('CHECKOUT_DESCRIPTION');
-        foreach (ConfigurationUtil::getPaymentMethods() as $method) {
+        foreach (PayrexxConfig::getPaymentMethods() as $method) {
             if ($this->_getConstantValue(strtoupper($method)) === 'true') {
                 $description .= $this->_getPaymentMethodIcon($method);
             }

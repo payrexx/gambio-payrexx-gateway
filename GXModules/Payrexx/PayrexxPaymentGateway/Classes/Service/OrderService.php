@@ -18,14 +18,14 @@
  */
 namespace Payrexx\PayrexxPaymentGateway\Classes\Service;
 
-use StaticGXCoreLoader;
-use MainFactory;
-use StringType;
+use BoolType;
 use IdType;
 use IntType;
-use BoolType;
+use MainFactory;
 use Payrexx\Models\Response\Transaction;
 use Payrexx\PayrexxPaymentGateway\Classes\Repository\OrderRepository;
+use StaticGXCoreLoader;
+use StringType;
 
 /**
  * Class OrderService.

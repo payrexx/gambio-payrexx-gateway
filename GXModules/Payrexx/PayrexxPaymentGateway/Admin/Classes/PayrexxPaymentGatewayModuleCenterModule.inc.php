@@ -18,8 +18,8 @@
  */
 declare(strict_types=1);
 
+use Payrexx\PayrexxPaymentGateway\Classes\Config\PayrexxConfig;
 use Payrexx\PayrexxPaymentGateway\Classes\Service\OrderService;
-use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 
 /**
  * Class PayrexxPaymentGatewayModuleCenterModule.
@@ -55,7 +55,7 @@ class PayrexxPaymentGatewayModuleCenterModule extends AbstractModuleCenterModule
         $configuration = MainFactory::create('PayrexxStorage');
         $orderService = new OrderService();
         $orderService->addNewOrderStatus();
-        foreach (ConfigurationUtil::getBasicConfigurations() as $key => $value) {
+        foreach (PayrexxConfig::getBasicConfigurations() as $key => $value) {
             $configuration->set($key, $value['value']);
         }
     }

@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Payrexx\PayrexxPaymentGateway\Classes\Controller;
 
 use MainFactory;
+use Payrexx\PayrexxPaymentGateway\Classes\Config\PayrexxConfig;
 use Payrexx\PayrexxPaymentGateway\Classes\Service\PayrexxApiService;
 use Payrexx\PayrexxPaymentGateway\Classes\Util\BasketUtil;
-use Payrexx\PayrexxPaymentGateway\Classes\Util\ConfigurationUtil;
 
 /**
  * Class PayrexxPaymentController.
@@ -68,7 +68,7 @@ class PayrexxPaymentController
         // pm
         $configuration = MainFactory::create('PayrexxStorage');
         $pm = [];
-        foreach (ConfigurationUtil::getPaymentMethods() as $method) {
+        foreach (PayrexxConfig::getPaymentMethods() as $method) {
             if ($configuration->get(strtoupper($method)) === 'true') {
                 $pm[] = str_replace('_', '-', $method);
             }

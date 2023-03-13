@@ -1,6 +1,6 @@
 <?php
 /**
- * Class ConfigurationUtil.
+ * Class PayrexxConfig.
  *
  * Payment gateway for Payrexx AG.
  *
@@ -17,10 +17,10 @@
  * 1.0.0 Payrexx Payment Gateway.
  */
 
-namespace Payrexx\PayrexxPaymentGateway\Classes\Util;
+namespace Payrexx\PayrexxPaymentGateway\Classes\Config;
 
 /**
- * Class ConfigurationUtil.
+ * Class PayrexxConfig.
  *
  * @category PaymentModule
  * @package  PayrexxPayemntGateway
@@ -28,7 +28,7 @@ namespace Payrexx\PayrexxPaymentGateway\Classes\Util;
  * @license  MIT License
  * @link     https://www.payrexx.com
  */
-class ConfigurationUtil
+class PayrexxConfig
 {
     /**
      * Get paymentmethods
