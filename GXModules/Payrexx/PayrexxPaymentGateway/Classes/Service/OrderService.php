@@ -55,13 +55,13 @@ class OrderService
     public function addNewOrderStatus()
     {
         $orderService = new OrderService();
-        $newOrderStatusConfig = $this->getOrderStatusConfig();
+        $newOrderStatusConfig = $this->_getOrderStatusConfig();
         $orderStatusService = StaticGXCoreLoader::getService('OrderStatus');
         foreach ($newOrderStatusConfig as $statusConfig) {
             $newOrderStatus = MainFactory::create('OrderStatus');
             foreach (['en', 'de'] as $lang) {
                 $statusName = $statusConfig['names'][$lang] ?? $statusConfig['names']['en'];
-                if ($orderService->orderStatusExists($statusName, $lang)) {
+                if ($orderService->_orderStatusExists($statusName, $lang)) {
                     continue 2;
                 }
                 $newOrderStatus->setName(
@@ -103,19 +103,15 @@ class OrderService
                 break;
             case Transaction::REFUNDED:
             case Transaction::PARTIALLY_REFUNDED:
-                $newStatus = $this->getOrderStatusConfig()[$status]['names']['en'];
-                $newStatusId = $this->orderStatusExists($newStatus);
-                if (!$newStatusId) {
-                    $this->addNewOrderStatus();
-                    $newStatusId = $this->orderStatusExists($newStatus);
-                }
+                $newStatus = $this->_getOrderStatusConfig()[$status]['names']['en'];
+                $newStatusId = $this->_orderStatusExists($newStatus);
                 break;
             default:
                 throw new \Exception($status . ' case not implemented.');
         }
 
         // check the status transition to change.
-        if (!$this->allowedStatusTransition($orderId, $newStatus)) {
+        if (!$this->_allowedStatusTransition($orderId, $newStatus)) {
             throw new \Exception('Status transition not allowed');
         }
         $this->updateOrderStatus($orderId, $newStatusId, $newStatus);
@@ -129,7 +125,7 @@ class OrderService
      *
      * @return bool
      */
-    private function allowedStatusTransition($orderId, $newStatus)
+    private function _allowedStatusTransition($orderId, $newStatus)
     {
         $orderRepository = new OrderRepository();
         $oldStatus = $orderRepository->getTransitionStatusByOrderId($orderId);
@@ -139,16 +135,22 @@ class OrderService
 
         switch ($oldStatus) {
             case self::STATUS_PENDING:
-                return !in_array($newStatus, [
-                    self::STATUS_REFUNDED,
-                    self::STATUS_PARTIALLY_REFUNDED,
-                ]);
+                return !in_array(
+                    $newStatus,
+                    [
+                        self::STATUS_REFUNDED,
+                        self::STATUS_PARTIALLY_REFUNDED,
+                    ]
+                );
             case self::STATUS_PROCESSING:
             case self::STATUS_PARTIALLY_REFUNDED:
-                return in_array($newStatus, [
-                    self::STATUS_REFUNDED,
-                    self::STATUS_PARTIALLY_REFUNDED,
-                ]);
+                return in_array(
+                    $newStatus,
+                    [
+                        self::STATUS_REFUNDED,
+                        self::STATUS_PARTIALLY_REFUNDED,
+                    ]
+                );
         }
         return false;
     }
@@ -182,7 +184,7 @@ class OrderService
      *
      * @return bool|int
      */
-    private function orderStatusExists($statusName, $langCode = 'en')
+    private function _orderStatusExists($statusName, $langCode = 'en')
     {
         $orderStatusId = false;
         $orderStatusService = StaticGXCoreLoader::getService('OrderStatus');
@@ -199,7 +201,7 @@ class OrderService
      *
      * @return array
      */
-    private function getOrderStatusConfig(): array
+    private function _getOrderStatusConfig(): array
     {
         return [
             'refunded' => [

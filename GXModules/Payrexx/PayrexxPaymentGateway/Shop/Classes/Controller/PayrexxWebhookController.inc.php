@@ -32,10 +32,25 @@ use Payrexx\PayrexxPaymentGateway\Classes\Service\PayrexxApiService;
  */
 class PayrexxWebhookController extends HttpViewController
 {
+    /**
+     * Payrexx Configuration
+     *
+     * @var PayrexxStorage
+     */
     protected $configuration;
 
+    /**
+     * Order service
+     *
+     * @var OrderService
+     */
     protected $orderService;
 
+    /**
+     * Payrexx Api Service
+     *
+     * @var PayrexxApiService
+     */
     protected $payrexxApiService;
 
     /**

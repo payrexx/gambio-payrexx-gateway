@@ -87,7 +87,7 @@ class PayrexxConfig
     {
         $config = [
             'STATUS' => [
-                'value' => 'False',
+                'value' => 'True',
                 'type' => 'switcher',
             ],
             'SORT_ORDER' => [
