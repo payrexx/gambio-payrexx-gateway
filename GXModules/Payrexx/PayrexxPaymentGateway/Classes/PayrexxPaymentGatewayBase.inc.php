@@ -354,7 +354,7 @@ class PayrexxPaymentGatewayBase
      */
     public function install()
     {
-        $config    = PayrexxConfig::getModuleConfigurations($this->code);
+        $config = PayrexxConfig::getModuleConfigurations($this->code);
         $sortOrder = 0;
         foreach ($config as $key => $data) {
             $installQuery = "INSERT INTO `gx_configurations` ( `key`, `value`, `sort_order`, `type`, `last_modified`) "
@@ -403,9 +403,12 @@ class PayrexxPaymentGatewayBase
     private function addAdditionalInfo()
     {
         // title
+        $logoImageName = ($this->code === 'payrexx')
+            ? 'payrexx'
+            : str_replace('payrexx', 'card', $this->code);
         $this->title .= xtc_image(
             xtc_catalog_href_link(
-                self::IMAGE_PATH . $this->code . '.svg',
+                self::IMAGE_PATH . $logoImageName . '.svg',
                 '',
                 'SSL'
             ),
@@ -454,6 +457,9 @@ class PayrexxPaymentGatewayBase
     {
         $configuration = MainFactory::create('PayrexxStorage');
         $description = $this->_getConstantValue('CHECKOUT_DESCRIPTION');
+        if ($this->code === 'payrexx') {
+            return $description;
+        }
         foreach (PayrexxConfig::getPaymentMethods() as $method) {
             if ($configuration->get(strtoupper($method)) === 'true') {
                 $description .= $this->_getPaymentMethodIcon($method);
