@@ -120,13 +120,8 @@ class PayrexxPaymentGatewayBase
     {
         $configKeys = array_keys(PayrexxConfig::getModuleConfigurations($this->code));
         foreach ($configKeys as $key) {
-            if (in_array(strtolower($key), PayrexxConfig::getPaymentMethods())) {
-                $title = str_replace('_', ' ', ucfirst(strtolower($key)));
-                $desc = $this->langText->get_text('accept_payment_by') . $title .'?';
-            } else {
-                $title = $this->langText->get_text(strtolower($key) . '_title');
-                $desc = $this->langText->get_text(strtolower($key). '_desc');
-            }
+            $title = $this->langText->get_text(strtolower($key) . '_title');
+            $desc = $this->langText->get_text(strtolower($key). '_desc');
             define($this->_getConstant($key) . '_TITLE', $title);
             define($this->_getConstant($key) . '_DESC', $desc);
         }
@@ -191,7 +186,7 @@ class PayrexxPaymentGatewayBase
         $selection = [
             'id' => $this->code,
             'module' => $this->_getConstantValue('CHECKOUT_NAME'),
-            'description' => $this->_getDescription(),
+            'description' => $this->_getConstantValue('CHECKOUT_DESCRIPTION'),
             'logo_url' => xtc_href_link(
                 self::IMAGE_PATH . $logoImageName . '.svg',
                 '',
@@ -446,42 +441,6 @@ class PayrexxPaymentGatewayBase
     private function _getConstantValue(string $key): string
     {
         return constant(MODULE_PAYMENT_ . strtoupper($this->code) . _ . $key);
-    }
-
-    /**
-     * Description
-     *
-     * @return string
-     */
-    private function _getDescription(): string
-    {
-        $configuration = MainFactory::create('PayrexxStorage');
-        $description = $this->_getConstantValue('CHECKOUT_DESCRIPTION');
-        if ($this->code === 'payrexx') {
-            return $description;
-        }
-        foreach (PayrexxConfig::getPaymentMethods() as $method) {
-            if ($configuration->get(strtoupper($method)) === 'true') {
-                $description .= $this->_getPaymentMethodIcon($method);
-            }
-        }
-        return $description;
-    }
-
-    /**
-     * Payment Method Icon
-     *
-     * @param string $paymentMethod Payment Method
-     *
-     * @return string
-     */
-    private function _getPaymentMethodIcon(string $paymentMethod): string
-    {
-        $path = self::IMAGE_PATH . 'card_' . $paymentMethod . '.svg';
-        if (file_exists(DIR_FS_CATALOG . $path)) {
-            return xtc_image(xtc_href_link($path, '', 'SSL'), $paymentMethod);
-        }
-        return '';
     }
 
     /**
