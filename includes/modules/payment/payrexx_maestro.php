@@ -1,23 +1,31 @@
 <?php
-/* --------------------------------------------
- * Class payrexx_maestro_ORIGIN.
+/**
+ * Class payrexx_maestro_ORIGIN
  *
  * Payment gateway for Payrexx AG.
  *
- * @category   Payment Module
+ * PHP version 7,8
  *
- * @link https://www.payrexx.com
+ * @category  PaymentModule
+ * @package   PayrexxPayemntGateway
+ * @author    Payrexx <integration@payrexx.com>
+ * @copyright 2023 Payrexx
+ * @license   MIT License
+ * @link      https://www.payrexx.com
  *
- * @author Payrexx <support@payrexx.com>
- *
- * @copyright  2023 Payrexx
- *
- * @license MIT License
- *
-* VERSION HISTORY:
-* 1.0.0 Payrexx Payment Gateway.
----------      -----------------------------*/
+ * VERSION HISTORY:
+ * 1.0.0 Payrexx Payment Gateway.
+ */
 
+/**
+ * Class payrexx_maestro_ORIGIN
+ *
+ * @category PaymentModule
+ * @package  PayrexxPayemntGateway
+ * @author   Payrexx <integration@payrexx.com>
+ * @license  MIT License
+ * @link     https://www.payrexx.com
+ */
 class payrexx_maestro_ORIGIN extends PayrexxPaymentGatewayBase
 {
     public $code = 'payrexx_maestro';
