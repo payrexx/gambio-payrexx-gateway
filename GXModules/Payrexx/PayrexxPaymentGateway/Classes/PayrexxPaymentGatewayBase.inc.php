@@ -101,9 +101,9 @@ class PayrexxPaymentGatewayBase
     {
         $this->langText = MainFactory::create('LanguageTextManager', 'payrexx', $_SESSION['languages_id']);
         $this->title = ucwords(str_replace('_', ' ', $this->code));
-        $this->info = defined($this->getConstant('TEXT_INFO')) ? $this->_getConstantValue('TEXT_INFO') : $this->langText->get_text('text_info');
-        $this->sort_order = defined($this->getConstant('SORT_ORDER')) ? $this->_getConstantValue('SORT_ORDER') : $this->sort_order;
-        $this->enabled = defined($this->getConstant('STATUS')) && filter_var(constant($this->getConstant('STATUS')), FILTER_VALIDATE_BOOLEAN);
+        $this->info = defined($this->_getConstant('TEXT_INFO')) ? $this->_getConstantValue('TEXT_INFO') : $this->langText->get_text('text_info');
+        $this->sort_order = defined($this->_getConstant('SORT_ORDER')) ? $this->_getConstantValue('SORT_ORDER') : $this->sort_order;
+        $this->enabled = defined($this->_getConstant('STATUS')) && filter_var(constant($this->_getConstant('STATUS')), FILTER_VALIDATE_BOOLEAN);
         $this->description = $this->langText->get_text('text_description');
         if (defined('DIR_WS_ADMIN')) {
             $this->addAdditionalInfo();
@@ -127,8 +127,8 @@ class PayrexxPaymentGatewayBase
                 $title = $this->langText->get_text(strtolower($key) . '_title');
                 $desc = $this->langText->get_text(strtolower($key). '_desc');
             }
-            define($this->getConstant($key) . '_TITLE', $title);
-            define($this->getConstant($key) . '_DESC', $desc);
+            define($this->_getConstant($key) . '_TITLE', $title);
+            define($this->_getConstant($key) . '_DESC', $desc);
         }
     }
 
@@ -339,7 +339,7 @@ class PayrexxPaymentGatewayBase
         $ckeys = array_keys(PayrexxConfig::getModuleConfigurations());
         $keys  = [];
         foreach ($ckeys as $key) {
-            $keys[] = 'configuration/' . $this->getConstant($key);
+            $keys[] = 'configuration/' . $this->_getConstant($key);
         }
         return $keys;
     }
@@ -425,7 +425,7 @@ class PayrexxPaymentGatewayBase
      *
      * @return string constant
      */
-    private function getConstant(string $key): string
+    private function _getConstant(string $key): string
     {
         return 'MODULE_PAYMENT_' .  strtoupper($this->code) . '_' . $key;
     }
