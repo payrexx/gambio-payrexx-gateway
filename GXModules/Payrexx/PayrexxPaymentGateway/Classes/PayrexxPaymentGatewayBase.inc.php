@@ -449,9 +449,10 @@ class PayrexxPaymentGatewayBase
      */
     private function _getDescription(): string
     {
+        $configuration = MainFactory::create('PayrexxStorage');
         $description = $this->_getConstantValue('CHECKOUT_DESCRIPTION');
         foreach (PayrexxConfig::getPaymentMethods() as $method) {
-            if ($this->_getConstantValue(strtoupper($method)) === 'true') {
+            if ($configuration->get(strtoupper($method)) === 'true') {
                 $description .= $this->_getPaymentMethodIcon($method);
             }
         }
