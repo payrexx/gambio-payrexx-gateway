@@ -114,16 +114,6 @@ class PayrexxConfig
                 'type' => 'text',
             ]
         ];
-
-        /**
-         * Creating checkbox for each payment method.
-         */
-        // foreach (self::getPaymentMethods() as $method) {
-        //     $config[strtoupper($method)] = [
-        //         'value' => 'False',
-        //         'type'  => 'switcher',
-        //     ];
-        // }
         return $config;
     }
 
