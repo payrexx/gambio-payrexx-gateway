@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Payrexx\PayrexxPaymentGateway\Classes\Controller;
 
-use MainFactory;
-use Payrexx\PayrexxPaymentGateway\Classes\Config\PayrexxConfig;
 use Payrexx\PayrexxPaymentGateway\Classes\Service\PayrexxApiService;
 use Payrexx\PayrexxPaymentGateway\Classes\Util\BasketUtil;
 
@@ -66,12 +64,10 @@ class PayrexxPaymentController
         }
 
         // pm
-        $configuration = MainFactory::create('PayrexxStorage');
         $pm = [];
-        foreach (PayrexxConfig::getPaymentMethods() as $method) {
-            if ($configuration->get(strtoupper($method)) === 'true') {
-                $pm[] = str_replace('_', '-', $method);
-            }
+        $paymentMethodCode = preg_replace('/payrexx_/', '', $userOrder->info['payment_method']);
+        if ($paymentMethodCode !== 'payrexx') { // Payrexx is default payment method.
+            $pm[] = str_replace('_', '-', $paymentMethodCode);
         }
         return $payrexxApiService->createGateway($userOrder, $basket, $purpose, $pm);
     }

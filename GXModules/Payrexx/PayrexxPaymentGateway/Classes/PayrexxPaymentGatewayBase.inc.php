@@ -118,15 +118,10 @@ class PayrexxPaymentGatewayBase
      */
     public function defineConstants()
     {
-        $configKeys = array_keys(PayrexxConfig::getModuleConfigurations());
+        $configKeys = array_keys(PayrexxConfig::getModuleConfigurations($this->code));
         foreach ($configKeys as $key) {
-            if (in_array(strtolower($key), PayrexxConfig::getPaymentMethods())) {
-                $title = str_replace('_', ' ', ucfirst(strtolower($key)));
-                $desc = $this->langText->get_text('accept_payment_by') . $title .'?';
-            } else {
-                $title = $this->langText->get_text(strtolower($key) . '_title');
-                $desc = $this->langText->get_text(strtolower($key). '_desc');
-            }
+            $title = $this->langText->get_text(strtolower($key) . '_title');
+            $desc = $this->langText->get_text(strtolower($key). '_desc');
             define($this->_getConstant($key) . '_TITLE', $title);
             define($this->_getConstant($key) . '_DESC', $desc);
         }
@@ -185,12 +180,15 @@ class PayrexxPaymentGatewayBase
             );
         }
 
+        $logoImageName = ($this->code === 'payrexx')
+            ? 'payrexx'
+            : str_replace('payrexx', 'card', $this->code);
         $selection = [
             'id' => $this->code,
             'module' => $this->_getConstantValue('CHECKOUT_NAME'),
-            'description' => $this->_getDescription(),
+            'description' => $this->_getConstantValue('CHECKOUT_DESCRIPTION'),
             'logo_url' => xtc_href_link(
-                self::IMAGE_PATH . 'payrexx.svg',
+                self::IMAGE_PATH . $logoImageName . '.svg',
                 '',
                 'SSL'
             ),
@@ -336,7 +334,7 @@ class PayrexxPaymentGatewayBase
      */
     public function keys(): array
     {
-        $ckeys = array_keys(PayrexxConfig::getModuleConfigurations());
+        $ckeys = array_keys(PayrexxConfig::getModuleConfigurations($this->code));
         $keys  = [];
         foreach ($ckeys as $key) {
             $keys[] = 'configuration/' . $this->_getConstant($key);
@@ -351,7 +349,7 @@ class PayrexxPaymentGatewayBase
      */
     public function install()
     {
-        $config = PayrexxConfig::getModuleConfigurations();
+        $config = PayrexxConfig::getModuleConfigurations($this->code);
         $sortOrder = 0;
         foreach ($config as $key => $data) {
             $installQuery = "INSERT INTO `gx_configurations` ( `key`, `value`, `sort_order`, `type`, `last_modified`) "
@@ -400,9 +398,12 @@ class PayrexxPaymentGatewayBase
     private function addAdditionalInfo()
     {
         // title
+        $logoImageName = ($this->code === 'payrexx')
+            ? 'payrexx'
+            : str_replace('payrexx', 'card', $this->code);
         $this->title .= xtc_image(
             xtc_catalog_href_link(
-                self::IMAGE_PATH . $this->code . '.svg',
+                self::IMAGE_PATH . $logoImageName . '.svg',
                 '',
                 'SSL'
             ),
@@ -440,39 +441,6 @@ class PayrexxPaymentGatewayBase
     private function _getConstantValue(string $key): string
     {
         return constant(MODULE_PAYMENT_ . strtoupper($this->code) . _ . $key);
-    }
-
-    /**
-     * Description
-     *
-     * @return string
-     */
-    private function _getDescription(): string
-    {
-        $configuration = MainFactory::create('PayrexxStorage');
-        $description = $this->_getConstantValue('CHECKOUT_DESCRIPTION');
-        foreach (PayrexxConfig::getPaymentMethods() as $method) {
-            if ($configuration->get(strtoupper($method)) === 'true') {
-                $description .= $this->_getPaymentMethodIcon($method);
-            }
-        }
-        return $description;
-    }
-
-    /**
-     * Payment Method Icon
-     *
-     * @param string $paymentMethod Payment Method
-     *
-     * @return string
-     */
-    private function _getPaymentMethodIcon(string $paymentMethod): string
-    {
-        $path = self::IMAGE_PATH . 'card_' . $paymentMethod . '.svg';
-        if (file_exists(DIR_FS_CATALOG . $path)) {
-            return xtc_image(xtc_href_link($path, '', 'SSL'), $paymentMethod);
-        }
-        return '';
     }
 
     /**

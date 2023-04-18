@@ -83,8 +83,11 @@ class PayrexxConfig
      *
      * @return array
      */
-    public static function getModuleConfigurations(): array
+    public static function getModuleConfigurations(string $paymentCode = ''): array
     {
+        $value = empty($paymentCode) 
+            ? 'Payrexx Payment Gateway' 
+            : ucwords(str_replace('_', ' ', $paymentCode));
         $config = [
             'STATUS' => [
                 'value' => 'True',
@@ -103,7 +106,7 @@ class PayrexxConfig
                 'type' => 'geo-zone',
             ],
             'CHECKOUT_NAME' => [
-                'value' => 'Payrexx Payment Gateway',
+                'value' => $value,
                 'type' => 'text',
             ],
             'CHECKOUT_DESCRIPTION' => [
@@ -111,16 +114,6 @@ class PayrexxConfig
                 'type' => 'text',
             ]
         ];
-
-        /**
-         * Creating checkbox for each payment method.
-         */
-        foreach (self::getPaymentMethods() as $method) {
-            $config[strtoupper($method)] = [
-                'value' => 'False',
-                'type'  => 'switcher',
-            ];
-        }
         return $config;
     }
 
