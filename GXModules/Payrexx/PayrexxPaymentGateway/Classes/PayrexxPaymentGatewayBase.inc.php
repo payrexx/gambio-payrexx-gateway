@@ -334,9 +334,9 @@ class PayrexxPaymentGatewayBase
      */
     public function keys(): array
     {
-        $ckeys = array_keys(PayrexxConfig::getModuleConfigurations($this->code));
+        $configKeys = array_keys(PayrexxConfig::getModuleConfigurations($this->code));
         $keys  = [];
-        foreach ($ckeys as $key) {
+        foreach ($configKeys as $key) {
             $keys[] = 'configuration/' . $this->_getConstant($key);
         }
         return $keys;
@@ -350,6 +350,7 @@ class PayrexxPaymentGatewayBase
     public function install()
     {
         $config = PayrexxConfig::getModuleConfigurations($this->code);
+        $config['STATUS'] = ['value' => 'True', 'type' => 'switcher'];
         $sortOrder = 0;
         foreach ($config as $key => $data) {
             $installQuery = "INSERT INTO `gx_configurations` ( `key`, `value`, `sort_order`, `type`, `last_modified`) "
