@@ -217,14 +217,14 @@ class OrderService
     private function _getOrderStatusConfig(): array
     {
         return [
-            'refunded' => [
+            Transaction::REFUNDED => [
                 'names' => [
                     'en' => self::STATUS_REFUNDED,
                     'de' => 'Payrexx Rückerstattung',
                 ],
                 'color' => '2196F3',
             ],
-            'partially-refunded' => [
+            Transaction::PARTIALLY_REFUNDED => [
                 'names' => [
                     'en' => self::STATUS_PARTIALLY_REFUNDED,
                     'de' => 'Payrexx Teilrückerstattung',
