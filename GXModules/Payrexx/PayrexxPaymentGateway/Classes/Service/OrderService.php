@@ -79,10 +79,11 @@ class OrderService
      *
      * @param int    $orderId order id
      * @param string $status  status
+     * @param array  $invoice Invoice details
      *
      * @return void
      */
-    public function handleTransactionStatus(int $orderId, string $status)
+    public function handleTransactionStatus(int $orderId, string $status, array $invoice = [])
     {
         // status mapping
         switch ($status) {
@@ -105,6 +106,18 @@ class OrderService
             case Transaction::PARTIALLY_REFUNDED:
                 $newStatus = $this->_getOrderStatusConfig()[$status]['names']['en'];
                 $newStatusId = $this->_orderStatusExists($newStatus);
+                if (!$newStatusId) {
+                    $this->addNewOrderStatus();
+                    $newStatusId = $this->_orderStatusExists($newStatus);
+                }
+                if (
+                    $newStatus == self::STATUS_PARTIALLY_REFUNDED &&
+                    !empty($invoice) &&
+                    $invoice['originalAmount'] == $invoice['refundedAmount']
+                ) {
+                    $newStatus = self::STATUS_REFUNDED;
+                    $newStatusId = $this->_orderStatusExists($newStatus);
+                }
                 break;
             default:
                 throw new \Exception($status . ' case not implemented.');

@@ -101,7 +101,11 @@ class PayrexxWebhookController extends HttpViewController
             if ($payrexxTransaction->getStatus() !== $transaction['status']) {
                 throw new \Exception('Fraudulent transaction status');
             }
-            $this->orderService->handleTransactionStatus($orderId, $transaction['status']);
+            $this->orderService->handleTransactionStatus(
+                $orderId,
+                $transaction['status'],
+                $transaction['invoice']
+            );
             echo 'Success: Webhook processed!';
         } catch (Exception $e) {
             echo 'Error: ' . $e->getMessage();

@@ -89,22 +89,6 @@ class PayrexxConfig
             ? 'Payrexx Payment Gateway' 
             : ucwords(str_replace('_', ' ', $paymentCode));
         $config = [
-            'STATUS' => [
-                'value' => 'True',
-                'type' => 'switcher',
-            ],
-            'SORT_ORDER' => [
-                'value' => '-9999',
-                'type' => 'number'
-            ],
-            'ALLOWED' => [
-                'value' => '',
-                'type' => 'text'
-            ],
-            'ZONE' => [
-                'value' => '',
-                'type' => 'geo-zone',
-            ],
             'CHECKOUT_NAME' => [
                 'value' => $value,
                 'type' => 'text',
@@ -112,7 +96,15 @@ class PayrexxConfig
             'CHECKOUT_DESCRIPTION' => [
                 'value' => '',
                 'type' => 'text',
-            ]
+            ],
+            'SORT_ORDER' => [
+                'value' => '-9999',
+                'type' => 'number',
+            ],
+            'ALLOWED' => [
+                'value' => '',
+                'type' => 'text',
+            ],
         ];
         return $config;
     }
