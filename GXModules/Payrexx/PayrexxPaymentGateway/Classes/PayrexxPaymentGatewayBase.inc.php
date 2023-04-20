@@ -368,10 +368,12 @@ class PayrexxPaymentGatewayBase
      */
     public function remove()
     {
+        $keys = $this->keys();
+        $keys[] = 'configuration/' . $this->_getConstant('STATUS');
         xtc_db_query(
             "DELETE FROM " . TABLE_CONFIGURATION . "
                 WHERE `key`
-                IN ('" . implode("', '", $this->keys()) . "')"
+                IN ('" . implode("', '", $keys) . "')"
         );
     }
 
