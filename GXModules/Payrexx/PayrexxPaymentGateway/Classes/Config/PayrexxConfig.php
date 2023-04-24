@@ -30,53 +30,6 @@ namespace Payrexx\PayrexxPaymentGateway\Classes\Config;
  */
 class PayrexxConfig
 {
-    /**
-     * Get paymentmethods
-     *
-     * @return array
-     */
-    public static function getPaymentMethods(): array
-    {
-        $paymentMethods =  [
-            'masterpass',
-            'mastercard',
-            'visa',
-            'apple-pay',
-            'maestro',
-            'jcb',
-            'american-express',
-            'wirpay',
-            'paypal',
-            'bitcoin',
-            'sofort',
-            'billpay',
-            'bonus',
-            'cashu',
-            'cb',
-            'diners-club',
-            'sepa-direct-debit',
-            'discover',
-            'elv',
-            'ideal',
-            'invoice',
-            'myone',
-            'paysafecard',
-            'post-finance-card',
-            'post-finance-e-finance',
-            'swissbilling',
-            'twint',
-            'barzahlen',
-            'bancontact',
-            'giropay',
-            'eps',
-            'google-pay',
-            'klarna-paynow',
-            'klarna-paylater',
-            'oney',
-        ];
-
-        return $paymentMethods;
-    }
 
     /**
      * Get payment method configurations
