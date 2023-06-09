@@ -125,6 +125,8 @@ class PayrexxPaymentGatewayBase
             define($this->_getConstant($key) . '_TITLE', $title);
             define($this->_getConstant($key) . '_DESC', $desc);
         }
+        define($this->_getConstant('TEXT_TITLE'), ucwords(str_replace('_', ' ', $this->code)));
+        define($this->_getConstant('ZONE'), '');
     }
 
     /**
@@ -443,7 +445,7 @@ class PayrexxPaymentGatewayBase
      */
     private function _getConstantValue(string $key): string
     {
-        return constant(MODULE_PAYMENT_ . strtoupper($this->code) . _ . $key);
+        return constant('MODULE_PAYMENT_' . strtoupper($this->code) . '_' . $key);
     }
 
     /**
