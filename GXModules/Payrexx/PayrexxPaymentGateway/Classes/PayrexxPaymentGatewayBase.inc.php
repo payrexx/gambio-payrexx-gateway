@@ -118,11 +118,11 @@ class PayrexxPaymentGatewayBase
      */
     public function defineConstants()
     {
-        $pmConstants = [];
-
         // Payment method title and zone
-        $pmConstants[$this->_getConstant('TEXT_TITLE')] = ucwords(str_replace('_', ' ', $this->code));
-        $pmConstants[$this->_getConstant('ZONE')] = '';
+        $pmConstants = [
+            $this->_getConstant('TEXT_TITLE') => ucwords(str_replace('_', ' ', $this->code)),
+            $this->_getConstant('ZONE') => '',
+        ];
 
         // configuration
         $configKeys = array_keys(PayrexxConfig::getModuleConfigurations($this->code));
