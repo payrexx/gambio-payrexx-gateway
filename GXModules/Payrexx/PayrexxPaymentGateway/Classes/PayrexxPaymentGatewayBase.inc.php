@@ -120,7 +120,7 @@ class PayrexxPaymentGatewayBase
     {
         $pmConstants = [];
 
-        // Module title and zone
+        // Payment method title and zone
         $pmConstants[$this->_getConstant('TEXT_TITLE')] = ucwords(str_replace('_', ' ', $this->code));
         $pmConstants[$this->_getConstant('ZONE')] = '';
 
@@ -131,7 +131,7 @@ class PayrexxPaymentGatewayBase
             $pmConstants[$this->_getConstant($key) . '_DESC'] = $this->langText->get_text(strtolower($key) . '_desc');
         }
 
-        // To show all payment methods module title and zone on order edit.
+        // order edit: define all payrexx payment methods title and zone.
         if (defined('MODULE_PAYMENT_INSTALLED') && trim(constant('MODULE_PAYMENT_INSTALLED') != '')) {
             $payments = explode(';', constant('MODULE_PAYMENT_INSTALLED'));
             foreach ($payments as $payment) {
