@@ -128,12 +128,11 @@ class PayrexxPaymentGatewayBase
         $configKeys = array_keys(PayrexxConfig::getModuleConfigurations($this->code));
         foreach ($configKeys as $key) {
             $pmConstants[$this->_getConstant($key) . '_TITLE'] = $this->langText->get_text(strtolower($key) . '_title');
-            $pmConstants[$this->_getConstant($key) . '_DESC'] = $this->langText->get_text(strtolower($key). '_desc');
+            $pmConstants[$this->_getConstant($key) . '_DESC'] = $this->langText->get_text(strtolower($key) . '_desc');
         }
 
         // To show all payment methods module title and zone on order edit.
-        if (defined('MODULE_PAYMENT_INSTALLED') && trim(constant('MODULE_PAYMENT_INSTALLED') != ''))
-        {
+        if (defined('MODULE_PAYMENT_INSTALLED') && trim(constant('MODULE_PAYMENT_INSTALLED') != '')) {
             $payments = explode(';', constant('MODULE_PAYMENT_INSTALLED'));
             foreach ($payments as $payment) {
                 $paymentKey = substr($payment, 0, strrpos($payment, '.'));
