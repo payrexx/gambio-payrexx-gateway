@@ -189,11 +189,7 @@ class PayrexxPaymentGatewayBase
             'id' => $this->code,
             'module' => $this->_getConstantValue('CHECKOUT_NAME'),
             'description' => $this->_getConstantValue('CHECKOUT_DESCRIPTION'),
-            'logo_url' => xtc_href_link(
-                self::IMAGE_PATH . $logoImageName . '.svg',
-                '',
-                'SSL'
-            ),
+            'logo_url' => self::IMAGE_PATH . $logoImageName . '.svg',
         ];
 
         return $selection;
