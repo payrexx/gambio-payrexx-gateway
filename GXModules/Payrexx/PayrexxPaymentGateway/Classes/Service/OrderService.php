@@ -169,13 +169,10 @@ class OrderService
         $storage = MainFactory::create('PayrexxStorage');
         $configurations = $storage->getAll();
 
-        $refudId = $this->orderStatusExists(self::STATUS_REFUNDED);
-        $partiallyRefundId = $this->orderStatusExists(self::STATUS_PARTIALLY_REFUNDED);
-        $successOrderStatusId = $configurations['PAYMENT_SUCCESS_STATUS_ID'] ?? 2;
-        // $failedOrderStatusId = $configurations['PAYMENT_FAILED_STATUS_ID'] ?? 99;
-        $waitingOrderStatusId = $configurations['PAYMENT_WAITING_STATUS_ID'] ?? 1;
-        $refundedOrderStatusId = $configurations['PAYMENT_REFUNDED_STATUS_ID'] ?? $refudId;
-        $partiallyRefundedOrderStatusId = $configurations['PAYMENT_PARTIALLY_REFUNDED_STATUS_ID'] ?? $partiallyRefundId;
+        $successOrderStatusId = $configurations['PAYMENT_SUCCESS_STATUS_ID'];
+        $waitingOrderStatusId = $configurations['PAYMENT_WAITING_STATUS_ID'];
+        $refundedOrderStatusId = $configurations['PAYMENT_REFUNDED_STATUS_ID'];
+        $partiallyRefundedOrderStatusId = $configurations['PAYMENT_PARTIALLY_REFUNDED_STATUS_ID'];
 
         if ($orderStatusId === $waitingOrderStatusId) {
             return !in_array(
