@@ -18,8 +18,8 @@
  */
 declare(strict_types=1);
 
-use PayrexxStorage;
 use Payrexx\PayrexxPaymentGateway\Classes\Config\PayrexxConfig;
+use Payrexx\PayrexxPaymentGateway\Classes\Service\OrderService;
 use Payrexx\PayrexxPaymentGateway\Classes\Service\PayrexxApiService;
 
 /**
@@ -48,6 +48,13 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
     public $payrexxApiService;
 
     /**
+     * Payrexx api service
+     *
+     * @var PayrexxApiService $payrexxApiService
+     */
+    public $orderService;
+
+    /**
      * Init function
      *
      * @return void
@@ -57,6 +64,7 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
         $this->pageTitle = $this->languageTextManager->get_text('page_title', 'payrexx');
         $this->configuration = MainFactory::create('PayrexxStorage');
         $this->payrexxApiService = new PayrexxApiService();
+        $this->orderService = new OrderService();
     }
 
     /**
@@ -79,9 +87,10 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
                 'pageToken' => $_SESSION['coo_page_token']->generate_token(),
                 'configuration' => $this->configuration->getAll(),
                 'platforms' => PayrexxConfig::getPlatforms(),
+                'orderStatus' => $this->orderService->getOrderStatus($_SESSION['language_code']),
                 'translate_section' => 'payrexx',
                 'action_save' => xtc_href_link(
-                    'admin.php', 
+                    'admin.php',
                     'do=PayrexxPaymentGatewayModuleCenterModule/SaveConfig'
                 ),
             ]

@@ -56,10 +56,75 @@
                 </div>
             </fieldset>
         </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <button type="submit" class="btn btn-primary pull-right">{$txt.save_configuration}</button>
-            </div>
+        <div class="form-horizontal">
+            <fieldset>
+                <legend>{$txt.order_status_selection}</legend>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.payment_waiting}</label>
+                    <div class="col-sm-7">
+                        <select class="form-control" name="configuration[PAYMENT_WAITING_STATUS_ID]">
+                            {foreach from=$content.orderStatus key=statusId item=statusName}
+                            <option value="{$statusId}" {if $content.configuration['PAYMENT_WAITING_STATUS_ID'] == $statusId} selected {/if}>{$statusName}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="tooltip-icon" data-gx-widget="tooltip_icon" data-tooltip_icon-type="info">{$txt.payment_waiting_tooltip}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.payment_success}</label>
+                    <div class="col-sm-7">
+                        <select class="form-control" name="configuration[PAYMENT_SUCCESS_STATUS_ID]">
+                            {foreach from=$content.orderStatus key=statusId item=statusName}
+                            <option value="{$statusId}" {if $content.configuration['PAYMENT_SUCCESS_STATUS_ID'] == $statusId} selected {/if}>{$statusName}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="tooltip-icon" data-gx-widget="tooltip_icon" data-tooltip_icon-type="info">{$txt.payment_success_tooltip}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.payment_failed}</label>
+                    <div class="col-sm-7">
+                        <select class="form-control" name="configuration[PAYMENT_FAILED_STATUS_ID]">
+                            {foreach from=$content.orderStatus key=statusId item=statusName}
+                            <option value="{$statusId}" {if $content.configuration['PAYMENT_FAILED_STATUS_ID'] == $statusId} selected {/if}>{$statusName}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="tooltip-icon" data-gx-widget="tooltip_icon" data-tooltip_icon-type="info">{$txt.payment_failed_tooltip}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.payment_refunded}</label>
+                    <div class="col-sm-7">
+                        <select class="form-control" name="configuration[PAYMENT_REFUNDED_STATUS_ID]">
+                            {foreach from=$content.orderStatus key=statusId item=statusName}
+                            <option value="{$statusId}" {if $content.configuration['PAYMENT_REFUNDED_STATUS_ID'] == $statusId} selected {/if}>{$statusName}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="tooltip-icon" data-gx-widget="tooltip_icon" data-tooltip_icon-type="info">{$txt.payment_refunded_tooltip}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">{$txt.payment_partially_refunded}</label>
+                    <div class="col-sm-7">
+                        <select class="form-control" name="configuration[PAYMENT_PARTIALLY_REFUNDED_STATUS_ID]">
+                            {foreach from=$content.orderStatus key=statusId item=statusName}
+                            <option value="{$statusId}" {if $content.configuration['PAYMENT_PARTIALLY_REFUNDED_STATUS_ID'] == $statusId} selected {/if}>{$statusName}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="tooltip-icon" data-gx-widget="tooltip_icon" data-tooltip_icon-type="info">{$txt.payment_partially_refunded_tooltip}</span>
+                    </div>
+                </div>
+            </fieldset>
         </div>
         <div class="form-horizontal">
             <fieldset>
@@ -69,6 +134,11 @@
                     <div class="col-sm-8">{xtc_catalog_href_link("shop.php", 'do=PayrexxWebhook')}</div>
                 </div>
             </fieldset>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary pull-right">{$txt.save_configuration}</button>
+            </div>
         </div>
     </form>
 </div>
