@@ -185,15 +185,12 @@ class PayrexxPaymentGatewayBase
         $logoImageName = ($this->code === 'payrexx')
             ? 'payrexx'
             : str_replace('payrexx', 'card', $this->code);
+        $logo = self::IMAGE_PATH . $logoImageName . '.svg';
         $selection = [
             'id' => $this->code,
             'module' => $this->_getConstantValue('CHECKOUT_NAME'),
             'description' => $this->_getConstantValue('CHECKOUT_DESCRIPTION'),
-            'logo_url' => xtc_href_link(
-                self::IMAGE_PATH . $logoImageName . '.svg',
-                '',
-                'SSL'
-            ),
+            'logo_url' => xtc_href_link($logo, '', 'SSL', false, false, false, true, true),
         ];
 
         return $selection;
