@@ -118,15 +118,38 @@ class PayrexxPaymentGatewayBase
      */
     public function defineConstants()
     {
+        // Payment method title and zone
+        $pmConstants = [
+            $this->_getConstant('TEXT_TITLE') => ucwords(str_replace('_', ' ', $this->code)),
+            $this->_getConstant('ZONE') => '',
+        ];
+
+        // configuration
         $configKeys = array_keys(PayrexxConfig::getModuleConfigurations($this->code));
         foreach ($configKeys as $key) {
-            $title = $this->langText->get_text(strtolower($key) . '_title');
-            $desc = $this->langText->get_text(strtolower($key). '_desc');
-            define($this->_getConstant($key) . '_TITLE', $title);
-            define($this->_getConstant($key) . '_DESC', $desc);
+            $pmConstants[$this->_getConstant($key) . '_TITLE'] = $this->langText->get_text(strtolower($key) . '_title');
+            $pmConstants[$this->_getConstant($key) . '_DESC'] = $this->langText->get_text(strtolower($key) . '_desc');
         }
-        define($this->_getConstant('TEXT_TITLE'), ucwords(str_replace('_', ' ', $this->code)));
-        define($this->_getConstant('ZONE'), '');
+
+        // order edit: define all payrexx payment methods title and zone.
+        if (defined('MODULE_PAYMENT_INSTALLED') && trim(constant('MODULE_PAYMENT_INSTALLED') != '')) {
+            $payments = explode(';', constant('MODULE_PAYMENT_INSTALLED'));
+            foreach ($payments as $payment) {
+                $paymentKey = substr($payment, 0, strrpos($payment, '.'));
+                if (!preg_match('/payrexx/', $paymentKey)) {
+                    continue;
+                }
+                $pmConstants['MODULE_PAYMENT_' .  strtoupper($paymentKey) . '_TEXT_TITLE'] = ucwords(str_replace('_', ' ', $paymentKey));
+                $pmConstants['MODULE_PAYMENT_' .  strtoupper($paymentKey) . '_ZONE'] = '';
+            }
+        }
+
+        // define constants
+        foreach ($pmConstants as $constantKey => $constantValue) {
+            if (!defined($constantKey)) {
+                define($constantKey, $constantValue);
+            }
+        }
     }
 
     /**
