@@ -48,9 +48,9 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
     public $payrexxApiService;
 
     /**
-     * Payrexx api service
+     * order service
      *
-     * @var PayrexxApiService $payrexxApiService
+     * @var orderService $orderService
      */
     public $orderService;
 

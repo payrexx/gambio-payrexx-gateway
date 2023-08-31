@@ -155,8 +155,8 @@ class OrderService
     /**
      * Check the transition is allowed or not
      *
-     * @param int    $orderId   Order id
-     * @param string $newStatus New status
+     * @param int $orderStatusId    Order status id
+     * @param int $orderNewStatusId Order new status id
      *
      * @return bool
      */
