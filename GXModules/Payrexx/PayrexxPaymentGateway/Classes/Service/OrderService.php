@@ -23,7 +23,6 @@ use IdType;
 use IntType;
 use MainFactory;
 use Payrexx\Models\Response\Transaction;
-use Payrexx\PayrexxPaymentGateway\Classes\Repository\OrderRepository;
 use StaticGXCoreLoader;
 use StringType;
 
@@ -61,7 +60,7 @@ class OrderService
             $newOrderStatus = MainFactory::create('OrderStatus');
             foreach (['en', 'de'] as $lang) {
                 $statusName = $statusConfig['names'][$lang] ?? $statusConfig['names']['en'];
-                if ($orderService->_orderStatusExists($statusName, $lang)) {
+                if ($orderService->orderStatusExists($statusName, $lang)) {
                     continue 2;
                 }
                 $newOrderStatus->setName(
@@ -85,38 +84,37 @@ class OrderService
      */
     public function handleTransactionStatus(int $orderId, string $status, array $invoice = [])
     {
+        $storage = MainFactory::create('PayrexxStorage');
+        $configurations = $storage->getAll();
+
+        $orderReadService  = StaticGXCoreLoader::getService('OrderRead');
+        $gxOrder           = $orderReadService->getOrderById(new IdType((int)$orderId));
+        
         // status mapping
         switch ($status) {
             case Transaction::WAITING:
-                $newStatusId = 1; // Pending
-                $newStatus = self::STATUS_PENDING;
+                $newStatusId = $configurations['PAYMENT_WAITING_STATUS_ID']; // Pending
                 break;
             case Transaction::CONFIRMED:
-                $newStatusId = 2; // Processing
-                $newStatus = self::STATUS_PROCESSING;
+                $newStatusId = $configurations['PAYMENT_SUCCESS_STATUS_ID']; // Processing
                 break;
             case Transaction::CANCELLED:
             case Transaction::DECLINED:
             case Transaction::ERROR:
             case Transaction::EXPIRED:
-                $newStatusId = 99; // Canceled
-                $newStatus = self::STATUS_CANCELED;
+                $newStatusId = $configurations['PAYMENT_FAILED_STATUS_ID']; // Canceled
                 break;
             case Transaction::REFUNDED:
             case Transaction::PARTIALLY_REFUNDED:
-                $newStatus = $this->_getOrderStatusConfig()[$status]['names']['en'];
-                $newStatusId = $this->_orderStatusExists($newStatus);
-                if (!$newStatusId) {
-                    $this->addNewOrderStatus();
-                    $newStatusId = $this->_orderStatusExists($newStatus);
-                }
+                $refundStatusId = $configurations['PAYMENT_REFUNDED_STATUS_ID'];
+                $partiallyRefundId = $configurations['PAYMENT_PARTIALLY_REFUNDED_STATUS_ID'];
+                $newStatusId = $partiallyRefundId;
                 if (
-                    $newStatus == self::STATUS_PARTIALLY_REFUNDED &&
+                    $status == self::STATUS_PARTIALLY_REFUNDED &&
                     !empty($invoice) &&
                     $invoice['originalAmount'] == $invoice['refundedAmount']
                 ) {
-                    $newStatus = self::STATUS_REFUNDED;
-                    $newStatusId = $this->_orderStatusExists($newStatus);
+                    $newStatusId = $refundStatusId;
                 }
                 break;
             default:
@@ -124,47 +122,80 @@ class OrderService
         }
 
         // check the status transition to change.
-        if (!$this->_allowedStatusTransition($orderId, $newStatus)) {
+        if (!$this->_allowedStatusTransition($gxOrder->getOrderStatusId(), $newStatusId)) {
             throw new \Exception('Status transition not allowed');
         }
-        $this->updateOrderStatus($orderId, $newStatusId, $newStatus);
+        $this->updateOrderStatus($orderId, $newStatusId, $status);
+    }
+
+    /**
+     * Get order status
+     *
+     * @param string $langCode
+     * @param int $id
+     *
+     * @return array
+     */
+    public function getOrderStatus(string $langCode = '', int $id = 0): array
+    {
+        $langCode = $langCode ?? 'EN';
+        $orderStatusService = StaticGXCoreLoader::getService('OrderStatus');
+        $status = [];
+        foreach ($orderStatusService->findAll() as $orderStatus) {
+            $status[$orderStatus->getId()] = $orderStatus->getName(
+                MainFactory::create('LanguageCode', new StringType($langCode))
+            );
+        }
+        if ($id) {
+            return [$id => $status[$id]];
+        }
+        return $status;
     }
 
     /**
      * Check the transition is allowed or not
      *
-     * @param int    $orderId   Order id
-     * @param string $newStatus New status
+     * @param int $orderStatusId    Order status id
+     * @param int $orderNewStatusId Order new status id
      *
      * @return bool
      */
-    private function _allowedStatusTransition($orderId, $newStatus)
+    private function _allowedStatusTransition($orderStatusId, $orderNewStatusId)
     {
-        $orderRepository = new OrderRepository();
-        $oldStatus = $orderRepository->getTransitionStatusByOrderId($orderId);
-        if (empty($oldStatus) || $oldStatus === $newStatus) {
+        if ($orderStatusId == $orderNewStatusId) {
             return false;
         }
 
-        switch ($oldStatus) {
-            case self::STATUS_PENDING:
-                return !in_array(
-                    $newStatus,
-                    [
-                        self::STATUS_REFUNDED,
-                        self::STATUS_PARTIALLY_REFUNDED,
-                    ]
-                );
-            case self::STATUS_PROCESSING:
-            case self::STATUS_PARTIALLY_REFUNDED:
-                return in_array(
-                    $newStatus,
-                    [
-                        self::STATUS_REFUNDED,
-                        self::STATUS_PARTIALLY_REFUNDED,
-                    ]
-                );
+        $storage = MainFactory::create('PayrexxStorage');
+        $configurations = $storage->getAll();
+
+        $successOrderStatusId = $configurations['PAYMENT_SUCCESS_STATUS_ID'];
+        $waitingOrderStatusId = $configurations['PAYMENT_WAITING_STATUS_ID'];
+        $refundedOrderStatusId = $configurations['PAYMENT_REFUNDED_STATUS_ID'];
+        $partiallyRefundedOrderStatusId = $configurations['PAYMENT_PARTIALLY_REFUNDED_STATUS_ID'];
+
+        if ($orderStatusId === $waitingOrderStatusId) {
+            return !in_array(
+                $orderNewStatusId,
+                [
+                    $refundedOrderStatusId,
+                    $partiallyRefundedOrderStatusId,
+                ]
+            );
         }
+
+        if ($orderStatusId === $successOrderStatusId || 
+            $orderStatusId === $partiallyRefundedOrderStatusId
+        ) {
+            return in_array(
+                $orderNewStatusId,
+                [
+                    $refundedOrderStatusId,
+                    $partiallyRefundedOrderStatusId,
+                ]
+            );
+        }
+
         return false;
     }
 
@@ -184,7 +215,7 @@ class OrderService
         $orderWriteService->updateOrderStatus(
             new IdType($orderId),
             new IntType((int)$newStatusId),
-            new StringType($newStatus . ' status updated by payrexx'),
+            new StringType('Payrexx status: ' . $newStatus . ' is processed'),
             new BoolType(false)
         );
     }
@@ -197,7 +228,7 @@ class OrderService
      *
      * @return bool|int
      */
-    private function _orderStatusExists($statusName, $langCode = 'en')
+    public function orderStatusExists($statusName, $langCode = 'en')
     {
         $orderStatusId = false;
         $orderStatusService = StaticGXCoreLoader::getService('OrderStatus');

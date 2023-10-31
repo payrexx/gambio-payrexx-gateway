@@ -19,6 +19,7 @@
 declare(strict_types=1);
 
 use Payrexx\PayrexxPaymentGateway\Classes\Config\PayrexxConfig;
+use Payrexx\PayrexxPaymentGateway\Classes\Service\OrderService;
 
 /**
  * Class PayrexxStorage
@@ -32,11 +33,6 @@ use Payrexx\PayrexxPaymentGateway\Classes\Config\PayrexxConfig;
  */
 class PayrexxStorage extends ConfigurationStorage
 {
-    const CONFIG_INSTANCE_NAME = 'INSTANCE_NAME';
-    const CONFIG_API_KEY = 'API_KEY';
-    const CONFIG_PLATFORM = 'PLATFORM';
-    const CONFIG_LOOK_AND_FEEL_ID = 'LOOK_AND_FEEL_ID';
-
     /**
      * Namespace inside the configuration storage
      */
@@ -84,6 +80,7 @@ class PayrexxStorage extends ConfigurationStorage
         foreach ($configValues as $key => $configValue) {
             $configValues[str_replace($prefix, '', $key)] = $configValue;
         }
+        $configValues = $this->updateDefaultConfig($configValues);
         return $configValues;
     }
 
@@ -92,7 +89,7 @@ class PayrexxStorage extends ConfigurationStorage
      *
      * @param string $key   config key
      * @param string $value config value
-     * 
+     *
      * @return void
      */
     public function set($key, $value)
@@ -106,5 +103,32 @@ class PayrexxStorage extends ConfigurationStorage
             return false;
         }
         parent::set(self::CONFIG_STORAGE_PREFIX . $key, $value);
+    }
+
+    /**
+     * update default config values
+     *
+     * @param array $configValues
+     * @return array
+     */
+    public function updateDefaultConfig(array $configValues): array
+    {
+        // payment order status
+        $configValues['PAYMENT_WAITING_STATUS_ID'] = $configValues['PAYMENT_WAITING_STATUS_ID'] ?? 1;
+        $configValues['PAYMENT_SUCCESS_STATUS_ID'] = $configValues['PAYMENT_SUCCESS_STATUS_ID'] ?? 2;
+        $configValues['PAYMENT_FAILED_STATUS_ID'] = $configValues['PAYMENT_FAILED_STATUS_ID'] ?? 99;
+
+        $orderService = new OrderService();
+
+        if (empty($configValues['PAYMENT_REFUNDED_STATUS_ID']) || empty($configValues['PAYMENT_PARTIALLY_REFUNDED_STATUS_ID'])) {
+            $orderService->addNewOrderStatus();
+        }
+        $refudId = $orderService->orderStatusExists($orderService::STATUS_REFUNDED);
+        $partiallyRefundId = $orderService->orderStatusExists($orderService::STATUS_PARTIALLY_REFUNDED);
+
+        $configValues['PAYMENT_REFUNDED_STATUS_ID'] = $configValues['PAYMENT_REFUNDED_STATUS_ID'] ?? $refudId;
+        $configValues['PAYMENT_PARTIALLY_REFUNDED_STATUS_ID'] = $configValues['PAYMENT_PARTIALLY_REFUNDED_STATUS_ID'] ?? $partiallyRefundId;
+
+        return $configValues;
     }
 }

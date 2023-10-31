@@ -85,7 +85,27 @@ class PayrexxConfig
             'LOOK_AND_FEEL_ID' => [
                 'value' => '',
                 'type' => 'text',
-            ]
+            ],
+            'PAYMENT_SUCCESS_STATUS_ID' => [
+                'value' => '2',
+                'type'  => 'order-status',
+            ],
+            'PAYMENT_FAILED_STATUS_ID' => [
+                'value' => '99',
+                'type'  => 'order-status',
+            ],
+            'PAYMENT_WAITING_STATUS_ID' => [
+                'value' => '1',
+                'type'  => 'order-status',
+            ],
+            'PAYMENT_REFUNDED_STATUS_ID' => [
+                'value' => '',
+                'type'  => 'order-status',
+            ],
+            'PAYMENT_PARTIALLY_REFUNDED_STATUS_ID' => [
+                'value' => '',
+                'type'  => 'order-status',
+            ], 
         ];
     }
 
