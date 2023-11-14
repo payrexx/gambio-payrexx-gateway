@@ -122,7 +122,7 @@ class OrderService
         }
 
         // check the status transition to change.
-        if (!$this->_allowedStatusTransition($gxOrder->getOrderStatusId(), $newStatusId)) {
+        if (!$this->_allowedStatusTransition($gxOrder->getStatusId(), $newStatusId)) {
             throw new \Exception('Status transition not allowed');
         }
         $this->updateOrderStatus($orderId, $newStatusId, $status);
