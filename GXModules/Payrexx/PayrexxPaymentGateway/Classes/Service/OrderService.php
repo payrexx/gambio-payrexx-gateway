@@ -160,7 +160,7 @@ class OrderService
      *
      * @return bool
      */
-    private function _allowedStatusTransition($orderStatusId, $orderNewStatusId)
+    private function _allowedStatusTransition(int $orderStatusId, int $orderNewStatusId): bool
     {
         if ($orderStatusId == $orderNewStatusId) {
             return false;
@@ -169,10 +169,10 @@ class OrderService
         $storage = MainFactory::create('PayrexxStorage');
         $configurations = $storage->getAll();
 
-        $successOrderStatusId = $configurations['PAYMENT_SUCCESS_STATUS_ID'];
-        $waitingOrderStatusId = $configurations['PAYMENT_WAITING_STATUS_ID'];
-        $refundedOrderStatusId = $configurations['PAYMENT_REFUNDED_STATUS_ID'];
-        $partiallyRefundedOrderStatusId = $configurations['PAYMENT_PARTIALLY_REFUNDED_STATUS_ID'];
+        $successOrderStatusId = (int)$configurations['PAYMENT_SUCCESS_STATUS_ID'];
+        $waitingOrderStatusId = (int)$configurations['PAYMENT_WAITING_STATUS_ID'];
+        $refundedOrderStatusId = (int)$configurations['PAYMENT_REFUNDED_STATUS_ID'];
+        $partiallyRefundedOrderStatusId = (int)$configurations['PAYMENT_PARTIALLY_REFUNDED_STATUS_ID'];
 
         if ($orderStatusId === $waitingOrderStatusId) {
             return !in_array(
