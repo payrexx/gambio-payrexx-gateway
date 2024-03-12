@@ -21,6 +21,7 @@ use Payrexx\PayrexxPaymentGateway\Classes\Config\PayrexxConfig;
 use Payrexx\PayrexxPaymentGateway\Classes\Controller\PayrexxPaymentController;
 use Payrexx\PayrexxPaymentGateway\Classes\Service\OrderService;
 use Payrexx\Models\Response\Transaction;
+use Exception;
 
 /**
  * Class PayrexxPaymentGatewayBase.
@@ -275,6 +276,13 @@ class PayrexxPaymentGatewayBase
         } catch (\Payrexx\PayrexxException $e) {
             return false;
         }
+        try {
+            $orderservice = new OrderService();
+            $orderservice->handleTransactionStatus(
+                $orderId,
+                Transaction::WAITING
+            );
+        } catch(Exception $e) {}
         $payrexxPaymentUrl = str_replace(
             '?',
             $_SESSION['language_code'] . '/?',
