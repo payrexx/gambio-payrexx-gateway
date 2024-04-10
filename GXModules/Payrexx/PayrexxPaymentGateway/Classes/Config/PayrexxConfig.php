@@ -126,6 +126,7 @@ class PayrexxConfig
             'shop-and-pay.com',
             'ideal-pay.ch',
             'payzzter.com',
+            'wawipay.com',
         ];
     }
 }
