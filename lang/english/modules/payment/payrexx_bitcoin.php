@@ -1,3 +1,5 @@
 <?php
 
-define('MODULE_PAYMENT_PAYREXX_BITCOIN_TEXT_TITLE', 'Payrexx Bitcoin');
+if (!defined('MODULE_PAYMENT_PAYREXX_BITCOIN_TEXT_TITLE')) {
+    define('MODULE_PAYMENT_PAYREXX_BITCOIN_TEXT_TITLE', 'Payrexx Bitcoin');
+}

@@ -1,3 +1,5 @@
 <?php
 
-define('MODULE_PAYMENT_PAYREXX_MAESTRO_TEXT_TITLE', 'Payrexx Maestro');
+if (!defined('MODULE_PAYMENT_PAYREXX_MAESTRO_TEXT_TITLE')) {
+    define('MODULE_PAYMENT_PAYREXX_MAESTRO_TEXT_TITLE', 'Payrexx Maestro');
+}

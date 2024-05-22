@@ -1,3 +1,5 @@
 <?php
 
-define('MODULE_PAYMENT_PAYREXX_BANCONTACT_TEXT_TITLE', 'Payrexx Bancontact');
+if (!defined('MODULE_PAYMENT_PAYREXX_BANCONTACT_TEXT_TITLE')) {
+    define('MODULE_PAYMENT_PAYREXX_BANCONTACT_TEXT_TITLE', 'Payrexx Bancontact');
+}

@@ -1,3 +1,5 @@
 <?php
 
-define('MODULE_PAYMENT_PAYREXX_PAYPAL_TEXT_TITLE', 'Payrexx Paypal');
+if (!defined('MODULE_PAYMENT_PAYREXX_PAYPAL_TEXT_TITLE')) {
+    define('MODULE_PAYMENT_PAYREXX_PAYPAL_TEXT_TITLE', 'Payrexx Paypal');
+}

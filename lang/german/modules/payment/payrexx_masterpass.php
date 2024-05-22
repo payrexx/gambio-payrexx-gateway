@@ -1,3 +1,5 @@
 <?php
 
-define('MODULE_PAYMENT_PAYREXX_MASTERPASS_TEXT_TITLE', 'Payrexx Masterpass');
+if (!defined('MODULE_PAYMENT_PAYREXX_MASTERPASS_TEXT_TITLE')) {
+    define('MODULE_PAYMENT_PAYREXX_MASTERPASS_TEXT_TITLE', 'Payrexx Masterpass');
+}

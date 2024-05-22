@@ -1,3 +1,5 @@
 <?php
 
-define('MODULE_PAYMENT_PAYREXX_INVOICE_TEXT_TITLE', ' Payrexx Invoice');
+if (!defined('MODULE_PAYMENT_PAYREXX_INVOICE_TEXT_TITLE')) {
+    define('MODULE_PAYMENT_PAYREXX_INVOICE_TEXT_TITLE', ' Payrexx Invoice');
+}
