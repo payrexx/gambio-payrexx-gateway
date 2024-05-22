@@ -21,7 +21,6 @@ use Payrexx\PayrexxPaymentGateway\Classes\Config\PayrexxConfig;
 use Payrexx\PayrexxPaymentGateway\Classes\Controller\PayrexxPaymentController;
 use Payrexx\PayrexxPaymentGateway\Classes\Service\OrderService;
 use Payrexx\Models\Response\Transaction;
-use Exception;
 
 /**
  * Class PayrexxPaymentGatewayBase.
