@@ -163,7 +163,7 @@ class PayrexxApiService
         $gateway->addField('place', $order->billing['city']);
         $gateway->addField('country', $order->billing['country_iso_2']);
         $gateway->addField('phone', $order->customer['telephone']);
-        $gateway->addField('email', $order->customer['email_address']);    
+        $gateway->addField('email', $order->customer['email_address']);
         $gateway->addField('custom_field_1', $orderId, 'Gambio Order ID');
         $gateway->addField('delivery_forename', $order->delivery['firstname']);
         $gateway->addField('delivery_surname', $order->delivery['lastname']);
