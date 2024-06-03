@@ -165,6 +165,13 @@ class PayrexxApiService
         $gateway->addField('phone', $order->customer['telephone']);
         $gateway->addField('email', $order->customer['email_address']);
         $gateway->addField('custom_field_1', $orderId, 'Gambio Order ID');
+        $gateway->addField('delivery_forename', $order->delivery['firstname']);
+        $gateway->addField('delivery_surname', $order->delivery['lastname']);
+        $gateway->addField('delivery_company', $order->delivery['company']);
+        $gateway->addField('delivery_street', $order->delivery['street_address']);
+        $gateway->addField('delivery_postcode', $order->delivery['postcode']);
+        $gateway->addField('delivery_place', $order->delivery['city']);
+        $gateway->addField('delivery_country', $order->delivery['country_iso_2']);
 
         if (!empty($this->configuration->get('LOOK_AND_FEEL_ID'))) {
             $gateway->setLookAndFeelProfile($this->configuration->get('LOOK_AND_FEEL_ID'));
