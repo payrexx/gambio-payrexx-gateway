@@ -1,6 +1,6 @@
 <?php
 /**
- * Class payrexx_sofort_ORIGIN
+ * Class payrexx_klarna_ORIGIN
  *
  * Payment gateway for Payrexx AG.
  *
@@ -18,7 +18,7 @@
  */
 
 /**
- * Class payrexx_sofort_ORIGIN
+ * Class payrexx_klarna_ORIGIN
  *
  * @category PaymentModule
  * @package  PayrexxPayemntGateway
@@ -26,9 +26,9 @@
  * @license  MIT License
  * @link     https://www.payrexx.com
  */
-class payrexx_sofort_ORIGIN extends PayrexxPaymentGatewayBase
+class payrexx_klarna_ORIGIN extends PayrexxPaymentGatewayBase
 {
-    public $code = 'payrexx_sofort';
+    public $code = 'payrexx_klarna';
 }
 
-MainFactory::load_origin_class('payrexx_sofort');
+MainFactory::load_origin_class('payrexx_klarna');
