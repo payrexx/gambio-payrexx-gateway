@@ -1,3 +1,5 @@
 <?php
 
-define('MODULE_PAYMENT_PAYREXX_MASTERCARD_TEXT_TITLE', 'Payrexx Mastercard');
+if (!defined('MODULE_PAYMENT_PAYREXX_MASTERCARD_TEXT_TITLE')) {
+    define('MODULE_PAYMENT_PAYREXX_MASTERCARD_TEXT_TITLE', 'Payrexx Mastercard');
+}

@@ -1,3 +1,5 @@
 <?php
 
-define('MODULE_PAYMENT_PAYREXX_BARZAHLEN_TEXT_TITLE', 'Payrexx Barzahlen');
+if (!defined('MODULE_PAYMENT_PAYREXX_BARZAHLEN_TEXT_TITLE')) {
+    define('MODULE_PAYMENT_PAYREXX_BARZAHLEN_TEXT_TITLE', 'Payrexx Barzahlen');
+}
