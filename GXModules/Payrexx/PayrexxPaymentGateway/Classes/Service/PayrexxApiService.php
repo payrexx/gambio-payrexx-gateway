@@ -133,8 +133,8 @@ class PayrexxApiService
 
         // Redirect URL
         $successUrl = xtc_href_link(FILENAME_CHECKOUT_PROCESS, 'payrexx_success=1', 'SSL');
-        $failedUrl = xtc_href_link(FILENAME_CHECKOUT_PROCESS, 'payrexx_failed=1', 'SSL');
-        $cancelUrl = xtc_href_link(FILENAME_CHECKOUT_PROCESS, 'payrexx_cancel=1', 'SSL');
+        $failedUrl = xtc_href_link("shop.php", 'do=PayrexxCancel&payrexx_failed=1&id=' . $orderId, 'SSL');
+        $cancelUrl = xtc_href_link("shop.php", 'do=PayrexxCancel&payrexx_cancel=1&id=' . $orderId, 'SSL');
 
         $gateway = new \Payrexx\Models\Request\Gateway();
         $gateway->setAmount($totalAmount);
