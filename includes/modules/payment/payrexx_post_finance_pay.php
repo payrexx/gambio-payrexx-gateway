@@ -1,6 +1,6 @@
 <?php
 /**
- * Class payrexx_post_finance_e_finance_ORIGIN
+ * Class payrexx_post_finance_pay_ORIGIN
  *
  * Payment gateway for Payrexx AG.
  *
@@ -9,16 +9,13 @@
  * @category  PaymentModule
  * @package   PayrexxPayemntGateway
  * @author    Payrexx <integration@payrexx.com>
- * @copyright 2023 Payrexx
+ * @copyright 2024 Payrexx
  * @license   MIT License
  * @link      https://www.payrexx.com
- *
- * VERSION HISTORY:
- * 1.0.0 Payrexx Payment Gateway.
  */
 
 /**
- * Class payrexx_post_finance_e_finance_ORIGIN
+ * Class payrexx_post_finance_pay_ORIGIN
  *
  * @category PaymentModule
  * @package  PayrexxPayemntGateway
@@ -26,9 +23,9 @@
  * @license  MIT License
  * @link     https://www.payrexx.com
  */
-class payrexx_post_finance_e_finance_ORIGIN extends PayrexxPaymentGatewayBase
+class payrexx_post_finance_pay_ORIGIN extends PayrexxPaymentGatewayBase
 {
-    public $code = 'payrexx_post_finance_e_finance';
+    public $code = 'payrexx_post_finance_pay';
 }
 
-MainFactory::load_origin_class('payrexx_post_finance_e_finance');
+MainFactory::load_origin_class('payrexx_post_finance_pay');
