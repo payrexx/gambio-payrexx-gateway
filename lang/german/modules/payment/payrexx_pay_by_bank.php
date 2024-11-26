@@ -1,0 +1,5 @@
+<?php
+
+if (!defined('MODULE_PAYMENT_PAYREXX_PAY_BY_BANK_TEXT_TITLE')) {
+    define('MODULE_PAYMENT_PAYREXX_PAY_BY_BANK_TEXT_TITLE', 'Pay by Bank');
+}
