@@ -7,21 +7,11 @@
  * PHP version 7,8
  *
  * @category  PaymentModule
- * @package   PayrexxPayemntGateway
+ * @package   PayrexxPaymentGateway
  * @author    Payrexx <integration@payrexx.com>
  * @copyright 2024 Payrexx
  * @license   MIT License
  * @link      https://www.payrexx.com
- */
-
-/**
- * Class payrexx_post_finance_pay_ORIGIN
- *
- * @category PaymentModule
- * @package  PayrexxPayemntGateway
- * @author   Payrexx <integration@payrexx.com>
- * @license  MIT License
- * @link     https://www.payrexx.com
  */
 class payrexx_post_finance_pay_ORIGIN extends PayrexxPaymentGatewayBase
 {

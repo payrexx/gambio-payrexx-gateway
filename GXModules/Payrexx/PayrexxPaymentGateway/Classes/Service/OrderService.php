@@ -7,14 +7,11 @@
  * PHP version 7,8
  *
  * @category  PaymentModule
- * @package   PayrexxPayemntGateway
+ * @package   PayrexxPaymentGateway
  * @author    Payrexx <integration@payrexx.com>
- * @copyright 2023 Payrexx
+ * @copyright Payrexx AG
  * @license   MIT License
  * @link      https://www.payrexx.com
- *
- * VERSION HISTORY:
- * 1.0.0 Payrexx Payment Gateway.
  */
 namespace Payrexx\PayrexxPaymentGateway\Classes\Service;
 
@@ -30,7 +27,7 @@ use StringType;
  * Class OrderService.
  *
  * @category PaymentModule
- * @package  PayrexxPayemntGateway
+ * @package  PayrexxPaymentGateway
  * @author   Payrexx <integration@payrexx.com>
  * @license  MIT License
  * @link     https://www.payrexx.com
