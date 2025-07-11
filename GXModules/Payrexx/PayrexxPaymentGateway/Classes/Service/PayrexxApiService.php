@@ -20,6 +20,7 @@ use PayrexxStorage;
 use Payrexx\Payrexx;
 use Payrexx\Models\Request\SignatureCheck;
 use Payrexx\Models\Request\Transaction;
+use Payrexx\Models\Response\Gateway;
 
 /**
  * Class PayrexxApiService.
@@ -122,8 +123,13 @@ class PayrexxApiService
      *
      * @return \Payrexx\Models\Response\Gateway
      */
-    public function createGateway($order, array $basket, $purpose, array $pm)
-    {
+    public function createGateway(
+        $order,
+        array $basket,
+        string $purpose,
+        array $pm,
+        array $metaData = []
+    ): Gateway {
         $currency = $order->info['currency'];
         $totalAmount = $order->info['pp_total'] * 100;
         $orderId = $order->info['orders_id'];
@@ -175,6 +181,9 @@ class PayrexxApiService
         }
 
         $payrexx = $this->getInterface($this->instance, $this->apiKey, $this->platform);
+        if (!empty($metaData)) {
+            $payrexx->setHttpHeaders($metaData);
+        }
         return $payrexx->create($gateway);
     }
 

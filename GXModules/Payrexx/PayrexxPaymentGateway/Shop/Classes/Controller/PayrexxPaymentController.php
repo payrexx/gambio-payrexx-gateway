@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace Payrexx\PayrexxPaymentGateway\Classes\Controller;
 
+use Exception;
 use Payrexx\PayrexxPaymentGateway\Classes\Service\PayrexxApiService;
 use Payrexx\PayrexxPaymentGateway\Classes\Util\BasketUtil;
 
@@ -66,6 +67,27 @@ class PayrexxPaymentController
         if ($paymentMethodCode !== 'payrexx') { // Payrexx is default payment method.
             $pm[] = str_replace('_', '-', $paymentMethodCode);
         }
-        return $payrexxApiService->createGateway($userOrder, $basket, $purpose, $pm);
+        $metaData = $this->getMetaData();
+        return $payrexxApiService->createGateway($userOrder, $basket, $purpose, $pm, $metaData);
+    }
+
+    private function getMetaData(): array
+    {
+        $metaData = [];
+        try {
+            include DIR_FS_CATALOG . '/release_info.php';
+            $metaData['X-Shop-Version'] = (string) $gx_version;
+
+            $pluginRoot = dirname(__DIR__, 3);
+            $composerPath = $pluginRoot . '/composer.json';
+
+            if (file_exists($composerPath)) {
+                $composer = json_decode(file_get_contents($composerPath), true);
+                if (!empty($composer['version'])) {
+                    $metaData['X-Plugin-Version'] = (string) $composer['version'];
+                }
+            }
+        } catch (Exception){}
+        return $metaData;
     }
 }
