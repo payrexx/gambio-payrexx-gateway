@@ -21,6 +21,7 @@ use Payrexx\Payrexx;
 use Payrexx\Models\Request\SignatureCheck;
 use Payrexx\Models\Request\Transaction;
 use Payrexx\Models\Response\Gateway;
+use Payrexx\PayrexxException;
 
 /**
  * Class PayrexxApiService.
@@ -115,13 +116,8 @@ class PayrexxApiService
 
     /**
      * Create Gateway
-     *
-     * @param order  $order   Order
-     * @param array  $basket  Basket items
-     * @param string $purpose Purpose
-     * @param array  $pm      Payment Mean
-     *
-     * @return \Payrexx\Models\Response\Gateway
+     * 
+     * @throws PayrexxException
      */
     public function createGateway(
         $order,
