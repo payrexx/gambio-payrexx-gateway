@@ -227,14 +227,20 @@ class OrderService
      */
     public function orderStatusExists($statusName, $langCode = 'en')
     {
-        $orderStatusId = false;
         $orderStatusService = StaticGXCoreLoader::getService('OrderStatus');
         foreach ($orderStatusService->findAll() as $orderStatus) {
-            if ($orderStatus->getName(MainFactory::create('LanguageCode', new StringType($langCode))) === $statusName) {
-                return $orderStatusId = (int) $orderStatus->getId();
+            try {
+                $existingOrderStatusName = $orderStatus->getName(
+                    MainFactory::create('LanguageCode', new StringType($langCode))
+                );
+            } catch (\Exception $e) {
+                continue;
+            }
+            if ($existingOrderStatusName === $statusName) {
+                return (int) $orderStatus->getId();
             }
         }
-        return $orderStatusId;
+        return false;
     }
 
     /**
