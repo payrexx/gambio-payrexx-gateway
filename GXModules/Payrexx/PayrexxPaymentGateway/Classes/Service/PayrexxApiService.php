@@ -149,8 +149,11 @@ class PayrexxApiService
         $gateway->setReferenceId($orderId);
         $gateway->setValidity(15);
 
-        $gateway->setBasket($basket);
-        $gateway->setPurpose($purpose);
+        if (!empty($basket)) {
+            $gateway->setBasket($basket);
+        } else {
+            $gateway->setPurpose($purpose);
+        }
 
         $gateway->setSkipResultPage(true);
 
