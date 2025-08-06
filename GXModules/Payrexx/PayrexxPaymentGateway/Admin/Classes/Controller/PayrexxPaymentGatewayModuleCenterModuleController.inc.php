@@ -78,6 +78,10 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
         $template = $this->getTemplateFile(
             'Payrexx/PayrexxPaymentGateway/Admin/Html/basic_config.html'
         );
+
+		$connectJsUrl = ($this->serverDataArray['SERVER_PROTOCOL'] === 'HTTP/1.1' ? 'http://' : 'https://')
+		                . "{$this->serverDataArray['HTTP_HOST']}/GXModules/Payrexx/PayrexxPaymentGateway/Admin/ui/assets/connect.js";
+
         $data = MainFactory::create(
             'KeyValueCollection',
             [
@@ -90,6 +94,7 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
                     'admin.php',
                     'do=PayrexxPaymentGatewayModuleCenterModule/SaveConfig'
                 ),
+				'connectJs' => $connectJsUrl
             ]
         );
 
