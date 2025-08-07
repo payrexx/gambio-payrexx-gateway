@@ -79,7 +79,7 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
             'Payrexx/PayrexxPaymentGateway/Admin/Html/basic_config.html'
         );
 
-        $connectJsUrl = ($this->serverDataArray['BASE'] ?? '/')
+        $connectJsUrl = HTTP_CATALOG_SERVER . DIR_WS_CATALOG
                         . '/GXModules/Payrexx/PayrexxPaymentGateway/Admin/ui/assets/connect.js';
 
         $data = MainFactory::create(
