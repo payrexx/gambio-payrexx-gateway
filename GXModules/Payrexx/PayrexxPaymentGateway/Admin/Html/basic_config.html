@@ -5,15 +5,15 @@
 {load_language_text section="module_center_module" name="mcm"}
 
 <div class="breakpoint-small">
-    <form action="{$content.action_save}" method="POST" class="form-configuration">
+    <form id="payrexx-settings-form" action="{$content.action_save}" method="POST" class="form-configuration">
         <input type="hidden" name="pageToken" value="{$content.pageToken}">
         <div class="form-horizontal">
             <fieldset>
                 <legend>{$txt.basic_configuration}</legend>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">{$txt.platform}*</label>
+                    <label for="platform-select" class="col-sm-4 control-label">{$txt.platform}*</label>
                     <div class="col-sm-7">
-                        <select class="form-control" name="configuration[PLATFORM]">
+                        <select id="platform-select" class="form-control" name="configuration[PLATFORM]">
                             {foreach from=$content.platforms item=platform}
                             <option value="{$platform}"{if $content.configuration['PLATFORM'] === $platform} selected{/if}>{$platform}</option>
                             {/foreach}
@@ -24,7 +24,22 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">{$txt.instance_name}*</label>
+                    <label class="col-sm-4 control-label">{$txt.connect_platform_title}</label>
+                    <div class="col-sm-7">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button type="button" id="connect-platform-button" class="btn btn-primary">
+                                    {$txt.connect_platform_button}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="tooltip-icon" data-gx-widget="tooltip_icon" data-tooltip_icon-type="info">{$txt.connect_platform_tooltip}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="instance_name" class="col-sm-4 control-label">{$txt.instance_name}*</label>
                     <div class="col-sm-7">
                         <input type="text" class="form-control" name="configuration[INSTANCE_NAME]"
                             id="instance_name" value="{$content.configuration['INSTANCE_NAME']}" required>
@@ -35,7 +50,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">{$txt.api_key}*</label>
+                    <label for="api_key" class="col-sm-4 control-label">{$txt.api_key}*</label>
                     <div class="col-sm-7">
                         <input type="text" class="form-control" name="configuration[API_KEY]"
                             id="api_key" value="{$content.configuration['API_KEY']}" required>
@@ -45,7 +60,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">{$txt.look_and_feel_id}</label>
+                    <label for="look_and_feel_id" class="col-sm-4 control-label">{$txt.look_and_feel_id}</label>
                     <div class="col-sm-7">
                         <input type="text" class="form-control" name="configuration[LOOK_AND_FEEL_ID]"
                             id="look_and_feel_id" value="{$content.configuration['LOOK_AND_FEEL_ID']}">
@@ -60,9 +75,9 @@
             <fieldset>
                 <legend>{$txt.order_status_selection}</legend>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">{$txt.payment_waiting}</label>
+                    <label for="order-select-waiting-status" class="col-sm-4 control-label">{$txt.payment_waiting}</label>
                     <div class="col-sm-7">
-                        <select class="form-control" name="configuration[PAYMENT_WAITING_STATUS_ID]">
+                        <select id="order-select-waiting-status" class="form-control" name="configuration[PAYMENT_WAITING_STATUS_ID]">
                             {foreach from=$content.orderStatus key=statusId item=statusName}
                             <option value="{$statusId}" {if $content.configuration['PAYMENT_WAITING_STATUS_ID'] == $statusId} selected {/if}>{$statusName}</option>
                             {/foreach}
@@ -73,9 +88,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">{$txt.payment_success}</label>
+                    <label for="order-select-payment-success" class="col-sm-4 control-label">{$txt.payment_success}</label>
                     <div class="col-sm-7">
-                        <select class="form-control" name="configuration[PAYMENT_SUCCESS_STATUS_ID]">
+                        <select id="order-select-payment-success" class="form-control" name="configuration[PAYMENT_SUCCESS_STATUS_ID]">
                             {foreach from=$content.orderStatus key=statusId item=statusName}
                             <option value="{$statusId}" {if $content.configuration['PAYMENT_SUCCESS_STATUS_ID'] == $statusId} selected {/if}>{$statusName}</option>
                             {/foreach}
@@ -86,9 +101,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">{$txt.payment_failed}</label>
+                    <label for="order-select-payment-failed" class="col-sm-4 control-label">{$txt.payment_failed}</label>
                     <div class="col-sm-7">
-                        <select class="form-control" name="configuration[PAYMENT_FAILED_STATUS_ID]">
+                        <select id="order-select-payment-failed" class="form-control" name="configuration[PAYMENT_FAILED_STATUS_ID]">
                             {foreach from=$content.orderStatus key=statusId item=statusName}
                             <option value="{$statusId}" {if $content.configuration['PAYMENT_FAILED_STATUS_ID'] == $statusId} selected {/if}>{$statusName}</option>
                             {/foreach}
@@ -99,9 +114,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">{$txt.payment_refunded}</label>
+                    <label for="order-select-payment-refunded" class="col-sm-4 control-label">{$txt.payment_refunded}</label>
                     <div class="col-sm-7">
-                        <select class="form-control" name="configuration[PAYMENT_REFUNDED_STATUS_ID]">
+                        <select id="order-select-payment-refunded" class="form-control" name="configuration[PAYMENT_REFUNDED_STATUS_ID]">
                             {foreach from=$content.orderStatus key=statusId item=statusName}
                             <option value="{$statusId}" {if $content.configuration['PAYMENT_REFUNDED_STATUS_ID'] == $statusId} selected {/if}>{$statusName}</option>
                             {/foreach}
@@ -112,9 +127,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-4 control-label">{$txt.payment_partially_refunded}</label>
+                    <label for="order-select-payment-partially-refunded" class="col-sm-4 control-label">{$txt.payment_partially_refunded}</label>
                     <div class="col-sm-7">
-                        <select class="form-control" name="configuration[PAYMENT_PARTIALLY_REFUNDED_STATUS_ID]">
+                        <select id="order-select-payment-partially-refunded" class="form-control" name="configuration[PAYMENT_PARTIALLY_REFUNDED_STATUS_ID]">
                             {foreach from=$content.orderStatus key=statusId item=statusName}
                             <option value="{$statusId}" {if $content.configuration['PAYMENT_PARTIALLY_REFUNDED_STATUS_ID'] == $statusId} selected {/if}>{$statusName}</option>
                             {/foreach}
@@ -133,4 +148,5 @@
         </div>
     </form>
 </div>
+<script src="{$content.connectJs}"></script>
 {/block}
