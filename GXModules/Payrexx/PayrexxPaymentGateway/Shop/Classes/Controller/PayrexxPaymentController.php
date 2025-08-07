@@ -55,7 +55,7 @@ class PayrexxPaymentController
         }
 
         // Purpose
-        $purpose = null;
+        $purpose = '';
         if (round($basketAmount) !== round($totalAmount)) {
             $purpose = BasketUtil::createPurposeByBasket($basket);
             $basket = [];
