@@ -136,7 +136,7 @@ class PayrexxApiService
         $cancelUrl = xtc_href_link("shop.php", 'do=PayrexxCancel&payrexx_cancel=1&id=' . $orderId, 'SSL');
 
         $gateway = new \Payrexx\Models\Request\Gateway();
-        $gateway->setAmount($totalAmount);
+        $gateway->setAmount((int)$totalAmount);
         $gateway->setCurrency($currency);
 
         $gateway->setSuccessRedirectUrl($successUrl);
