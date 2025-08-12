@@ -58,10 +58,10 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
      */
     protected function _init(): void
     {
-        $this->pageTitle = $this->languageTextManager->get_text('page_title', 'payrexx');
-        $this->configuration = MainFactory::create('PayrexxStorage');
+        $this->pageTitle         = $this->languageTextManager->get_text('page_title', 'payrexx');
+        $this->configuration     = MainFactory::create('PayrexxStorage');
         $this->payrexxApiService = new PayrexxApiService();
-        $this->orderService = new OrderService();
+        $this->orderService      = new OrderService();
     }
 
     /**
@@ -72,24 +72,29 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
      */
     public function actionDefault(): AdminLayoutHttpControllerResponse
     {
-        $title = new NonEmptyStringType(
+        $title    = new NonEmptyStringType(
             $this->languageTextManager->get_text('page_title', 'payrexx')
         );
         $template = $this->getTemplateFile(
             'Payrexx/PayrexxPaymentGateway/Admin/Html/basic_config.html'
         );
+
+        $connectJsUrl = HTTP_CATALOG_SERVER . DIR_WS_CATALOG
+                        . '/GXModules/Payrexx/PayrexxPaymentGateway/Admin/ui/assets/connect.js';
+
         $data = MainFactory::create(
             'KeyValueCollection',
             [
-                'pageToken' => $_SESSION['coo_page_token']->generate_token(),
-                'configuration' => $this->configuration->getAll(),
-                'platforms' => PayrexxConfig::getPlatforms(),
-                'orderStatus' => $this->orderService->getOrderStatus($_SESSION['language_code']),
+                'pageToken'         => $_SESSION['coo_page_token']->generate_token(),
+                'configuration'     => $this->configuration->getAll(),
+                'platforms'         => PayrexxConfig::getPlatforms(),
+                'orderStatus'       => $this->orderService->getOrderStatus($_SESSION['language_code']),
                 'translate_section' => 'payrexx',
-                'action_save' => xtc_href_link(
+                'action_save'       => xtc_href_link(
                     'admin.php',
                     'do=PayrexxPaymentGatewayModuleCenterModule/SaveConfig'
                 ),
+                'connectJs'         => $connectJsUrl
             ]
         );
 
@@ -111,7 +116,7 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
     {
         $this->_validatePageToken();
 
-        $postValues = $this->_getPostData('configuration');
+        $postValues     = $this->_getPostData('configuration');
         $signatureCheck = $this->payrexxApiService->validateSignature(
             $postValues['INSTANCE_NAME'],
             $postValues['API_KEY'],
@@ -141,6 +146,7 @@ class PayrexxPaymentGatewayModuleCenterModuleController extends AbstractModuleCe
                 'error'
             );
         }
+
         return MainFactory::create(
             'RedirectHttpControllerResponse',
             xtc_href_link(
