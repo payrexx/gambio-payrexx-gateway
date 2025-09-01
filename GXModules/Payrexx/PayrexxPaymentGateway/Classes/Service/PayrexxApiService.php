@@ -157,10 +157,18 @@ class PayrexxApiService
 
         $gateway->setSkipResultPage(true);
 
+        $billingStreet = $order->billing['street_address'];
+        if (!empty($order->billing['house_number'])) {
+            $billingStreet .= ' ' . $order->billing['house_number'];
+        }
+        $deliveryStreet = $order->delivery['street_address'];
+        if (!empty($order->delivery['house_number'])) {
+            $deliveryStreet .= ' ' . $order->delivery['house_number'];
+        }
         $gateway->addField('forename', $order->billing['firstname']);
         $gateway->addField('surname', $order->billing['lastname']);
         $gateway->addField('company', $order->billing['company']);
-        $gateway->addField('street', $order->billing['street_address']);
+        $gateway->addField('street', $billingStreet);
         $gateway->addField('postcode', $order->billing['postcode']);
         $gateway->addField('place', $order->billing['city']);
         $gateway->addField('country', $order->billing['country_iso_2']);
@@ -170,7 +178,7 @@ class PayrexxApiService
         $gateway->addField('delivery_forename', $order->delivery['firstname']);
         $gateway->addField('delivery_surname', $order->delivery['lastname']);
         $gateway->addField('delivery_company', $order->delivery['company']);
-        $gateway->addField('delivery_street', $order->delivery['street_address']);
+        $gateway->addField('delivery_street', $deliveryStreet);
         $gateway->addField('delivery_postcode', $order->delivery['postcode']);
         $gateway->addField('delivery_place', $order->delivery['city']);
         $gateway->addField('delivery_country', $order->delivery['country_iso_2']);
