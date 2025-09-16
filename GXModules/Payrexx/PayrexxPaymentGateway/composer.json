@@ -1,6 +1,6 @@
 {
   "name": "payrexx/gambio",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "require": {
     "php": "^8.0",
     "payrexx/payrexx": "^2.0"
