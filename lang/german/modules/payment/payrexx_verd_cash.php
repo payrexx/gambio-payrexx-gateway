@@ -1,0 +1,5 @@
+<?php
+
+if (!defined('MODULE_PAYMENT_PAYREXX_VERD_CASH_TEXT_TITLE')) {
+    define('MODULE_PAYMENT_PAYREXX_VERD_CASH_TEXT_TITLE', 'Payrexx VERD.cash');
+}
