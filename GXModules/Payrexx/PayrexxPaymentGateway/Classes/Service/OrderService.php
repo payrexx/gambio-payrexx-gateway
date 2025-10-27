@@ -72,14 +72,8 @@ class OrderService
 
     /**
      * Update transaction status for order
-     *
-     * @param int    $orderId order id
-     * @param string $status  status
-     * @param array  $invoice Invoice details
-     *
-     * @return void
      */
-    public function handleTransactionStatus(int $orderId, string $status, array $invoice = [])
+    public function handleTransactionStatus(int $orderId, string $status, array $invoice = [], $force = false)
     {
         $storage = MainFactory::create('PayrexxStorage');
         $configurations = $storage->getAll();
@@ -118,6 +112,12 @@ class OrderService
                 throw new \Exception($status . ' case not implemented.');
         }
 
+        if ((int)$gxOrder->getStatusId() === (int)$newStatusId) {
+            return;
+        }
+        if ($force) {
+            $this->updateOrderStatus($orderId, $newStatusId, $status);    
+        }
         // check the status transition to change.
         if (!$this->_allowedStatusTransition($gxOrder->getStatusId(), $newStatusId)) {
             throw new \Exception('Status transition not allowed');
