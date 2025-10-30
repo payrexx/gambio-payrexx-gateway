@@ -1,5 +1,5 @@
 <?php
 
 if (!defined('MODULE_PAYMENT_PAYREXX_CEMBRAPAY_TEXT_TITLE')) {
-    define('MODULE_PAYMENT_PAYREXX_CEMBRAPAY_TEXT_TITLE', 'Payrexx CembraPay');
+    define('MODULE_PAYMENT_PAYREXX_CEMBRAPAY_TEXT_TITLE', 'Kauf auf Rechnung (CembraPay)');
 }
