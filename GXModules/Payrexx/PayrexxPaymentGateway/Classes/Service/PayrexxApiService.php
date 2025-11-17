@@ -187,6 +187,11 @@ class PayrexxApiService
             $gateway->setLookAndFeelProfile($this->configuration->get('LOOK_AND_FEEL_ID'));
         }
 
+        $lang = substr($_SESSION['language_code'] ?? '', 0, 2);
+        if ($lang) {
+            $gateway->setLanguage($lang);
+        }
+
         $payrexx = $this->getInterface($this->instance, $this->apiKey, $this->platform);
         if (!empty($metaData)) {
             $payrexx->setHttpHeaders($metaData);

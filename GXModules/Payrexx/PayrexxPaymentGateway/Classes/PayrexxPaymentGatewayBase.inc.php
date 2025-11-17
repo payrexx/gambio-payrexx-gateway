@@ -279,12 +279,7 @@ class PayrexxPaymentGatewayBase
                 Transaction::WAITING
             );
         } catch(Exception $e) {}
-        $payrexxPaymentUrl = str_replace(
-            '?',
-            $_SESSION['language_code'] . '/?',
-            $response->getLink()
-        );
-        xtc_redirect($payrexxPaymentUrl);
+        xtc_redirect($response->getLink());
     }
 
     /**
