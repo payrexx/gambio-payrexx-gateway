@@ -276,9 +276,7 @@ class PayrexxPaymentGatewayBase
             $orderservice = new OrderService();
             $orderservice->handleTransactionStatus(
                 $orderId,
-                Transaction::WAITING,
-                [],
-                true
+                Transaction::WAITING
             );
         } catch(Exception $e) {}
         xtc_redirect($response->getLink());

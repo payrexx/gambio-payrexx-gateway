@@ -73,7 +73,7 @@ class OrderService
     /**
      * Update transaction status for order
      */
-    public function handleTransactionStatus(int $orderId, string $status, array $invoice = [], $force = false)
+    public function handleTransactionStatus(int $orderId, string $status, array $invoice = [])
     {
         $storage = MainFactory::create('PayrexxStorage');
         $configurations = $storage->getAll();
@@ -114,9 +114,6 @@ class OrderService
 
         if ((int)$gxOrder->getStatusId() === (int)$newStatusId) {
             return;
-        }
-        if ($force) {
-            $this->updateOrderStatus($orderId, $newStatusId, $status);    
         }
         // check the status transition to change.
         if (!$this->_allowedStatusTransition($gxOrder->getStatusId(), $newStatusId)) {
