@@ -73,9 +73,9 @@ class OrderService
     /**
      * Update transaction status for order
      *
-     * @param int $orderId order id
-     * @param string $status status
-     * @param array $invoice Invoice details
+     * @param int    $orderId order id
+     * @param string $status  status
+     * @param array  $invoice Invoice details
      *
      * @return void
      * @throws \Exception
