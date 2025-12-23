@@ -179,9 +179,9 @@ class OrderService
         if ($orderStatusId === (int)DEFAULT_ORDERS_STATUS_ID
             &&
             (
-                $orderNewStatusId === $successOrderStatusId ||
-                $orderNewStatusId === $waitingOrderStatusId ||
-                $orderNewStatusId === $failedOrderStatusId
+                $orderNewStatusId === $successOrderStatusId
+                || $orderNewStatusId === $waitingOrderStatusId
+                || $orderNewStatusId === $failedOrderStatusId
             )
          ) {
             return true;
