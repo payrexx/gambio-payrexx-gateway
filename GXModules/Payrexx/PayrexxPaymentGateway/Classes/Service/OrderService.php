@@ -78,6 +78,7 @@ class OrderService
      * @param array  $invoice Invoice details
      *
      * @return void
+     * @throws \Exception
      */
     public function handleTransactionStatus(int $orderId, string $status, array $invoice = [])
     {
@@ -86,7 +87,6 @@ class OrderService
 
         $orderReadService  = StaticGXCoreLoader::getService('OrderRead');
         $gxOrder           = $orderReadService->getOrderById(new IdType((int)$orderId));
-        
         // status mapping
         switch ($status) {
             case Transaction::WAITING:
@@ -118,6 +118,9 @@ class OrderService
                 throw new \Exception($status . ' case not implemented.');
         }
 
+        if ((int)$gxOrder->getStatusId() === (int)$newStatusId) {
+            return;
+        }
         // check the status transition to change.
         if (!$this->_allowedStatusTransition($gxOrder->getStatusId(), $newStatusId)) {
             throw new \Exception('Status transition not allowed');
@@ -168,9 +171,23 @@ class OrderService
 
         $successOrderStatusId = (int)$configurations['PAYMENT_SUCCESS_STATUS_ID'];
         $waitingOrderStatusId = (int)$configurations['PAYMENT_WAITING_STATUS_ID'];
+        $failedOrderStatusId = (int)$configurations['PAYMENT_FAILED_STATUS_ID'];
         $refundedOrderStatusId = (int)$configurations['PAYMENT_REFUNDED_STATUS_ID'];
         $partiallyRefundedOrderStatusId = (int)$configurations['PAYMENT_PARTIALLY_REFUNDED_STATUS_ID'];
 
+        // DEFAULT (backend selected) → SUCCESS / WAITING / FAILED
+        if ($orderStatusId === (int)DEFAULT_ORDERS_STATUS_ID
+            &&
+            (
+                $orderNewStatusId === $successOrderStatusId
+                || $orderNewStatusId === $waitingOrderStatusId
+                || $orderNewStatusId === $failedOrderStatusId
+            )
+         ) {
+            return true;
+        }
+
+        // WAITING → anything except REFUNDED / PARTIALLY_REFUNDED
         if ($orderStatusId === $waitingOrderStatusId) {
             return !in_array(
                 $orderNewStatusId,
@@ -181,7 +198,8 @@ class OrderService
             );
         }
 
-        if ($orderStatusId === $successOrderStatusId || 
+        // SUCCESS or PARTIALLY_REFUNDED → REFUNDED / PARTIALLY_REFUNDED
+        if ($orderStatusId === $successOrderStatusId ||
             $orderStatusId === $partiallyRefundedOrderStatusId
         ) {
             return in_array(
