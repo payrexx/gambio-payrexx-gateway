@@ -1,8 +1,8 @@
 <?php return array(
     'root' => array(
         'name' => 'payrexx/gambio',
-        'pretty_version' => '1.2.7',
-        'version' => '1.2.7.0',
+        'pretty_version' => '1.2.8',
+        'version' => '1.2.8.0',
         'reference' => null,
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
@@ -11,8 +11,8 @@
     ),
     'versions' => array(
         'payrexx/gambio' => array(
-            'pretty_version' => '1.2.7',
-            'version' => '1.2.7.0',
+            'pretty_version' => '1.2.8',
+            'version' => '1.2.8.0',
             'reference' => null,
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',

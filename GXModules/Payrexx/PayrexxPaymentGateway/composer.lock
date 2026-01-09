@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2c7afe530046c0e26ac665a6a35f1484",
+    "content-hash": "0d656b159520c5b39e709e9203d0fe7c",
     "packages": [
         {
             "name": "payrexx/payrexx",
