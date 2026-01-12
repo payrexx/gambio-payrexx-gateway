@@ -193,7 +193,7 @@ class OrderService
             && in_array($orderNewStatusId,
                 [
                     $waitingOrderStatusId,
-                    $successOrderStatusId
+                    $successOrderStatusId,
                 ]
             )
         ) {
