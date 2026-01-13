@@ -187,6 +187,19 @@ class OrderService
             return true;
         }
 
+        // FAILED -> WAITING / SUCCESS
+        if (
+            $orderStatusId === $failedOrderStatusId
+            && in_array($orderNewStatusId,
+                [
+                    $waitingOrderStatusId,
+                    $successOrderStatusId,
+                ]
+            )
+        ) {
+            return true;
+        }
+
         // WAITING → anything except REFUNDED / PARTIALLY_REFUNDED
         if ($orderStatusId === $waitingOrderStatusId) {
             return !in_array(
