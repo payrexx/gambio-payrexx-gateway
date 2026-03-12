@@ -13,6 +13,7 @@ namespace Payrexx\CommunicationAdapter;
 use CURLFile;
 use Exception;
 use CurlHandle;
+use Payrexx\Payrexx;
 
 // check for php version 8.0 or higher
 if (version_compare(PHP_VERSION, '8.0', '<')) {
@@ -42,9 +43,15 @@ class CurlCommunication extends AbstractCommunication
             CURLOPT_URL => $apiUrl,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST => $method,
+            CURLOPT_USERAGENT => 'payrexx-php/' . Payrexx::CLIENT_VERSION,
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_CAINFO => dirname(__DIR__) . '/certs/ca.pem',
         ];
+
+        $instance = $params['instance'] ?? '';
+        if (!in_array($method, ['GET', 'DELETE'])) {
+            unset($params['instance']); // Remove from body
+        }
         if (defined('PHP_QUERY_RFC3986')) {
             $paramString = http_build_query($params, '', '&', PHP_QUERY_RFC3986);
         } else {
@@ -55,16 +62,14 @@ class CurlCommunication extends AbstractCommunication
                 http_build_query($params, '', '&')
             );
         }
-        if ($method == 'GET') {
-            if (!empty($params)) {
-                $curlOpts[CURLOPT_URL] .= str_contains($curlOpts[CURLOPT_URL], '?') ? '&' : '?';
-                $curlOpts[CURLOPT_URL] .= $paramString;
-            }
+        $separator = strpos($apiUrl, '?') === false ? '?' : '&';
+        if (in_array($method, ['GET', 'DELETE']) && !empty($params)) {
+            $curlOpts[CURLOPT_URL] = $apiUrl . $separator . $paramString;
         } else {
-            $curlOpts[CURLOPT_POSTFIELDS] = json_encode($params);
-            $curlOpts[CURLOPT_URL] .= str_contains($curlOpts[CURLOPT_URL], '?') ? '&' : '?';
-            $curlOpts[CURLOPT_URL] .= 'instance=' . $params['instance'];
+            $curlOpts[CURLOPT_POSTFIELDS] = $paramString;
+            $curlOpts[CURLOPT_URL] = $apiUrl . $separator . 'instance=' . $instance;
         }
+
         if ($httpHeader) {
             $header = [];
             foreach ($httpHeader as $name => $value) {
@@ -72,6 +77,7 @@ class CurlCommunication extends AbstractCommunication
             }
             $curlOpts[CURLOPT_HTTPHEADER] = $header;
         }
+
         $hasFile = false;
         $hasCurlFile = class_exists('CURLFile', false);
         foreach ($params as $param) {
@@ -96,21 +102,27 @@ class CurlCommunication extends AbstractCommunication
             }
             $curlOpts[CURLOPT_POSTFIELDS] = $postFields;
         }
-        $curlOpts[CURLOPT_HTTPHEADER][] = 'Content-Type: ' . (
-            $hasFile ? 'multipart/form-data' : 'application/json'
-        );
+
+        if (in_array($method, ['POST', 'PUT', 'PATCH'])) {
+            $curlOpts[CURLOPT_HTTPHEADER][] =
+                'Content-Type: ' . ($hasFile ? 'multipart/form-data' : 'application/x-www-form-urlencoded');
+        }
 
         $curl = curl_init();
         curl_setopt_array($curl, $curlOpts);
+
         $responseBody = $this->curlExec($curl);
         $responseInfo = $this->curlInfo($curl);
 
         if ($responseBody === false) {
-            $responseBody = ['status' => 'error', 'message' => $this->curlError($curl)];
+            $responseBody = [
+                'status' => 'error',
+                'message' => $this->curlError($curl)
+            ];
         }
         curl_close($curl);
 
-        if ($responseInfo['content_type'] === 'application/json') {
+        if (($responseInfo['content_type'] ?? '') === 'application/json') {
             $responseBody = json_decode($responseBody, true);
         }
 

@@ -1,8 +1,8 @@
 <?php return array(
     'root' => array(
         'name' => 'payrexx/gambio',
-        'pretty_version' => '1.2.8',
-        'version' => '1.2.8.0',
+        'pretty_version' => '1.2.9',
+        'version' => '1.2.9.0',
         'reference' => null,
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
@@ -11,8 +11,8 @@
     ),
     'versions' => array(
         'payrexx/gambio' => array(
-            'pretty_version' => '1.2.8',
-            'version' => '1.2.8.0',
+            'pretty_version' => '1.2.9',
+            'version' => '1.2.9.0',
             'reference' => null,
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'payrexx/payrexx' => array(
-            'pretty_version' => 'v2.0.8',
-            'version' => '2.0.8.0',
-            'reference' => '95473689ba082d327effbbc43fc2302d36c6c8bd',
+            'pretty_version' => 'v2.0.12',
+            'version' => '2.0.12.0',
+            'reference' => '6d249753a2b0aaf4b82ea73614c1ad0498d216be',
             'type' => 'library',
             'install_path' => __DIR__ . '/../payrexx/payrexx',
             'aliases' => array(),
