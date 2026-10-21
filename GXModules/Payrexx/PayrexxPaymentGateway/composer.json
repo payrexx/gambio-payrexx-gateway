@@ -3,6 +3,6 @@
   "version": "1.2.10",
   "require": {
     "php": "^8.0",
-    "payrexx/payrexx": "^2.0.12"
+    "payrexx/payrexx": "^2.0.17"
   }
 }

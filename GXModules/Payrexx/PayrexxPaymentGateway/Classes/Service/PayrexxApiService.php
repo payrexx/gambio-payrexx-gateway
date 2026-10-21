@@ -98,20 +98,21 @@ class PayrexxApiService
      *
      * @param integer $id Transaction id
      *
-     * @return array|Transaction
+     * @return \Payrexx\Models\Response\Transaction|null
      */
-    public function getTransactionById(int $id)
+    public function getTransactionById(int $id): ?\Payrexx\Models\Response\Transaction
     {
-        $payrexx = $this->getInterface($this->instance, $this->apiKey, $this->platform);;
+        $payrexx = $this->getInterface($this->instance, $this->apiKey, $this->platform);
         $transaction = new Transaction();
         $transaction->setId($id);
 
         try {
             $response = $payrexx->getOne($transaction);
-            return $response;
         } catch (\Payrexx\PayrexxException $e) {
-            return [];
+            return null;
         }
+
+        return $response instanceof \Payrexx\Models\Response\Transaction ? $response : null;
     }
 
     /**
@@ -146,7 +147,8 @@ class PayrexxApiService
         $gateway->setPsp([]);
         $gateway->setPm($pm);
 
-        $gateway->setReferenceId($orderId);
+        // The SDK sends JSON bodies, and the API drops a numeric referenceId
+        $gateway->setReferenceId((string)$orderId);
         $gateway->setValidity(15);
 
         if (!empty($basket)) {
@@ -174,7 +176,7 @@ class PayrexxApiService
         $gateway->addField('country', $order->billing['country_iso_2']);
         $gateway->addField('phone', $order->customer['telephone']);
         $gateway->addField('email', $order->customer['email_address']);
-        $gateway->addField('custom_field_1', $orderId, 'Gambio Order ID');
+        $gateway->addField('custom_field_1', (string)$orderId, 'Gambio Order ID');
         $gateway->addField('delivery_forename', $order->delivery['firstname']);
         $gateway->addField('delivery_surname', $order->delivery['lastname']);
         $gateway->addField('delivery_company', $order->delivery['company']);
