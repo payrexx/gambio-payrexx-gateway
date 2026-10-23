@@ -112,6 +112,8 @@ class PayrexxWebhookController extends HttpViewController
             );
             echo 'Success: Webhook processed!';
         } catch (\Throwable $e) {
+            // A non-2xx response makes Payrexx retry the webhook, e.g. after a failed transaction lookup
+            http_response_code(500);
             echo 'Error: ' . $e->getMessage();
         }
         exit();
