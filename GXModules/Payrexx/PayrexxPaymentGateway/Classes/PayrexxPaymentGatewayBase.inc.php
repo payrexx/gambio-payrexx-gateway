@@ -100,7 +100,9 @@ class PayrexxPaymentGatewayBase
         $this->title = ucwords(str_replace('_', ' ', $this->code));
         $this->info = defined($this->_getConstant('TEXT_INFO')) ? $this->_getConstantValue('TEXT_INFO') : $this->langText->get_text('text_info');
         $this->sort_order = defined($this->_getConstant('SORT_ORDER')) ? $this->_getConstantValue('SORT_ORDER') : $this->sort_order;
-        $this->enabled = defined($this->_getConstant('STATUS')) && filter_var(constant($this->_getConstant('STATUS')), FILTER_VALIDATE_BOOLEAN);
+        $this->enabled = defined($this->_getConstant('STATUS'))
+            && filter_var(constant($this->_getConstant('STATUS')), FILTER_VALIDATE_BOOLEAN)
+            && !in_array($this->code, PayrexxConfig::REMOVED_PAYMENT_METHODS, true);
         $this->description = $this->langText->get_text('text_description');
         if (defined('DIR_WS_ADMIN')) {
             $this->addAdditionalInfo();
