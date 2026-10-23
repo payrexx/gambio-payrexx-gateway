@@ -96,6 +96,9 @@ class PayrexxWebhookController extends HttpViewController
 
             $payrexxTransaction = $this->payrexxApiService->getTransactionById((int)$transaction['id']);
             if (!$payrexxTransaction) {
+                // Only a failed lookup is worth a retry: a non-2xx response makes Payrexx send the webhook again,
+                // while every other error stays 200 to avoid retries and webhook error mails to the merchant
+                http_response_code(500);
                 throw new \Exception('Transaction could not be loaded from Payrexx');
             }
             // The posted referenceId is untrusted, so a valid transaction of another order must not update this one
@@ -112,8 +115,6 @@ class PayrexxWebhookController extends HttpViewController
             );
             echo 'Success: Webhook processed!';
         } catch (\Throwable $e) {
-            // A non-2xx response makes Payrexx retry the webhook, e.g. after a failed transaction lookup
-            http_response_code(500);
             echo 'Error: ' . $e->getMessage();
         }
         exit();
