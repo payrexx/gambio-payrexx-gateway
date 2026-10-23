@@ -32,6 +32,17 @@ class PayrexxConfig
      * updated by copying the new plugin files over the old ones, so they have to be disabled explicitly.
      */
     const REMOVED_PAYMENT_METHODS = [
+        'payrexx_billpay',
+        'payrexx_bitcoin',
+        'payrexx_bonus',
+        'payrexx_cashu',
+        'payrexx_elv',
+        'payrexx_klarna_paylater',
+        'payrexx_klarna_paynow',
+        'payrexx_masterpass',
+        'payrexx_myone',
+        'payrexx_oney',
+        'payrexx_paysafecard',
         'payrexx_wirpay',
     ];
 
