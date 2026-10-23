@@ -98,6 +98,10 @@ class PayrexxWebhookController extends HttpViewController
             if (!$payrexxTransaction) {
                 throw new \Exception('Transaction could not be loaded from Payrexx');
             }
+            // The posted referenceId is untrusted, so a valid transaction of another order must not update this one
+            if ((int)$payrexxTransaction->getReferenceId() !== $orderId) {
+                throw new \Exception('Transaction does not belong to this order');
+            }
             if ($payrexxTransaction->getStatus() !== $transaction['status']) {
                 throw new \Exception('Fraudulent transaction status');
             }
