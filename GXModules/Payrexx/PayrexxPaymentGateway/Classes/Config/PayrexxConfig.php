@@ -27,6 +27,13 @@ namespace Payrexx\PayrexxPaymentGateway\Classes\Config;
  */
 class PayrexxConfig
 {
+    /**
+     * Payment methods no longer supported by Payrexx. Their module files remain in shops that are
+     * updated by copying the new plugin files over the old ones, so they have to be disabled explicitly.
+     */
+    const REMOVED_PAYMENT_METHODS = [
+        'payrexx_wirpay',
+    ];
 
     /**
      * Get payment method configurations
